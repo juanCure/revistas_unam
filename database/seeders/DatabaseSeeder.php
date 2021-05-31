@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Revista;
+use App\Models\Responsable;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder {
@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder {
 	 * @return void
 	 */
 	public function run() {
-		$revistas = Revista::factory(50)->create();
+		//$revistas = Revista::factory(50)->create();
+		$responsables = Responsable::factory(25)->create();
 	}
 }

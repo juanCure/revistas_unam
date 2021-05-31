@@ -3,9 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RevistaRequest;
+use App\Models\Editorial;
 use App\Models\Revista;
 
 class RevistaController extends Controller {
+
+	public function __construct() {
+		// Restringiendo a que rutas se puede acceder sin necesidad de estar logueado
+		// Para este ejemplo particular se podrá acceder a index y show
+		// $this->middleware('auth')->except(['index', 'show']);
+		$this->middleware('auth');
+	}
 
 	public function index() {
 		$revistas = Revista::all();
@@ -16,11 +24,16 @@ class RevistaController extends Controller {
 	}
 
 	public function create() {
-		return view('revistas.create');
+		return view('revistas.create-with-component');
+		/*return view('revistas.create')->with([
+			'editoriales' => Editorial::all(),
+			'subsistemas' => Subsistema::all(),
+			'frecuencias' => Frecuencia::all(),
+		]);*/
 	}
 
 	public function store(RevistaRequest $request) {
-		//dd('Estamos en store');
+		//dd($request->all(), $request->validated());
 		/*$revista = Revista::create([
 			'titulo' => request()->titulo,
 			'descripcion' => request()->descripcion,
@@ -38,8 +51,16 @@ class RevistaController extends Controller {
 			'editorial' => request()->editorial,
 		]);*/
 		//$revista = Revista::create(request()->all());
+		//dd(request()->all(), $request->all(), $request->validated());
 		$revista = Revista::create($request->validated());
-
+		$editoriales = $request->editoriales;
+		foreach ($editoriales as $id_editorial) {
+			$editorial = Editorial::findOrFail($id_editorial);
+			//dump($editorial);
+			//dump(key($editoriales) + 1);
+			$revista->editoriales()->attach($editorial->id, ['orden' => key($editoriales) + 1]);
+			next($editoriales);
+		}
 		return redirect()
 			->route('revistas.index')
 			->with(['success' => "La nueva revista with id {$revista->id_revista} fue creada"]);
@@ -57,11 +78,25 @@ class RevistaController extends Controller {
 	}
 
 	public function edit(Revista $revista) {
-		return view('revistas.edit')
+		return view('revistas.edit-with-component')
 			->with([
 				'revista' => $revista,
 			]);
-
+		// $editoriales = Editorial::all();
+		// //$ids_selected_editoriales = $revista->editoriales->map->only(['id']);
+		// $ids_selected_editoriales = collect([]);
+		// foreach ($revista->editoriales as $editorial) {
+		// 	$ids_selected_editoriales->push($editorial->id);
+		// }
+		// //dump($ids_selected_editoriales);
+		// return view('revistas.edit')
+		// 	->with([
+		// 		'revista' => $revista,
+		// 		'editoriales' => $editoriales,
+		// 		'frecuencias' => Frecuencia::all(),
+		// 		'subsistemas' => Subsistema::all(),
+		// 		'ids_selected_editoriales' => $ids_selected_editoriales,
+		// 	]);
 	}
 
 	public function update(RevistaRequest $request, Revista $revista) {
@@ -69,18 +104,26 @@ class RevistaController extends Controller {
 		//$revista = Revista::findOrFail($revista);
 		//$revista->update(request()->all());
 		$revista->update($request->validated());
+		$revista->editoriales()->detach();
+		$editoriales = $request->editoriales;
+		foreach ($editoriales as $id_editorial) {
+			$editorial = Editorial::findOrFail($id_editorial);
+			$revista->editoriales()->attach($editorial->id, ['orden' => key($editoriales) + 1]);
+			next($editoriales);
+		}
 		return redirect()
 			->route('revistas.index')
 			->with(['success' => "La revista con id {$revista->id_revista} fue editada con éxito"]);
 	}
 
-	public function destroy($revista) {
-		$revista = Revista::findOrFail($revista);
-
+	public function destroy(Revista $revista) {
+		$revista->editoriales()->detach();
+		$revista->entidades_editoras()->detach();
+		$revista->idiomas()->detach();
+		$revista->temas()->detach();
 		$revista->delete();
-
 		return redirect()
 			->route('revistas.index')
-			->with(['success' => "La revista con id {$revista->id_revista} fue borrada"]);
+			->with(['success' => "La revista \"{$revista->titulo}\" fue borrada"]);
 	}
 }

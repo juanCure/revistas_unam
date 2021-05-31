@@ -1,0 +1,43 @@
+{{--@extends('layouts.master')--}}
+@extends('layouts.app')
+@section('content')
+	<h1>Areas Conocimiento</h1>
+
+	<a class="btn btn-success mb-3" href="{{ route('areas_conocimiento.create') }}">Crear área</a>
+
+	@if(count($areas_conocimiento) == 0)
+		<div class="alert alert-warning">
+			La lista de áreas es vacia
+		</div>
+	@else
+		<div class="table-responsive">
+			<table class="table table-striped">
+				<thead class="thead-light">
+					<tr>
+						<th>Id</th>
+						<th>Nombre</th>
+						<th>Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach ($areas_conocimiento as $area)
+						<tr>
+							<td>{{ $area->id }}</td>
+							<td>{{ $area->nombre }}</td>
+							<td>
+								{{--<a class="btn btn-link" href="{{ route('areas_conocimiento.show', ['areas_conocimiento' => $area->id]) }}">Ver</a>--}}
+								<a class="btn btn-link" href="{{ route('areas_conocimiento.edit', ['areas_conocimiento' => $area->id]) }}">Editar</a>
+
+								<form method="POST" class="d-inline" action="{{ route('areas_conocimiento.destroy', ['areas_conocimiento' => $area->id]) }}">
+									@csrf
+									@method('DELETE')
+									<button type="submit" class="btn btn-link">Eliminar</button>
+								</form>
+							</td>
+						</tr>
+					@endforeach
+				</tbody>
+			</table>
+		</div>
+	@endif
+@endsection

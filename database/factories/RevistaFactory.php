@@ -26,15 +26,14 @@ class RevistaFactory extends Factory {
 			'issn' => $this->faker->regexify('[0-9][0-9][0-9][0-9][-][0-9][0-9][0-9][0-9]'),
 			'issne' => $this->faker->regexify('[0-9][0-9][0-9][0-9][-][0-9][0-9][0-9][X0-9]'),
 			'arbitrada' => $this->faker->randomElement(['Si', 'No']),
-			//'id_situacion' => $this->faker->numberBetween($min = 1, $max = 2),
-			'situacion' => $this->faker->randomElement(['vigente', 'descontinuada']),
-			'id_frecuencia' => $this->faker->numberBetween($min = 1, $max = 10),
-			'id_soporte' => $this->faker->numberBetween($min = 1, $max = 10),
-			'id_tipo_revista' => $this->faker->numberBetween($min = 1, $max = 10),
-			'id_area_conocimiento' => $this->faker->numberBetween($min = 1, $max = 10),
-			'id_subsistema' => $this->faker->numberBetween($min = 1, $max = 10),
+			'soporte' => $this->faker->randomElement(['Ambas', 'Electrónica', 'Impresa']),
+			'situacion' => $this->faker->randomElement(['Vigente', 'Descontinuada']),
+			'tipo_revista' => $this->faker->randomElement(['Cultural', 'Divulgación', 'Investigación', 'Técnico-Profesional']),
 			'otros_indices' => $this->faker->sentence(8),
-			'editorial' => $this->faker->sentence(3),
+			'id_frecuencia' => $this->faker->numberBetween($min = 1, $max = 10),
+			//'id_area_conocimiento' => $this->faker->numberBetween($min = 1, $max = 10),
+			'id_subsistema' => $this->faker->numberBetween($min = 1, $max = 10),
+
 		];
 	}
 }
