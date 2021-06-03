@@ -49,6 +49,28 @@
     									<option {{ ($filtro == $indexador->id && $accion == 'revistasPorIndexaciones') ? 'selected' : '' }} value="{{ $indexador->id}}"> {{ $indexador->nombre }} </option>
     								@endforeach
     							</select>
+    							@inject('indiceServicio', 'App\Services\IndicesServicio')	
+    							<select name="entidad_id" id="entidad_id" style="display: none;">
+    								{{-- <option value="all">Todos</option> --}}
+    								<option value selected="selected">Todos</option>
+    								@foreach ($entidades = $indiceServicio->getEntidadesEditoras() as $entidad)
+    									<option {{ ($filtro == $entidad->id && $accion == 'revistasPorEntidad') ? 'selected' : '' }} value="{{ $entidad->id}}"> {{ $entidad->nombre }} </option>
+    								@endforeach
+    							</select>
+
+    							<select name="subsistema_id" id="subsistema_id" style="display: none;">
+    								{{-- <option value="all">Todos</option> --}}
+    								<option value selected="selected">Todos</option>
+    								@foreach ($subsistemas = $indiceServicio->getSubsistemas() as $subsistema)
+    									<option {{ ($filtro == $subsistema->id && $accion == 'revistasPorSubsistema') ? 'selected' : '' }} value="{{ $subsistema->id}}"> {{ $subsistema->nombre }} </option>
+    								@endforeach
+    							</select>
+
+    							<select name="oldRevistas" id="oldRevistas" style="display: none;">
+    									<option {{ ($filtro == "Descontinuada" && $accion == 'oldRevistas') ? 'selected' : '' }} value="{{ $filtro}}">
+    										{{$filtro}}
+    									</option>
+    							</select>
     						</div>
     						<div class="row">
     							<div class="col-md-2 text-right">
