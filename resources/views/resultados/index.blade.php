@@ -35,10 +35,13 @@
 							</ul>
 						</td>
 						<td>
+							@foreach ($revista->sistemas_indexadores as $indexador)
+								<a href="{{ route('revistas.indexaciones', ['indice_id' => $indexador->id])}}">
+									<img src="{{ asset($indexador->imagen )}}">
+								</a>
+							@endforeach
 							<ul>
-								@foreach ($revista->sistemas_indexadores as $indexador)
-									<li><a href="{{ route('revistas.indexaciones', ['indice_id' => $indexador->id])}}"> {{ $indexador->nombre }} </a></li>
-								@endforeach
+
 							</ul>
 						</td>
 						<td>

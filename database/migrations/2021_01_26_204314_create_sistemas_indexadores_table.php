@@ -14,6 +14,7 @@ class CreateSistemasIndexadoresTable extends Migration {
 		Schema::create('sistemas_indexadores', function (Blueprint $table) {
 			$table->id();
 			$table->string('nombre', 45);
+			$table->string('imagen', 255);
 			$table->longText('descripcion')->nullable();
 			$table->string('url')->nullable();
 			//$table->timestamps();

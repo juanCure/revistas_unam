@@ -21,6 +21,7 @@ class SistemaIndexador extends Model {
 	 */
 	protected $fillable = [
 		'nombre',
+		'imagen',
 		'descripcion',
 		'url',
 	];

@@ -115,7 +115,8 @@
                     type: 'pie',
                     options3d: {
                         enabled: true,
-                        alpha: 45
+                        alpha: 45,
+                        beta: 0
                     },
                     renderTo: 'pie_areas_chart',
                     plotBackgroundColor: null,
@@ -131,8 +132,8 @@
                 },
                 plotOptions: {
                     pie: {
-                        innerSize: 35,
-                        depth: 50,
+                        // innerSize: 35,
+                        depth: 35,
                         allowPointSelect: true,
                         cursor: 'pointer',
                         dataLabels: {

@@ -49,7 +49,7 @@
     									<option {{ ($filtro == $indexador->id && $accion == 'revistasPorIndexaciones') ? 'selected' : '' }} value="{{ $indexador->id}}"> {{ $indexador->nombre }} </option>
     								@endforeach
     							</select>
-    							@inject('indiceServicio', 'App\Services\IndicesServicio')	
+    							@inject('indiceServicio', 'App\Services\IndicesServicio')
     							<select name="entidad_id" id="entidad_id" style="display: none;">
     								{{-- <option value="all">Todos</option> --}}
     								<option value selected="selected">Todos</option>
@@ -76,7 +76,7 @@
     							<div class="col-md-2 text-right">
 	        						<label> Números de registros a mostrar:</label>
 	        					</div>
-	        					<div class="col-md-2">
+	        					<div class="col-md-1" style="padding:0px;">
 	        						<br>
 	        						<select
 	        							name="per_page"
@@ -92,7 +92,7 @@
 	        					<div class="col-md-1 text-right">
 	        						<label>Arbitrada:</label>
 	        					</div>
-	        					<div class="col-md-2">
+	        					<div class="col-md-1" style="padding:0px;">
 	        						<select name="arbitrada" id="arbitrada" class="custom-select" onchange="data_ajax('{{ route('revistas.listado') }}', '#form_revista', '#revistas_resultado')">
 	        							<option value selected="selected">Todos</option>
 	        							<option value="Si">Si</option>
@@ -102,7 +102,7 @@
 	        					<div class="col-md-1">
 	        						<label>Soportes:</label>
 	        					</div>
-	        					<div class="col-md-2">
+	        					<div class="col-md-1" style="padding:0px;">
 	        						<select class="custom-select" name="soporte" id="soporte" onchange="data_ajax('{{ route('revistas.listado') }}', '#form_revista', '#revistas_resultado')">
 										<option value selected="selected">Todos</option>
 										<option value="Digital">Digital</option>
@@ -110,6 +110,25 @@
 										<option value="Ambas">Digital e Impreso</option>
 									</select>
 	        					</div>
+
+	        					<!-- Botón para lanzar la ventanda modal que contiene la gráfica -->
+								<div class="col-md-1 text-right">
+									<a href="#myModalChart" data-toggle="modal"><img src="http://www.revistas.unam.mx/catalogo/assets/img/icono_estadisticas.png" id="img_chart" style="margin-left: 15px; margin-top: -5px;" />
+									</a>
+								</div>
+
+								<!-- Select Box para elegir mediante que indice se quiere realizar la gráfica -->
+
+								<div class="col-md-2 text-right">
+									<select name="grafica" id="grafica" class="form-control  form-control input-sm" style="width:100;">
+									<option value="" selected="selected">Seleccione...</option>
+									<option value="1">Áreas del conocimiento</option>
+									<option value="2">Entidades académicas</option>
+									<option value="7">Indexaciones</option>
+									<option value="3">Subsistemas</option>
+									<option value="6">Tipos de revista</option>
+									</select>
+								</div>
     						</div>
         				</form>
     				</div>
@@ -137,9 +156,8 @@
 		});
 	}
 
-
+	// Agregando la funcionalidad para que funcione la ventana modal de la ficha
     $(document).ready(function(){
-    	// console.log("I am in busquedaPorTipo");
         $("#fichaRevistaModal").on("show.bs.modal", function(e) {
             var id = $(e.relatedTarget).data('id');
             console.log("data-id: ", id);
