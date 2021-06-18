@@ -15,7 +15,7 @@
                     <tr>
                         <th>No.</th>
                         <th>Nombre</th>
-                        <th width="150px">Action</th>
+                        <th width="150px">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -24,8 +24,8 @@
                         <td>{{ $frecuencia->id }}</td>
                         <td>{{ $frecuencia->nombre }}</td>
                         <td>
-                            <button wire:click="edit({{ $frecuencia->id }})" class="btn btn-primary btn-sm">Edit</button>
-                            <button wire:click="$emit('confirm_remove', {{ $frecuencia->id }})" class="btn btn-danger btn-sm">Delete</button>
+                            <button wire:click="edit({{ $frecuencia->id }})" class="btn btn-primary btn-sm">Editar</button>
+                            <button wire:click="$emit('confirm_remove', {{ $frecuencia->id }})" class="btn btn-danger btn-sm">Eliminar</button>
                         </td>
                     </tr>
                     @endforeach

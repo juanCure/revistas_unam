@@ -45,7 +45,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary" wire:click.prevent="update()">Guardar responsable</button>
+        <button type="button" class="btn btn-success" wire:click.prevent="update()">Guardar</button>
       </div>
     </div>
   </div>

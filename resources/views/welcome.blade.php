@@ -73,11 +73,11 @@
                 },
                 plotOptions: {
                     pie: {
-                        innerSize: 50,
-                        depth: 45,
+                        // innerSize: 35,
+                        depth: 35,
                         allowPointSelect: true,
                         cursor: 'pointer',
-                            dataLabels: {
+                        dataLabels: {
                             enabled: true,
                             color: '#000000',
                             connectorColor: '#000000',
@@ -132,11 +132,11 @@
                 },
                 plotOptions: {
                     pie: {
-                        // innerSize: 35,
-                        depth: 35,
+                        innerSize: 50,
+                        depth: 45,
                         allowPointSelect: true,
                         cursor: 'pointer',
-                        dataLabels: {
+                            dataLabels: {
                             enabled: true,
                             color: '#000000',
                             connectorColor: '#000000',

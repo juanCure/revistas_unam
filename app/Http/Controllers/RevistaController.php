@@ -16,11 +16,12 @@ class RevistaController extends Controller {
 	}
 
 	public function index() {
-		$revistas = Revista::all();
+		// $revistas = Revista::all();
 		//dd($revistas);
-		return view('revistas.index')->with([
-			'revistas' => $revistas,
-		]);
+		return view('revistas.index');
+		// return view('revistas.index')->with([
+		// 	'revistas' => $revistas,
+		// ]);
 	}
 
 	public function create() {

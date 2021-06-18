@@ -69,6 +69,23 @@ Route::resources([
 	//'temas' => TemaController::class,
 ]);
 
+// Ruta para listar las revistas en la vista de gestión
+// Route::get('revistas', function () {
+// 	return view('revistas.index');
+// })->name('revistas.index')->middleware('auth');
+
+// Ruta para mostrar una revista
+// Route::get('revistas/{revista}', [RevistaController::class, 'show'])->name('revistas.show');
+
+// Ruta para crear una revista
+// Route::get('revistas/create', [RevistaController::class, 'create'])->name('revistas.create');
+
+// Ruta para editar un revista
+// Route::get('revistas/{revista}/edit', [RevistaController::class, 'edit'])->name('revistas.edit');
+
+// Ruta para elimianar una revista
+// Route::delete('revistas/{revista}', [RevistaController::class, 'destroy'])->name('revistas.destroy');
+
 // Ruta para listar las frecuencias
 Route::get('areas_conocimiento', [AreasConocimientoController::class, 'index'])->name('areas_conocimiento.index');
 

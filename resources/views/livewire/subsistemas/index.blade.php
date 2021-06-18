@@ -14,7 +14,7 @@
                     <tr>
                         <th>No.</th>
                         <th>Nombre</th>
-                        <th width="150px">Action</th>
+                        <th width="150px">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
