@@ -7,6 +7,7 @@
         	@include('public_sidebar')
         	{{-- Incluyendo la vista modal de la ficha --}}
         	@include('resultados.ficha')
+        	@include('resultados.indicadores_modal')
     		<div class="col-md-9">
     			<ol class="breadcrumb">
     				<li><a href="{{ route('inicio') }}">
@@ -148,7 +149,7 @@
 			method: 'GET'
 		})
 		.done(function(response) {
-			console.log(response);
+			// console.log(response);
 			$(elemento_resultado).html(response);
 		})
 		.fail(function( jqXHR, textStatus ) {
@@ -156,37 +157,32 @@
 		});
 	}
 
-	// Agregando la funcionalidad para que funcione la ventana modal de la ficha
     $(document).ready(function(){
+
+    	// Agregando la funcionalidad para que funcione la ventana modal de la ficha
         $("#fichaRevistaModal").on("show.bs.modal", function(e) {
             var id = $(e.relatedTarget).data('id');
-            console.log("data-id: ", id);
+            // console.log("data-id: ", id);
             $.get( "/verFicha/" + id, function( data ) {
-            	console.log(data);
+            	// console.log(data);
                 $(".modal-body").html(data);
             });
 
         });
 
-        // $('.custom-select').change(function(e) {
-        // 	e.preventDefault();
-        // 	var selected_per_page = $(this).children("option:selected").val();
-        // 	let _token   = $('meta[name="csrf-token"]').attr('content');
-        // 	// console.log("selected per_page: ", selected_per_page);
+        // Agregando la funcionalidad para que funcione la ventana modal de los indicadores
+        $("#indicadorModal").on("show.bs.modal", function(e) {
+            var id = $(e.relatedTarget).data('id');
+            $.get( "/indicador/" + id, function( data ) {
+            	if(data.indicador != null) {
+            		$(".modal-body").html(data.indicador);
+            	} else {
+            		$(".modal-body").html("<p>La revista seleccionada no tiene indicadores que mostrar!</p>");
+            	}
 
-        // 	$.ajax({
-	       //  	url:"/listado",
-	       //  	type: "POST",
-	       //  	data: {
-	       //  		per_page: selected_per_page,
-	       //  		arbitrada: arbitrada
-	       //  		_token: _token
-	       //  	},
-	       //  	success: function(response){
-	       //  		console.log(response);
-	       //  	}
-	       //  });
-        // });
+            });
+
+        });
     });
 </script>
 @endsection

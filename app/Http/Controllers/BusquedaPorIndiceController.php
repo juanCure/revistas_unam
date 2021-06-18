@@ -131,13 +131,13 @@ class BusquedaPorIndiceController extends Controller {
 
 		$revistas = SistemaIndexador::find($indice_id)
 			->revistas()
-			->when($letra, function($query, $letra){
+			->when($letra, function ($query, $letra) {
 				return $query->where('titulo', 'like', "{$letra}%");
 			})->when($arbitrada, function ($query, $arbitrada) {
-				return $query->where('arbitrada', $arbitrada);
-			})->when($soporte, function ($query, $soporte) {
-				return $query->where('soporte', $soporte);
-			})
+			return $query->where('arbitrada', $arbitrada);
+		})->when($soporte, function ($query, $soporte) {
+			return $query->where('soporte', $soporte);
+		})
 			->sortable()
 			->paginate($per_page)
 			->withQueryString();
@@ -157,8 +157,8 @@ class BusquedaPorIndiceController extends Controller {
 
 		return view('resultados.index')->with([
 			'revistas' => $revistas,
-		])->render(); 
-		
+		])->render();
+
 	}
 
 	public function getRevistasPorEntidadEditora(Request $request) {
@@ -176,13 +176,13 @@ class BusquedaPorIndiceController extends Controller {
 
 		$revistas = EntidadEditora::find($entidad_id)
 			->revistas()
-			->when($letra, function($query, $letra){
+			->when($letra, function ($query, $letra) {
 				return $query->where('titulo', 'like', "{$letra}%");
 			})->when($arbitrada, function ($query, $arbitrada) {
-				return $query->where('arbitrada', $arbitrada);
-			})->when($soporte, function ($query, $soporte) {
-				return $query->where('soporte', $soporte);
-			})
+			return $query->where('arbitrada', $arbitrada);
+		})->when($soporte, function ($query, $soporte) {
+			return $query->where('soporte', $soporte);
+		})
 			->sortable()
 			->paginate(20)
 			->withQueryString();
@@ -198,12 +198,12 @@ class BusquedaPorIndiceController extends Controller {
 				'filtro' => $entidad_id,
 				'breadcrumb' => ' Entidades Académicas > ' . EntidadEditora::find($entidad_id)->nombre,
 			]);
-		} 
+		}
 
 		return view('resultados.index')->with([
 			'revistas' => $revistas,
-		])->render(); 			
-		
+		])->render();
+
 	}
 
 	// Función para filtrar las revistas por area de conocimiento
@@ -231,7 +231,7 @@ class BusquedaPorIndiceController extends Controller {
 			return $query->where('soporte', $soporte);
 		})->sortable()->paginate($per_page)->withQueryString();
 
-		if(!$request->ajax()) {
+		if (!$request->ajax()) {
 			return view('resultados.resultadosPorIndices', [
 				'revistas' => $revistas,
 				'tipos_revistas' => $indices['typos'],
@@ -242,11 +242,11 @@ class BusquedaPorIndiceController extends Controller {
 				'filtro' => $subsistema_id,
 				'breadcrumb' => ' Subsistemas > ' . Subsistema::find($subsistema_id)->nombre,
 			]);
-		} 
+		}
 
 		return view('resultados.index')->with([
 			'revistas' => $revistas,
-		])->render(); 
+		])->render();
 	}
 
 	public function viewModal($revista_id) {
@@ -267,7 +267,7 @@ class BusquedaPorIndiceController extends Controller {
 
 		$soporte = $request->soporte;
 
-		$revistas = Revista::when($letra, function($query, $letra){
+		$revistas = Revista::when($letra, function ($query, $letra) {
 			$query->where('titulo', 'like', "{$letra}%");
 		})->when($arbitrada, function ($query, $arbitrada) {
 			return $query->where('arbitrada', $arbitrada);
@@ -275,7 +275,7 @@ class BusquedaPorIndiceController extends Controller {
 			return $query->where('soporte', $soporte);
 		})->sortable()->paginate($per_page)->withQueryString();
 
-		if(!$request->ajax()) {
+		if (!$request->ajax()) {
 			return view('resultados.resultadosPorIndices', [
 				'revistas' => $revistas,
 				'tipos_revistas' => $indices['typos'],
@@ -306,15 +306,15 @@ class BusquedaPorIndiceController extends Controller {
 		$soporte = $request->soporte;
 
 		$revistas = Revista::where('situacion', 'Descontinuada')
-			->when($letra, function($query, $letra){
+			->when($letra, function ($query, $letra) {
 				$query->where('titulo', 'like', "{$letra}%");
 			})->when($arbitrada, function ($query, $arbitrada) {
-				return $query->where('arbitrada', $arbitrada);
-			})->when($soporte, function ($query, $soporte) {
-				return $query->where('soporte', $soporte);
-			})->sortable()->paginate($per_page)->withQueryString();
+			return $query->where('arbitrada', $arbitrada);
+		})->when($soporte, function ($query, $soporte) {
+			return $query->where('soporte', $soporte);
+		})->sortable()->paginate($per_page)->withQueryString();
 
-		if(!$request->ajax()) {
+		if (!$request->ajax()) {
 			return view('resultados.resultadosPorIndices', [
 				'revistas' => $revistas,
 				'tipos_revistas' => $indices['typos'],
@@ -329,7 +329,7 @@ class BusquedaPorIndiceController extends Controller {
 
 		return view('resultados.index')->with([
 			'revistas' => $revistas,
-		])->render(); 
+		])->render();
 	}
 
 	public function postListadoRevistas(Request $request) {
@@ -354,10 +354,9 @@ class BusquedaPorIndiceController extends Controller {
 			return $this->getRevistasPorEntidadEditora($request);
 		} elseif ($subsistema_id) {
 			return $this->getRevistasPorSubsistema($request);
-		} elseif($oldRevistas) {
+		} elseif ($oldRevistas) {
 			return $this->getRevistasDescontinuadas($request);
-		}
-		else {
+		} else {
 			// return response()->json([
 			// 	'success' => 'Ajax request submitted successfully',
 			// 	'tipo_revista' => $request->tipo_revista,
@@ -368,5 +367,16 @@ class BusquedaPorIndiceController extends Controller {
 			// 	'soporte' => $request->soporte]);
 			return $this->getTodosTiposRevistas($request);
 		}
+	}
+
+	/**
+	 * [getIndicador Método para obtener el atributo indicador del modelo Revista]
+	 * @param  $revista_id
+	 * @return indicador
+	 */
+	public function getIndicador($revista_id) {
+		return response()->json([
+			'indicador' => Revista::findOrFail($revista_id)->indicador,
+		]);
 	}
 }

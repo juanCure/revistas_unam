@@ -45,7 +45,10 @@
 							</ul>
 						</td>
 						<td>
-							{!! $revista->indicador !!}
+							<div class="list-group">
+								<!-- Anchor trigger modal -->
+								<a data-toggle="modal" data-id="{{ $revista->id_revista }}" href="#indicadorModal" class="list-group-item"><i class="fas fa-tachometer-alt fa-lg"></i></a>
+							</div>
 						</td>
 						<td>
 							<!-- Button trigger modal -->

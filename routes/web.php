@@ -139,6 +139,9 @@ Route::get('revistasPorSubsistema', [BusquedaPorIndiceController::class, 'getRev
 
 // Ruta para obtener la ficha en una vista modal de cualquier revista
 Route::get('verFicha/{id_revista}', [BusquedaPorIndiceController::class, 'viewModal'])->name('verFicha.revista');
+
+// Ruta para obtener el campo indicador de cualquier revista
+Route::get('indicador/{id_revista}', [BusquedaPorIndiceController::class, 'getIndicador'])->name('indicador.revista');
 // Ruta para obtener las revistas de todos los tipos
 //
 Route::get('allRevistas', [BusquedaPorIndiceController::class, 'getTodosTiposRevistas'])->name('revistas.all');
