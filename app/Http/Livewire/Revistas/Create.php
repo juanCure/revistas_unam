@@ -7,9 +7,11 @@ use App\Models\Editorial;
 use App\Models\EntidadEditora;
 use App\Models\Frecuencia;
 use App\Models\Idioma;
+use App\Models\Responsable;
 use App\Models\Revista;
 use App\Models\Subsistema;
 use App\Models\Tema;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -28,6 +30,11 @@ class Create extends Component {
 
 	protected $listeners = ['say-hello' => 'sayHello'];
 
+	// Establecer que estilo utilizar para los enlaces de paginación
+	protected $paginationTheme = 'bootstrap';
+
+	public $searchTerm;
+
 	public function sayHello() {
 
 	}
@@ -40,11 +47,20 @@ class Create extends Component {
 		$this->entidades = EntidadEditora::all()->sortBy('nombre');
 		$this->idiomas = Idioma::all()->sortBy('nombre');
 		$this->temas = Tema::all()->sortBy('nombre');
+		// $this->responsables = Responsable::paginate(15);
 
 	}
 
 	public function render() {
-		return view('livewire.revistas.create');
+		// return view('livewire.revistas.create', [
+		// 	'responsables' => Responsable::orderBy('nombres')->paginate(15),
+		// ]);
+
+		return view('livewire.revistas.create', [
+			'responsables' => Responsable::where(function ($sub_query) {
+				$sub_query->where(DB::raw('CONCAT_WS(" ", grado, nombres, apellidos)'), 'like', '%' . $this->searchTerm . '%');
+			})->paginate(15),
+		]);
 	}
 
 	public function firstStepSubmit() {
@@ -175,5 +191,9 @@ class Create extends Component {
 		$this->anio_inicio = '';
 		$this->otros_indices = '';
 		$this->indicador = '';
+	}
+
+	public function agregarResponsable($id) {
+		dd("Estoy en agregar responsable ${id}");
 	}
 }

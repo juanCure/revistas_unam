@@ -26,12 +26,19 @@ class Index extends Component {
 	];
 
 	public function render() {
+		// return view('livewire.responsables.index', [
+		// 	'responsables' => Responsable::where(function ($sub_query) {
+		// 		$sub_query->where(DB::raw('CONCAT_WS(" ", grado, nombres, apellidos)'), 'like', $this->searchTerm . '%')
+		// 			->orWhere('correo_electronico', 'like', '%' . $this->searchTerm . '%')
+		// 			->orWhere('grado', 'like', '%' . $this->searchTerm . '%');
+		// 	})->paginate(20),
+		// ]);
+		//
 		return view('livewire.responsables.index', [
 			'responsables' => Responsable::where(function ($sub_query) {
-				$sub_query->where(DB::raw('CONCAT_WS(" ", grado, nombres, apellidos)'), 'like', $this->searchTerm . '%')
-					->orWhere('correo_electronico', 'like', '%' . $this->searchTerm . '%')
-					->orWhere('grado', 'like', '%' . $this->searchTerm . '%');
-			})->paginate(20),
+				// $sub_query->where('nombres', 'like', '%' . $this->searchTerm . '%');
+				$sub_query->where(DB::raw('CONCAT_WS(" ", grado, nombres, apellidos)'), 'like', '%' . $this->searchTerm . '%');
+			})->paginate(15),
 		]);
 	}
 

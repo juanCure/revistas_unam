@@ -13,13 +13,21 @@
                 <a href="#step-3" type="button" class="btn btn-circle {{ $currentStep != 3 ? 'btn-default' : 'btn-primary' }}">3</a>
                 <p>Paso 3</p>
             </div>
+            <div class="stepwizard-step">
+                <a href="#step-4" type="button" class="btn btn-circle {{ $currentStep != 3 ? 'btn-default' : 'btn-primary' }}">4</a>
+                <p>Paso 4</p>
+            </div>
+            <div class="stepwizard-step">
+                <a href="#step-5" type="button" class="btn btn-circle {{ $currentStep != 3 ? 'btn-default' : 'btn-primary' }}">5</a>
+                <p>Paso 5</p>
+            </div>
 	        <div class="stepwizard-step">
-	            <a href="#step-4" type="button" class="btn btn-circle {{ $currentStep != 4 ? 'btn-default' : 'btn-primary' }}" disabled="disabled">3</a>
+	            <a href="#step-6" type="button" class="btn btn-circle {{ $currentStep != 4 ? 'btn-default' : 'btn-primary' }}" disabled="disabled">6</a>
 	            <p>Resumen</p>
 	        </div>
 	    </div>
 	</div>
-	{{-- Esta sería la primera página --}}
+	{{-- Paso 1 Metadatos principales de la revista --}}
 
 	<div class="row setup-content {{$currentStep != 1 ? 'displayNone' : '' }}" id="step-1">
         <div class="col-xs-12">
@@ -147,12 +155,16 @@
         </div>
     </div>
 
-    {{-- Esta sería la segunda página --}}
+    {{-- Paso 2 Asociar los responsables de la revista --}}
 
-    <div class="row setup-content {{ $currentStep != 2 ? 'displayNone' : '' }}" id="step-2">
-    	<div class="col-xs-12">
-    		<div class="col-md-12">
-    			<h3>Paso 2</h3>
+    @include('livewire.revistas.step2')
+
+    {{-- Paso 3 Asociar las editoriales y entidades editoras --}}
+
+    <div class="row setup-content {{ $currentStep != 3 ? 'displayNone' : '' }}" id="step-3">
+        <div class="col-xs-12">
+            <div class="col-md-12">
+                <h3>Paso 3</h3>
                 <p>Todos los elementos con <i class="fa fa-asterisk" aria-hidden="true"></i> son requeridos.</p>
                 <div class="form-group">
                     <div class="container">
@@ -221,16 +233,18 @@
                     </div>
                 </div>
 
-    			<button class="btn btn-primary nextBtn btn-lg pull-right" type="button" wire:click="secondStepSubmit">Siguiente</button>
+                <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" wire:click="secondStepSubmit">Siguiente</button>
                 <button class="btn btn-danger nextBtn btn-lg pull-right" type="button" wire:click="back(1)">Regresar</button>
-    		</div>
-    	</div>
+            </div>
+        </div>
     </div>
 
-    <div class="row setup-content {{ $currentStep != 3 ? 'displayNone' : '' }}" id="step-3">
+    {{-- Paso 4 Asociar idiomas y temas --}}
+
+    <div class="row setup-content {{ $currentStep != 4 ? 'displayNone' : '' }}" id="step-4">
         <div class="col-xs-12">
             <div class="col-md-12">
-                <h3>Paso 3</h3>
+                <h3>Paso 4</h3>
                 <p>Todos los elementos con <i class="fa fa-asterisk" aria-hidden="true"></i> son requeridos.</p>
                 {{-- Seleccionado uno o varios idiomas --}}
 
@@ -309,54 +323,57 @@
             </div>
         </div>
     </div>
-    {{-- Este es el resume antes de crear la revista --}}
 
-    <div class="row setup-content {{ $currentStep != 4 ? 'displayNone' : '' }}" id="step-4">
-    	<div class="col-xs-12">
-    		<div class="col-md-12">
-    			<h3> Paso 3</h3>
+    {{-- Paso 5 Asociar los sistemas indexadores --}}
 
-    			<table class="table">
-    				<tr>
-    					<td>Titulo:</td>
-    					<td><strong>{{ $titulo }}</strong></td>
-    				</tr>
-    				<tr>
-    					<td>Descripción</td>
-    					<td>{!! $descripcion !!}</td>
-    				</tr>
-    				<tr>
-    					<td>ISSN:</td>
-    					<td><strong>{{ $issn }}</strong></td>
-    				</tr>
-    				<tr>
-    					<td>ISSN-E</td>
-    					<td><strong>{{ $issne }}</strong></td>
-    				</tr>
+    {{-- Paso 6 Resumen de la revista antes de ser guardada --}}
+
+    <div class="row setup-content {{ $currentStep != 6 ? 'displayNone' : '' }}" id="step-6">
+        <div class="col-xs-12">
+            <div class="col-md-12">
+                <h3> Resumen</h3>
+
+                <table class="table">
+                    <tr>
+                        <td>Titulo:</td>
+                        <td><strong>{{ $titulo }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Descripción</td>
+                        <td>{!! $descripcion !!}</td>
+                    </tr>
+                    <tr>
+                        <td>ISSN:</td>
+                        <td><strong>{{ $issn }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td>ISSN-E</td>
+                        <td><strong>{{ $issne }}</strong></td>
+                    </tr>
                     <tr>
                         <td>Año de inicio:</td>
                         <td><strong>{{ $anio_inicio }}</strong></td>
                     </tr>
-    				<tr>
-    					<td>Otros indices:</td>
-    					<td><strong>{{ $otros_indices}}</strong></td>
-    				</tr>
+                    <tr>
+                        <td>Otros indices:</td>
+                        <td><strong>{{ $otros_indices}}</strong></td>
+                    </tr>
                     <tr>
                         <td>Situación:</td>
                         <td><strong>{{ $situacion }}</strong></td>
                     </tr>
-    				<tr>
-    					<td>Arbitrada:</td>
-    					<td><strong>{{ $arbitrada }}</strong></td>
-    				</tr>
-    				<tr>
-    					<td>Soporte:</td>
-    					<td><strong>{{ $soporte }}</strong></td>
-    				</tr>
-    				<tr>
-    					<td>Tipo de revista:</td>
-    					<td><strong>{{ $tipo_revista }}</strong></td>
-    				</tr>
+                    <tr>
+                        <td>Arbitrada:</td>
+                        <td><strong>{{ $arbitrada }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Soporte:</td>
+                        <td><strong>{{ $soporte }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Tipo de revista:</td>
+                        <td><strong>{{ $tipo_revista }}</strong></td>
+                    </tr>
                     <tr>
                         <td>Área de conocimiento:</td>
                         <td><strong>
@@ -450,12 +467,12 @@
                             </ul>
                         </td>
                     </tr>
-    			</table>
+                </table>
 
-    			<button class="btn btn-success btn-lg pull-right" wire:click="submitForm" type="button">Crear</button>
+                <button class="btn btn-success btn-lg pull-right" wire:click="submitForm" type="button">Crear</button>
                 <button class="btn btn-danger nextBtn btn-lg pull-right" type="button" wire:click="back(3)">Regresar</button>
-    		</div>
-    	</div>
+            </div>
+        </div>
     </div>
 </div>
 
