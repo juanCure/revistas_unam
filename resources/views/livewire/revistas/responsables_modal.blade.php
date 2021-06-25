@@ -1,11 +1,11 @@
 
 
 <!-- Modal -->
-<div wire:ignore.self class="modal fade" id="editarResponsableModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div wire:ignore.self class="modal fade" id="agregarResponsableModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Editar Responsable</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Asignando responsable</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -41,11 +41,18 @@
             <input type="text" name="telefonos" class="form-control" wire:model="telefonos">
             @error('telefonos') <span class="text-danger">{{ $message }}</span>@enderror
           </div>
+
+          <div class="form-group">
+            <label for="telefonos">Asignando rol en la revista:</label>
+            <input type="text" name="role" class="form-control" wire:model="role">
+            @error('role') <span class="text-danger">{{ $message }}</span>@enderror
+          </div>
+
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" wire:click.prevent="resetInputFields()">Cerrar</button>
-        <button type="button" class="btn btn-success" wire:click.prevent="update()">Guardar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" wire:click.prevent="resetResponsableModalFields()">Cerrar</button>
+        <button type="button" class="btn btn-success" wire:click.prevent="agregarResponsable({{ $id_responsable }})">Guardar</button>
       </div>
     </div>
   </div>

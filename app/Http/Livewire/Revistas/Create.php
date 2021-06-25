@@ -26,7 +26,10 @@ class Create extends Component {
 	public $successMessage = '';
 
 	public $frecuencias, $subsistemas, $editoriales, $areas_conocimiento, $entidades, $idiomas, $temas;
-	public $selected_editoriales = [], $selected_entidades = [], $selected_idiomas = [], $selected_temas = [];
+	public $selected_editoriales = [], $selected_entidades = [], $selected_idiomas = [], $selected_temas = [], $selected_responsables, $selected_indices = [];
+
+	// Propiedades para el responsable
+	public $id_responsable, $grado, $nombres, $apellidos, $correo_electronico, $telefonos, $role;
 
 	protected $listeners = ['say-hello' => 'sayHello'];
 
@@ -48,6 +51,7 @@ class Create extends Component {
 		$this->idiomas = Idioma::all()->sortBy('nombre');
 		$this->temas = Tema::all()->sortBy('nombre');
 		// $this->responsables = Responsable::paginate(15);
+		$this->selected_responsables = collect([]);
 
 	}
 
@@ -89,8 +93,21 @@ class Create extends Component {
 			$this->currentStep = 2;
 		});
 	}
+	/**
+	 * Función para validar que se haya seleccionado por lo menos un usuario responsable de la revista 
+	 * 
+	 */
 
 	public function secondStepSubmit() {
+		 dump($this->selected_responsables);
+	}
+
+	/**
+	 * Función para validar que se haya seleccionado por lo menos una editorial y una entidad editora 
+	 * 
+	 */
+
+	public function thirdStepSubmit() {
 		// Validando los datos asociados a las editoriales
 		$this->scrollOnFail('.alert', function () {
 			$validatedData = $this->validate([
@@ -102,11 +119,16 @@ class Create extends Component {
 			$this->dispatchBrowserEvent('myownapp:scroll-to', [
 				'query' => '.stepwizard',
 			]);
-			$this->currentStep = 3;
+			$this->currentStep = 4;
 		});
 	}
 
-	public function thirdStepSubmit() {
+	/**
+	 * Función para validar que se haya seleccionado por lo menos un idioma y un tema 
+	 * 
+	 */
+
+	public function fourthStepSubmit() {
 		$this->scrollOnFail('.alert', function () {
 			$validatedData = $this->validate([
 				'selected_idiomas' => ['required', 'array', 'min:1'],
@@ -117,7 +139,7 @@ class Create extends Component {
 			$this->dispatchBrowserEvent('myownapp:scroll-to', [
 				'query' => '.stepwizard',
 			]);
-			$this->currentStep = 4;
+			$this->currentStep = 5;
 		});
 
 	}
@@ -193,7 +215,54 @@ class Create extends Component {
 		$this->indicador = '';
 	}
 
+	public function modalRolResponsable($id) {
+		$responsable = Responsable::findOrFail($id);
+		$this->id_responsable = $id;
+		$this->grado = $responsable->grado;
+		$this->nombres = $responsable->nombres;
+		$this->apellidos = $responsable->apellidos;
+		$this->correo_electronico = $responsable->correo_electronico;
+		$this->telefonos = $responsable->telefonos;
+		$this->role = '';
+
+	}
+
 	public function agregarResponsable($id) {
-		dd("Estoy en agregar responsable ${id}");
+		$validatedData = $this->validate([
+			'grado' => 'nullable',
+			'nombres' => 'required',
+			'apellidos' => 'required',
+			'correo_electronico' => 'nullable|email',
+			'telefonos' => 'nullable',
+			'role' => 'required',
+		]);
+
+		$responsable = Responsable::find($id);
+		$responsable->update([
+			'grado' => $this->grado,
+			'nombres' => $this->nombres,
+			'apellidos' => $this->apellidos,
+			'correo_electronico' => $this->correo_electronico,
+			'telefonos' => $this->telefonos,
+		]);
+
+		$collection_responsable = collect([
+			'responsable' => $responsable,
+			'role' => $this->role,
+		]);
+
+		// array_push($this->selected_responsables, $collection_responsable);
+		$this->selected_responsables->push($collection_responsable);
+		$this->resetResponsableModalFields();
+		$this->emit('responsableAgregado');
+	}
+
+	public function resetResponsableModalFields(){
+		$this->grado = ''; 
+		$this->nombres = ''; 
+		$this->apellidos = ''; 
+		$this->correo_electronico = ''; 
+		$this->telefonos = ''; 
+		$this->role = '';
 	}
 }
