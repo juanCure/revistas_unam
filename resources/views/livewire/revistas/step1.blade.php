@@ -1,4 +1,4 @@
-<div class="row setup-content {{$currentStep != 1 ? 'displayNone' : '' }}" id="step-1">
+<div class="row setup-content {{-- {{$currentStep != 1 ? 'displayNone' : '' }} --}}" id="step-1">
     <div class="col-xs-12">
         <div class="col-md-12">
             <h3> Paso 1</h3>
@@ -31,12 +31,6 @@
                 @error('anio_inicio') <div class="alert alert-danger">{{ $message }}</div> @enderror
                 <label for="issn">Año de inicio <i class="fa fa-asterisk" aria-hidden="true"></i>:</label>
                 <input type="text" wire:model="anio_inicio" class="form-control" id="anio_inicio" >
-            </div>
-
-            <div class="form-group">
-                @error('otros_indices') <span class="error">{{ $message }}</span> @enderror
-                <label for="issn">Otros indices:</label>
-                <input type="text" wire:model="otros_indices" class="form-control" id="otros_indices" >
             </div>
 
             <div class="form-group">

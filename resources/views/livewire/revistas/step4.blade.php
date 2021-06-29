@@ -1,4 +1,4 @@
-<div class="row setup-content mt-3 {{-- {{ $currentStep != 4 ? 'displayNone' : '' }} --}}" id="step-4">
+<div class="row setup-content mt-3 {{ $currentStep != 4 ? 'displayNone' : '' }}" id="step-4">
     <div class="col-xs-12">
         <div class="col-md-12">
             <h3>Paso 4</h3>

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Revistas;
 
 use App\Models\AreasConocimiento;
+use App\Models\SistemaIndexador;
 use App\Models\Editorial;
 use App\Models\EntidadEditora;
 use App\Models\Frecuencia;
@@ -25,8 +26,8 @@ class Create extends Component {
 	$id_frecuencia, $id_subsistema, $indicador;
 	public $successMessage = '';
 
-	public $frecuencias, $subsistemas, $editoriales, $areas_conocimiento, $entidades, $idiomas, $temas;
-	public $selected_editoriales = [], $selected_entidades = [], $selected_idiomas = [], $selected_temas = [], $selected_responsables, $selected_indices = [];
+	public $frecuencias, $subsistemas, $editoriales, $areas_conocimiento, $entidades, $idiomas, $temas, $indexadores;
+	public $selected_editoriales = [], $selected_entidades = [], $selected_idiomas = [], $selected_temas = [], $selected_responsables = [], $selected_indices = [];
 
 	// Propiedades para el responsable
 	public $id_responsable, $grado, $nombres, $apellidos, $correo_electronico, $telefonos, $role;
@@ -50,8 +51,9 @@ class Create extends Component {
 		$this->entidades = EntidadEditora::all()->sortBy('nombre');
 		$this->idiomas = Idioma::all()->sortBy('nombre');
 		$this->temas = Tema::all()->sortBy('nombre');
+		$this->indexadores = SistemaIndexador::all();
 		// $this->responsables = Responsable::paginate(15);
-		$this->selected_responsables = collect([]);
+		// $this->selected_responsables = collect([]);
 
 	}
 
@@ -84,11 +86,12 @@ class Create extends Component {
 				'id_frecuencia' => ['required', 'numeric'],
 				'id_area_conocimiento' => ['required', 'numeric'],
 				'id_subsistema' => ['required', 'numeric'],
-				'otros_indices' => ['nullable'],
+				// 'otros_indices' => ['nullable'],
 				'indicador' => ['nullable'],
 			]);
 			$this->dispatchBrowserEvent('myownapp:scroll-to', [
-				'query' => '.stepwizard',
+				// 'query' => '.stepwizard',
+				'query' => '#step-1',
 			]);
 			$this->currentStep = 2;
 		});
@@ -99,7 +102,16 @@ class Create extends Component {
 	 */
 
 	public function secondStepSubmit() {
-		 dump($this->selected_responsables);
+		// dump($this->selected_responsables);
+		$this->scrollOnFail('.alert', function () {
+			$validatedData = $this->validate([
+				'selected_responsables' => ['required', 'array', 'min:1'],
+			]);
+			$this->dispatchBrowserEvent('myownapp:scroll-to', [
+				'query' => '#step-2',
+			]);
+			$this->currentStep = 3;
+		});
 	}
 
 	/**
@@ -144,6 +156,19 @@ class Create extends Component {
 
 	}
 
+	public function fifthStep() {
+		$this->scrollOnFail('.alert', function () {
+			$validatedData = $this->validate([
+				'selected_indices' => ['required', 'array', 'min:1'],
+				'otros_indices' => ['nullable'],
+			]);
+			$this->dispatchBrowserEvent('myownapp:scroll-to', [
+				'query' => '.stepwizard',
+			]);
+			$this->currentStep = 6;
+		});		
+	}
+
 	public function submitForm() {
 		//dd($this);
 		$revista = Revista::create([
@@ -152,7 +177,7 @@ class Create extends Component {
 			'issn' => $this->issn,
 			'issne' => $this->issne,
 			'anio_inicio' => $this->anio_inicio,
-			'otros_indices' => $this->otros_indices,
+			// 'otros_indices' => $this->otros_indices,
 			'arbitrada' => $this->arbitrada,
 			'soporte' => $this->soporte,
 			'situacion' => $this->situacion,
@@ -162,6 +187,14 @@ class Create extends Component {
 			'id_subsistema' => $this->id_subsistema,
 			'indicador' => $this->indicador,
 		]);
+
+		$responsables = $this->selected_responsables;
+		foreach ($responsables as $responsable) {
+			$revista->responsables()->attach($responsable['responsable']['id'], [
+				'orden' => key($responsables) + 1,
+				'cargo' => $responsable['role']]);
+			next($responsables);
+		}
 
 		$editoriales = $this->selected_editoriales;
 		foreach ($editoriales as $id_editorial) {
@@ -191,6 +224,18 @@ class Create extends Component {
 			$tema = Tema::findOrFail($id_tema);
 			$revista->temas()->attach($tema->id, ['orden' => key($temas) + 1]);
 			next($temas);
+		}
+
+		$indices = $this->selected_indices;
+		foreach ($indices as $indice) {
+			$revista->sistemas_indexadores()->attach($indice['id'], ['orden' => key($indices) + 1]);
+			next($indices);
+		}
+
+		if($this->otros_indices != '') {
+			$revista->update([
+				'otros_indices' => $this->otros_indices,
+			]);
 		}
 
 		$this->successMessage = "Revista {$this->titulo} fue creada exitosamente";
@@ -246,13 +291,19 @@ class Create extends Component {
 			'telefonos' => $this->telefonos,
 		]);
 
-		$collection_responsable = collect([
+		// $collection_responsable = collect([
+		// 	'responsable' => $responsable,
+		// 	'role' => $this->role,
+		// ]);
+
+		$collection_responsable = [
 			'responsable' => $responsable,
 			'role' => $this->role,
-		]);
+		];
 
 		// array_push($this->selected_responsables, $collection_responsable);
-		$this->selected_responsables->push($collection_responsable);
+		$this->selected_responsables[] = $collection_responsable;
+		// $this->selected_responsables->push($collection_responsable);
 		$this->resetResponsableModalFields();
 		$this->emit('responsableAgregado');
 	}
@@ -264,5 +315,14 @@ class Create extends Component {
 		$this->correo_electronico = ''; 
 		$this->telefonos = ''; 
 		$this->role = '';
+	}
+
+	public function agregarIndice($id){
+		$indice = SistemaIndexador::findOrFail($id);
+		$collection_indice = [
+			'id' => $indice->id,
+			'nombre' => $indice->nombre,
+		];
+		$this->selected_indices[] = $collection_indice;
 	}
 }
