@@ -1,4 +1,4 @@
-<div class="row setup-content mt-3 {{-- {{$currentStep != 5 ? 'displayNone' : '' }} --}}" id="step-5">
+<div class="row setup-content mt-3 {{$currentStep != 5 ? 'displayNone' : '' }}" id="step-5">
     <div class="col-xs-12">
         <div class="col-md-12">
             <h3>Paso 5</h3>
@@ -19,7 +19,7 @@
                                     <td>{{ $loop->index + 1 }}</td>
                                     <td>{{ $indice['nombre'] }}</td>
                                     <td>
-                                        <button class="btn btn-danger btn-sm">Quitar</button>
+                                        <button class="btn btn-danger btn-sm" wire:click.prevent="quitarIndice({{ $loop->index }})">Quitar</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -42,7 +42,7 @@
                             <td>{{ $indexador->nombre }}</td>
                             <td>
                                 {{-- <button class="btn btn-success btn-sm">Agregar</button> --}}
-                                <button type="button" class="btn btn-success" wire:click.prevent="agregarIndice({{ $indexador->id }})">
+                                <button type="button" class="btn btn-success" wire:click.prevent="agregarIndice({{ $indexador->id }})" {{ (collect($selected_indices)->contains('id', $indexador->id)) ? 'disabled':'' }}>
                                       Agregar
                                 </button>
                             </td>

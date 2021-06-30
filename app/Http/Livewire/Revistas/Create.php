@@ -3,13 +3,13 @@
 namespace App\Http\Livewire\Revistas;
 
 use App\Models\AreasConocimiento;
-use App\Models\SistemaIndexador;
 use App\Models\Editorial;
 use App\Models\EntidadEditora;
 use App\Models\Frecuencia;
 use App\Models\Idioma;
 use App\Models\Responsable;
 use App\Models\Revista;
+use App\Models\SistemaIndexador;
 use App\Models\Subsistema;
 use App\Models\Tema;
 use Illuminate\Support\Facades\DB;
@@ -90,33 +90,32 @@ class Create extends Component {
 				'indicador' => ['nullable'],
 			]);
 			$this->dispatchBrowserEvent('myownapp:scroll-to', [
-				// 'query' => '.stepwizard',
-				'query' => '#step-1',
+				'query' => '.stepwizard',
+				// 'query' => '#step-1',
 			]);
 			$this->currentStep = 2;
 		});
 	}
 	/**
-	 * Función para validar que se haya seleccionado por lo menos un usuario responsable de la revista 
-	 * 
+	 * Función para validar que se haya seleccionado por lo menos un usuario responsable de la revista
+	 *
 	 */
 
 	public function secondStepSubmit() {
-		// dump($this->selected_responsables);
 		$this->scrollOnFail('.alert', function () {
 			$validatedData = $this->validate([
 				'selected_responsables' => ['required', 'array', 'min:1'],
 			]);
 			$this->dispatchBrowserEvent('myownapp:scroll-to', [
-				'query' => '#step-2',
+				'query' => '.stepwizard',
 			]);
 			$this->currentStep = 3;
 		});
 	}
 
 	/**
-	 * Función para validar que se haya seleccionado por lo menos una editorial y una entidad editora 
-	 * 
+	 * Función para validar que se haya seleccionado por lo menos una editorial y una entidad editora
+	 *
 	 */
 
 	public function thirdStepSubmit() {
@@ -136,8 +135,8 @@ class Create extends Component {
 	}
 
 	/**
-	 * Función para validar que se haya seleccionado por lo menos un idioma y un tema 
-	 * 
+	 * Función para validar que se haya seleccionado por lo menos un idioma y un tema
+	 *
 	 */
 
 	public function fourthStepSubmit() {
@@ -166,7 +165,7 @@ class Create extends Component {
 				'query' => '.stepwizard',
 			]);
 			$this->currentStep = 6;
-		});		
+		});
 	}
 
 	public function submitForm() {
@@ -232,7 +231,7 @@ class Create extends Component {
 			next($indices);
 		}
 
-		if($this->otros_indices != '') {
+		if ($this->otros_indices != '') {
 			$revista->update([
 				'otros_indices' => $this->otros_indices,
 			]);
@@ -308,21 +307,31 @@ class Create extends Component {
 		$this->emit('responsableAgregado');
 	}
 
-	public function resetResponsableModalFields(){
-		$this->grado = ''; 
-		$this->nombres = ''; 
-		$this->apellidos = ''; 
-		$this->correo_electronico = ''; 
-		$this->telefonos = ''; 
+	public function resetResponsableModalFields() {
+		$this->grado = '';
+		$this->nombres = '';
+		$this->apellidos = '';
+		$this->correo_electronico = '';
+		$this->telefonos = '';
 		$this->role = '';
 	}
 
-	public function agregarIndice($id){
+	public function agregarIndice($id) {
 		$indice = SistemaIndexador::findOrFail($id);
 		$collection_indice = [
 			'id' => $indice->id,
 			'nombre' => $indice->nombre,
 		];
 		$this->selected_indices[] = $collection_indice;
+	}
+
+	public function quitarResponsable($index) {
+		unset($this->selected_responsables[$index]);
+		$this->selected_responsables = array_values($this->selected_responsables);
+	}
+
+	public function quitarIndice($index) {
+		unset($this->selected_indices[$index]);
+		$this->selected_indices = array_values($this->selected_indices);
 	}
 }

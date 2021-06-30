@@ -1,4 +1,4 @@
-<div class="row setup-content mt-3 {{-- {{$currentStep != 2 ? 'displayNone' : '' }} --}}" id="step-2">
+<div class="row setup-content mt-3 {{$currentStep != 2 ? 'displayNone' : '' }}" id="step-2">
     <div class="col-xs-12">
         <div class="col-md-12">
             <h3>Paso 2</h3>
@@ -10,6 +10,7 @@
                     <table class="table table-bordered mt-5" style="margin: 10px 0 10px 0;">
                         <thead class="thead-light">
                             <tr>
+                                <th>Orden</th>
                                 <th>Rol en la revista</th>
                                 <th>Nombre</th>
                                 <th>Correo</th>
@@ -20,12 +21,13 @@
                         <tbody>
                             @foreach($selected_responsables as $responsable)
                                 <tr>
+                                    <td>{{ $loop->index + 1 }}</td>
                                     <td>{{$responsable['role']}}</td>
                                     <td>{{$responsable['responsable']['grado']}} {{$responsable['responsable']['nombres']}} {{$responsable['responsable']['apellidos']}}</td>
                                     <td>{{$responsable['responsable']['correo_electronico']}}</td>
                                     <td>{{$responsable['responsable']['telefonos']}}</td>
                                     <td>
-                                        <button class="btn btn-danger btn-sm">Quitar</button>
+                                        <button class="btn btn-danger btn-sm" wire:click.prevent="quitarResponsable({{ $loop->index }})">Quitar</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -57,7 +59,7 @@
                                 <td>{{ $responsable->correo_electronico }}</td>
                                 <td>{{ $responsable->telefonos }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#agregarResponsableModal" wire:click.prevent="modalRolResponsable({{ $responsable->id }})">
+                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#agregarResponsableModal" wire:click.prevent="modalRolResponsable({{ $responsable->id }})" {{ (collect($selected_responsables)->contains('responsable.id', $responsable->id)) ? 'disabled':'' }}>
                                       Agregar
                                     </button>
                                 </td>
