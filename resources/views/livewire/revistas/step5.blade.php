@@ -58,6 +58,7 @@
                 </div>
 
                 <button class="btn btn-primary nextBtn btn-lg pull-right" wire:click="fifthStep" type="button" >Siguiente</button>
+                <button class="btn btn-danger nextBtn btn-lg pull-right" type="button" wire:click="back(4)">Regresar</button>
             </div>
         </div>
     </div>

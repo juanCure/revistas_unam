@@ -26,7 +26,7 @@ class Create extends Component {
 	$id_frecuencia, $id_subsistema, $indicador;
 	public $successMessage = '';
 
-	public $frecuencias, $subsistemas, $editoriales, $areas_conocimiento, $entidades, $idiomas, $temas, $indexadores;
+	public $frecuencias, $subsistemas, $editoriales, $areas_conocimiento, $idiomas, $indexadores;
 	public $selected_editoriales = [], $selected_entidades = [], $selected_idiomas = [], $selected_temas = [], $selected_responsables = [], $selected_indices = [];
 
 	// Propiedades para el responsable
@@ -37,7 +37,7 @@ class Create extends Component {
 	// Establecer que estilo utilizar para los enlaces de paginación
 	protected $paginationTheme = 'bootstrap';
 
-	public $searchTerm;
+	public $searchTerm, $searchTermEntidad, $searchTermTema;
 
 	public function sayHello() {
 
@@ -48,9 +48,9 @@ class Create extends Component {
 		$this->frecuencias = Frecuencia::all();
 		$this->subsistemas = Subsistema::all();
 		$this->editoriales = Editorial::all()->sortBy('nombre');
-		$this->entidades = EntidadEditora::all()->sortBy('nombre');
+		// $this->entidades = EntidadEditora::all()->sortBy('nombre');
 		$this->idiomas = Idioma::all()->sortBy('nombre');
-		$this->temas = Tema::all()->sortBy('nombre');
+		// $this->temas = Tema::all()->sortBy('nombre');
 		$this->indexadores = SistemaIndexador::all();
 		// $this->responsables = Responsable::paginate(15);
 		// $this->selected_responsables = collect([]);
@@ -66,6 +66,12 @@ class Create extends Component {
 			'responsables' => Responsable::where(function ($sub_query) {
 				$sub_query->where(DB::raw('CONCAT_WS(" ", grado, nombres, apellidos)'), 'like', '%' . $this->searchTerm . '%');
 			})->paginate(15),
+			'entidades' => EntidadEditora::where(function ($sub_query) {
+				$sub_query->where('nombre', 'like', '%' . $this->searchTermEntidad . '%');
+			})->paginate(10),
+			'temas' => Tema::where(function ($sub_query) {
+				$sub_query->where('nombre', 'like', '%' . $this->searchTermTema . '%');
+			})->paginate(10),
 		]);
 	}
 
@@ -119,13 +125,13 @@ class Create extends Component {
 	 */
 
 	public function thirdStepSubmit() {
-		// Validando los datos asociados a las editoriales
+		// Validando los datos asociados a las editoriales y la entidades académicas
 		$this->scrollOnFail('.alert', function () {
 			$validatedData = $this->validate([
 				'selected_editoriales' => ['required', 'array', 'min:1'],
-				'selected_editoriales.*' => ['required', 'numeric', 'distinct'],
+				// 'selected_editoriales.*' => ['required', 'numeric', 'distinct'],
 				'selected_entidades' => ['required', 'array', 'min:1'],
-				'selected_entidades.*' => ['required', 'numeric', 'distinct'],
+				// 'selected_entidades.*' => ['required', 'numeric', 'distinct'],
 			]);
 			$this->dispatchBrowserEvent('myownapp:scroll-to', [
 				'query' => '.stepwizard',
@@ -143,9 +149,9 @@ class Create extends Component {
 		$this->scrollOnFail('.alert', function () {
 			$validatedData = $this->validate([
 				'selected_idiomas' => ['required', 'array', 'min:1'],
-				'selected_idiomas.*' => ['required', 'numeric', 'distinct'],
+				// 'selected_idiomas.*' => ['required', 'numeric', 'distinct'],
 				'selected_temas' => ['required', 'array', 'min:1'],
-				'selected_temas.*' => ['required', 'numeric', 'distinct'],
+				// 'selected_temas.*' => ['required', 'numeric', 'distinct'],
 			]);
 			$this->dispatchBrowserEvent('myownapp:scroll-to', [
 				'query' => '.stepwizard',
@@ -158,7 +164,7 @@ class Create extends Component {
 	public function fifthStep() {
 		$this->scrollOnFail('.alert', function () {
 			$validatedData = $this->validate([
-				'selected_indices' => ['required', 'array', 'min:1'],
+				'selected_indices' => ['nullable', 'array', 'min:0'],
 				'otros_indices' => ['nullable'],
 			]);
 			$this->dispatchBrowserEvent('myownapp:scroll-to', [
@@ -196,32 +202,32 @@ class Create extends Component {
 		}
 
 		$editoriales = $this->selected_editoriales;
-		foreach ($editoriales as $id_editorial) {
-			$editorial = Editorial::findOrFail($id_editorial);
+		foreach ($editoriales as $editorial) {
+			// $editorial = Editorial::findOrFail($id_editorial);
 			//dump($editorial);
 			//dump(key($editoriales) + 1);
-			$revista->editoriales()->attach($editorial->id, ['orden' => key($editoriales) + 1]);
+			$revista->editoriales()->attach($editorial['id'], ['orden' => key($editoriales) + 1]);
 			next($editoriales);
 		}
 
 		$entidades = $this->selected_entidades;
-		foreach ($entidades as $id_entidad) {
-			$entidad = EntidadEditora::findOrFail($id_entidad);
-			$revista->entidades_editoras()->attach($entidad->id, ['orden' => key($entidades) + 1]);
+		foreach ($entidades as $entidad) {
+			// $entidad = EntidadEditora::findOrFail($id_entidad);
+			$revista->entidades_editoras()->attach($entidad['id'], ['orden' => key($entidades) + 1]);
 			next($entidades);
 		}
 
 		$idiomas = $this->selected_idiomas;
-		foreach ($idiomas as $id_idioma) {
-			$idioma = Idioma::findOrFail($id_idioma);
-			$revista->idiomas()->attach($idioma->id, ['orden' => key($idiomas) + 1]);
+		foreach ($idiomas as $idioma) {
+			// $idioma = Idioma::findOrFail($id_idioma);
+			$revista->idiomas()->attach($idioma['id'], ['orden' => key($idiomas) + 1]);
 			next($idiomas);
 		}
 
 		$temas = $this->selected_temas;
-		foreach ($temas as $id_tema) {
-			$tema = Tema::findOrFail($id_tema);
-			$revista->temas()->attach($tema->id, ['orden' => key($temas) + 1]);
+		foreach ($temas as $tema) {
+			// $tema = Tema::findOrFail($id_tema);
+			$revista->temas()->attach($tema['id'], ['orden' => key($temas) + 1]);
 			next($temas);
 		}
 
@@ -333,5 +339,66 @@ class Create extends Component {
 	public function quitarIndice($index) {
 		unset($this->selected_indices[$index]);
 		$this->selected_indices = array_values($this->selected_indices);
+	}
+
+	public function agregarEditorial($id) {
+		$editorial = Editorial::findOrFail($id);
+		$collection_editorial = [
+			'id' => $id,
+			'nombre' => $editorial->nombre,
+		];
+
+		$this->selected_editoriales[] = $collection_editorial;
+	}
+
+	public function quitarEditorial($index) {
+		unset($this->selected_editoriales[$index]);
+		$this->selected_editoriales = array_values($this->selected_editoriales);
+	}
+
+	public function agregarEntidad($id) {
+		$entidad = EntidadEditora::findOrFail($id);
+		$collection_entidad = [
+			'id' => $id,
+			'nombre' => $entidad->nombre,
+		];
+
+		$this->selected_entidades[] = $collection_entidad;
+	}
+
+	public function quitarEntidad($index) {
+		unset($this->selected_entidades[$index]);
+		$this->selected_entidades = array_values($this->selected_entidades);
+	}
+
+
+	public function agregarIdioma($id) {
+		$idioma = Idioma::findOrFail($id);
+		$collection_idioma = [
+			'id' => $id,
+			'nombre' => $idioma->nombre,
+		];
+
+		$this->selected_idiomas[] = $collection_idioma;
+	}
+
+	public function quitarIdioma($index) {
+		unset($this->selected_idiomas[$index]);
+		$this->selected_idiomas = array_values($this->selected_idiomas);
+	}
+
+	public function agregarTema($id) {
+		$tema = Tema::findOrFail($id);
+		$collection_tema = [
+			'id' => $id,
+			'nombre' => $tema->nombre,
+		];
+
+		$this->selected_temas[] = $collection_tema;
+	}
+
+	public function quitarTema($index) {
+		unset($this->selected_temas[$index]);
+		$this->selected_temas = array_values($this->selected_temas);
 	}
 }

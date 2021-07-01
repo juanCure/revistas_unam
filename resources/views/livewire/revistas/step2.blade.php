@@ -4,7 +4,6 @@
             <h3>Paso 2</h3>
             {{-- Aquí se cargará los nombres de los responsables seleccionados --}}
             <div class="table-responsive mt-3">
-
                 @if(count($selected_responsables))
                     <h5>Responsables seleccionados:</h5>
                     <table class="table table-bordered mt-5" style="margin: 10px 0 10px 0;">

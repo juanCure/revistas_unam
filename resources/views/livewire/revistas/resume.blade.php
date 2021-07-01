@@ -1,4 +1,4 @@
-<div class="row setup-content {{ $currentStep != 6 ? 'displayNone' : '' }}" id="step-6">
+<div class="row setup-content mt-3 {{ $currentStep != 6 ? 'displayNone' : '' }}" id="step-6">
     <div class="col-xs-12">
         <div class="col-md-12">
             <h3> Resumen</h3>
@@ -90,72 +90,70 @@
                 <tr>
                     <td>Editoriales seleccionadas:</td>
                     <td>
-                        <ul>
-                            @foreach ($selected_editoriales as $selected)
-                                @foreach ($editoriales as $editorial)
-                                    @if ($editorial->id == $selected)
-                                        <li>{{ $editorial->nombre }}</li>
-                                        @continue
-                                    @endif
-                                @endforeach
-                            @endforeach
-                        </ul>
+                        <strong>
+                            @if(count($selected_editoriales))
+                                <ul>
+                                    @foreach ($selected_editoriales as $editorial)
+                                        <li> {{ $editorial['nombre']}} </li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                        </strong>
                     </td>
                 </tr>
                 <tr>
                     <td>Entidades Editoras seleccionadas:</td>
                     <td>
-                        <ul>
-                            @foreach ($selected_entidades as $selected)
-                                @foreach ($entidades as $entidad)
-                                    @if ($entidad->id == $selected)
-                                        <li>{{ $entidad->nombre }}</li>
-                                        @continue
-                                    @endif
-                                @endforeach
-                            @endforeach
-                        </ul>
+                        <strong>
+                            @if(count($selected_entidades))
+                                <ul>
+                                    @foreach ($selected_entidades as $entidad)
+                                        <li> {{ $entidad['nombre']}} </li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                        </strong>
                     </td>
                 </tr>
                 <tr>
                     <td>Idiomas seleccionados:</td>
                     <td>
-                        <ul>
-                            @foreach ($selected_idiomas as $selected)
-                                @foreach ($idiomas as $idioma)
-                                    @if ($idioma->id == $selected)
-                                        <li>{{ $idioma->nombre }}</li>
-                                        @continue
-                                    @endif
-                                @endforeach
-                            @endforeach
-                        </ul>
+                        <strong>
+                            @if(count($selected_idiomas))
+                                <ul>
+                                    @foreach ($selected_idiomas as $idioma)
+                                        <li> {{ $idioma['nombre']}} </li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                        </strong>
                     </td>
                 </tr>
                 <tr>
                     <td>Temas seleccionados:</td>
                     <td>
-                        <ul>
-                            @foreach ($selected_temas as $selected)
-                                @foreach ($temas as $tema)
-                                    @if ($tema->id == $selected)
-                                        <li>{{ $tema->nombre }}</li>
-                                        @continue
-                                    @endif
-                                @endforeach
-                            @endforeach
-                        </ul>
+                        <strong>
+                            @if(count($selected_temas))
+                                <ul>
+                                    @foreach ($selected_temas as $tema)
+                                        <li> {{ $tema['nombre']}} </li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                        </strong>
                     </td>
                 </tr>
 
                 <tr>
                     <td>Índices:</td>
                     <td>
-                        <ul>
-                            @foreach ($selected_indices as $indice)
-                                <li>{{ $indice['nombre'] }}</li>
-                            @endforeach
-                        </ul>
+                        <strong>
+                            <ul>
+                                @foreach ($selected_indices as $indice)
+                                    <li>{{ $indice['nombre'] }}</li>
+                                @endforeach
+                            </ul>
+                        </strong>
                     </td>
                 </tr>
 
@@ -166,7 +164,7 @@
             </table>
 
             <button class="btn btn-success btn-lg pull-right" wire:click="submitForm" type="button">Crear</button>
-            <button class="btn btn-danger nextBtn btn-lg pull-right" type="button" wire:click="back(3)">Regresar</button>
+            <button class="btn btn-danger nextBtn btn-lg pull-right" type="button" wire:click="back(5)">Regresar</button>
         </div>
     </div>
 </div>
