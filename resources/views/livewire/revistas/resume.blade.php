@@ -163,7 +163,11 @@
                 </tr>
             </table>
 
-            <button class="btn btn-success btn-lg pull-right" wire:click="submitForm" type="button">Crear</button>
+            @if (isset($updateMode) and $updateMode)
+                <button class="btn btn-success btn-lg pull-right" wire:click="myUpdate" type="button">Actualizar</button>
+            @else
+                <button class="btn btn-success btn-lg pull-right" wire:click="submitForm" type="button">Crear</button>
+            @endif
             <button class="btn btn-danger nextBtn btn-lg pull-right" type="button" wire:click="back(5)">Regresar</button>
         </div>
     </div>

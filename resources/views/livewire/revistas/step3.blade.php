@@ -51,7 +51,7 @@
                             </tr>
                         @endforeach
                     </tbody>
-                </table>    
+                </table>
             </div>
 
             {{-- Entidades Acádemicas --}}
@@ -86,6 +86,7 @@
             @error('selected_entidades') <div class="alert alert-danger">{{ $message }}</div> @enderror
             <div class="table-responsive">
                 <input type="text"  class="form-control" placeholder="Buscar Entidad Académica" wire:model="searchTermEntidad" />
+                {{ $entidades->links() }}
                 <table class="table table-bordered mt-3">
                     <thead class="thead-light">
                         <tr>
@@ -105,9 +106,12 @@
                             </tr>
                         @endforeach
                     </tbody>
-                </table>    
+                </table>
             </div>
 
+            @if (isset($updateMode) and $updateMode)
+                <button class="btn btn-success btn-lg pull-right" wire:click="myUpdate" type="button">Guardar</button>
+            @endif
             <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" wire:click="thirdStepSubmit">Siguiente</button>
             <button class="btn btn-danger nextBtn btn-lg pull-right" type="button" wire:click="back(2)">Regresar</button>
         </div>

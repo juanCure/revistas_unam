@@ -113,6 +113,9 @@
                 <textarea name="indicador" wire:model="indicador" rows="10" cols="40" class="form-control tinymce-editor" id="indicador"></textarea>
             </div>
 
+            @if (isset($updateMode) and $updateMode)
+                <button class="btn btn-success btn-lg pull-right" wire:click="myUpdate" type="button">Guardar</button>
+            @endif
             <button class="btn btn-primary nextBtn btn-lg pull-right" wire:click="firstStepSubmit" type="button" >Siguiente</button>
         </div>
     </div>

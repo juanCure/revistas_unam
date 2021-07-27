@@ -57,6 +57,9 @@
                     <input type="text" wire:model="otros_indices" class="form-control" id="otros_indices" >
                 </div>
 
+                @if (isset($updateMode) and $updateMode)
+                    <button class="btn btn-success btn-lg pull-right" wire:click="myUpdate" type="button">Guardar</button>
+                @endif
                 <button class="btn btn-primary nextBtn btn-lg pull-right" wire:click="fifthStep" type="button" >Siguiente</button>
                 <button class="btn btn-danger nextBtn btn-lg pull-right" type="button" wire:click="back(4)">Regresar</button>
             </div>

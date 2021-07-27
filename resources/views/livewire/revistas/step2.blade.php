@@ -67,6 +67,9 @@
                     </tbody>
                 </table>
 
+                @if (isset($updateMode) and $updateMode)
+                    <button class="btn btn-success btn-lg pull-right" wire:click="myUpdate" type="button">Guardar</button>
+                @endif
                 <button class="btn btn-primary nextBtn btn-lg pull-right" wire:click="secondStepSubmit" type="button" >Siguiente</button>
                 <button class="btn btn-danger nextBtn btn-lg pull-right" type="button" wire:click="back(1)">Regresar</button>
             </div>

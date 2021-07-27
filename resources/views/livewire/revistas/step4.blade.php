@@ -52,7 +52,7 @@
                             </tr>
                         @endforeach
                     </tbody>
-                </table>    
+                </table>
             </div>
 
             {{-- Temas --}}
@@ -87,6 +87,7 @@
             @error('selected_temas') <div class="alert alert-danger">{{ $message }}</div> @enderror
             <div class="table-responsive">
                 <input type="text"  class="form-control" placeholder="Buscar Tema" wire:model="searchTermTema" />
+                {{ $temas->links() }}
                 <table class="table table-bordered mt-3">
                     <thead class="thead-light">
                         <tr>
@@ -106,9 +107,12 @@
                             </tr>
                         @endforeach
                     </tbody>
-                </table>    
+                </table>
             </div>
 
+            @if (isset($updateMode) and $updateMode)
+                <button class="btn btn-success btn-lg pull-right" wire:click="myUpdate" type="button">Guardar</button>
+            @endif
             <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" wire:click="fourthStepSubmit">Siguiente</button>
             <button class="btn btn-danger nextBtn btn-lg pull-right" type="button" wire:click="back(3)">Regresar</button>
         </div>
