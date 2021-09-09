@@ -9,6 +9,7 @@ use App\Models\SistemaIndexador;
 use App\Models\Subsistema;
 use App\Services\IndicesServicio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BusquedaPorIndiceController extends Controller {
 
@@ -378,5 +379,354 @@ class BusquedaPorIndiceController extends Controller {
 		return response()->json([
 			'indicador' => Revista::findOrFail($revista_id)->indicador,
 		]);
+	}
+
+	/**
+	 * Función para generar los totales que se cargaran en una Highchart en una vista modal
+	 */
+	public function getTotales(Request $request) {
+
+		/*
+			<option value="" selected="selected">Seleccione...</option>
+			<option value="1">Áreas del conocimiento</option>
+			<option value="2">Entidades académicas</option>
+			<option value="7">Indexaciones</option>
+			<option value="3">Subsistemas</option>
+			<option value="6">Tipos de revista</option>
+		*/
+		$filter_id = $request->grafica;
+		$tipo = $request->tipo;
+		$area_id = $request->area_id;
+		$indice_id = $request->indice_id;
+		$entidad_id = $request->entidad_id;
+		$subsistema_id = $request->subsistema_id;
+		$old_revistas = $request->oldRevistas;
+		$data;
+		$respuesta;
+		switch ($filter_id) {
+		case 1:
+			$indice = "Areas del conocimiento";
+			$data = $this->agruparRevistasPorArea($tipo, $area_id, $indice_id, $entidad_id, $subsistema_id, $old_revistas);
+			$respuesta = [
+				'indice' => $indice,
+				'data' => $data,
+				'titulo' => "Número de revistas por area de conocimiento",
+			];
+			break;
+		case 2:
+			$indice = "Entidades Académicas";
+			$data = $this->agruparRevistasPorEntidades($tipo, $area_id, $indice_id, $entidad_id, $subsistema_id, $old_revistas);
+			$respuesta = [
+				'indice' => $indice,
+				'data' => $data,
+				'titulo' => "Número de revistas por entidades académicas",
+			];
+			break;
+		case 3:
+			$indice = "Subsistemas";
+			$data = $this->agruparRevistasPorSubsistemas($tipo, $area_id, $indice_id, $entidad_id, $subsistema_id, $old_revistas);
+			$respuesta = [
+				'indice' => $indice,
+				'data' => $data,
+				'titulo' => "Número de revistas por subsistemas",
+			];
+			break;
+		case 6:
+			$indice = "Tipos de revista";
+			$data = $this->agruparRevistasPorTipo($tipo, $area_id, $indice_id, $entidad_id, $subsistema_id, $old_revistas);
+			$respuesta = [
+				'indice' => $indice,
+				'data' => $data,
+				'titulo' => "Número de revistas por tipo",
+			];
+			break;
+		case 7:
+			$indice = "Indexaciones";
+			$data = $this->agruparRevistasPorIndices($tipo, $area_id, $indice_id, $entidad_id, $subsistema_id, $old_revistas);
+			$respuesta = [
+				'indice' => $indice,
+				'data' => $data,
+				'titulo' => "Número de revistas por indices",
+			];
+			break;
+
+		}
+		return response()->json($respuesta);
+	}
+
+	public function agruparRevistasPorTipo($tipo, $area_id, $indice_id, $entidad_id, $subsistema_id, $old_revistas) {
+
+		if (isset($tipo) || isset($area_id) || $subsistema_id) {
+			$totales = Revista::select(\DB::raw("tipo_revista as name, COUNT(*) as y"))
+				->when($tipo, function ($query, $tipo) {
+					return $query->where('tipo_revista', $tipo);
+				})
+				->when($area_id, function ($query, $area_id) {
+					return $query->where('id_area_conocimiento', $area_id);
+				})
+				->when($subsistema_id, function ($query, $subsistema_id) {
+					return $query->where('id_subsistema', $subsistema_id);
+				})
+				->groupBy(\DB::raw("tipo_revista"))
+				->get();
+		} elseif (isset($entidad_id)) {
+			$totales = DB::table('revistas')
+				->join('entidad_editoras_revistas', 'entidad_editoras_revistas.id_revista', '=', 'revistas.id_revista')
+				->join('entidad_editoras', 'entidad_editoras.id', '=', 'entidad_editoras_revistas.id_entidad_editora')
+				->where('entidad_editoras.id', $entidad_id)
+				->select('revistas.tipo_revista as name', DB::raw('count(*) as y'))
+				->groupBy(DB::raw('revistas.tipo_revista'))
+				->get();
+		} elseif (isset($indice_id)) {
+			$totales = DB::table('revistas')
+				->join('indezadores_revistas', 'indezadores_revistas.id_revista', '=', 'revistas.id_revista')
+				->join('sistemas_indexadores', 'sistemas_indexadores.id', '=', 'indezadores_revistas.id_sistema')
+				->where('sistemas_indexadores.id', $indice_id)
+				->select('revistas.tipo_revista as name', DB::raw('count(*) as y'))
+				->groupBy(DB::raw('revistas.tipo_revista'))
+				->get();
+		} elseif (isset($old_revistas)) {
+			$totales = Revista::select(DB::raw("tipo_revista as name, COUNT(*) as y"))
+				->where('situacion', "Descontinuada")
+				->groupBy(DB::raw("tipo_revista"))
+				->get();
+		} else {
+			$totales = Revista::select(DB::raw("tipo_revista as name, COUNT(*) as y"))
+				->groupBy(DB::raw("tipo_revista"))
+				->get();
+		}
+
+		return $totales;
+	}
+
+	public function agruparRevistasPorArea($tipo, $area_id, $indice_id, $entidad_id, $subsistema_id, $old_revistas) {
+
+		if (isset($tipo) || isset($area_id) || $subsistema_id) {
+
+			$totales = DB::table('revistas')
+				->join('areas_conocimiento', 'areas_conocimiento.id', '=', 'revistas.id_area_conocimiento')
+				->when($tipo, function ($query, $tipo) {
+					return $query->where('revistas.tipo_revista', $tipo);
+				})
+				->when($area_id, function ($query, $area_id) {
+					return $query->where('revistas.id_area_conocimiento', $area_id);
+				})
+				->when($subsistema_id, function ($query, $subsistema_id) {
+					return $query->where('revistas.id_subsistema', $subsistema_id);
+				})
+				->select('areas_conocimiento.nombre as name', DB::raw('count(*) as y'))
+				->groupBy('areas_conocimiento.nombre')
+				->get();
+		} elseif (isset($entidad_id)) {
+			$totales = DB::table('revistas')
+				->join('areas_conocimiento', 'areas_conocimiento.id', '=', 'revistas.id_area_conocimiento')
+				->join('entidad_editoras_revistas', 'entidad_editoras_revistas.id_revista', '=', 'revistas.id_revista')
+				->join('entidad_editoras', 'entidad_editoras.id', '=', 'entidad_editoras_revistas.id_entidad_editora')
+				->where('entidad_editoras.id', $entidad_id)
+				->select('areas_conocimiento.nombre as name', DB::raw('count(*) as y'))
+				->groupBy(DB::raw('areas_conocimiento.nombre'))
+				->get();
+		} elseif (isset($indice_id)) {
+			$totales = DB::table('revistas')
+				->join('areas_conocimiento', 'areas_conocimiento.id', '=', 'revistas.id_area_conocimiento')
+				->join('indezadores_revistas', 'indezadores_revistas.id_revista', '=', 'revistas.id_revista')
+				->join('sistemas_indexadores', 'sistemas_indexadores.id', '=', 'indezadores_revistas.id_sistema')
+				->where('sistemas_indexadores.id', $indice_id)
+				->select('areas_conocimiento.nombre as name', DB::raw('count(*) as y'))
+				->groupBy(DB::raw('areas_conocimiento.nombre'))
+				->get();
+
+		} elseif (isset($old_revistas)) {
+			$totales = DB::table('revistas')
+				->join('areas_conocimiento', 'areas_conocimiento.id', '=', 'revistas.id_area_conocimiento')
+				->where('revistas.situacion', 'Descontinuada')
+				->select('areas_conocimiento.nombre as name', DB::raw('count(*) as y'))
+				->groupBy(DB::raw('areas_conocimiento.nombre'))
+				->get();
+		} else {
+			$totales = Revista::select(DB::raw("areas_conocimiento.nombre as name, COUNT(*) as y"))
+				->join('areas_conocimiento', 'areas_conocimiento.id', '=', 'revistas.id_area_conocimiento')
+				->groupBy(DB::raw('areas_conocimiento.nombre'))
+				->get();
+		}
+
+		return $totales;
+	}
+
+	public function agruparRevistasPorEntidades($tipo, $area_id, $indice_id, $entidad_id, $subsistema_id, $old_revistas) {
+		$totales;
+		if (isset($tipo) || isset($area_id) || $subsistema_id) {
+
+			$totales = DB::table('revistas')
+				->join('entidad_editoras_revistas', 'entidad_editoras_revistas.id_revista', '=', 'revistas.id_revista')
+				->join('entidad_editoras', 'entidad_editoras.id', '=', 'entidad_editoras_revistas.id_entidad_editora')
+				->when($tipo, function ($query, $tipo) {
+					return $query->where('revistas.tipo_revista', $tipo);
+				})
+				->when($area_id, function ($query, $area_id) {
+					return $query->where('revistas.id_area_conocimiento', $area_id);
+				})
+				->when($subsistema_id, function ($query, $subsistema_id) {
+					return $query->where('revistas.id_subsistema', $subsistema_id);
+				})
+				->select('entidad_editoras.nombre as name', DB::raw('count(*) as y'))
+				->groupBy('entidad_editoras.nombre')
+				->get();
+		} elseif (isset($entidad_id)) {
+			$totales = DB::table('revistas')
+				->join('entidad_editoras_revistas', 'entidad_editoras_revistas.id_revista', '=', 'revistas.id_revista')
+				->join('entidad_editoras', 'entidad_editoras.id', '=', 'entidad_editoras_revistas.id_entidad_editora')
+				->where('entidad_editoras.id', $entidad_id)
+				->select('entidad_editoras.nombre as name', DB::raw('count(*) as y'))
+				->groupBy(DB::raw('entidad_editoras.nombre'))
+				->get();
+		} elseif (isset($indice_id)) {
+			$totales = DB::table('revistas')
+				->join('entidad_editoras_revistas', 'entidad_editoras_revistas.id_revista', '=', 'revistas.id_revista')
+				->join('entidad_editoras', 'entidad_editoras.id', '=', 'entidad_editoras_revistas.id_entidad_editora')
+				->join('indezadores_revistas', 'indezadores_revistas.id_revista', '=', 'revistas.id_revista')
+				->join('sistemas_indexadores', 'sistemas_indexadores.id', '=', 'indezadores_revistas.id_sistema')
+				->where('sistemas_indexadores.id', $indice_id)
+				->select('entidad_editoras.nombre as name', DB::raw('count(*) as y'))
+				->groupBy(DB::raw('entidad_editoras.nombre'))
+				->orderBy('entidad_editoras.nombre', 'asc')
+				->get();
+
+		} elseif (isset($old_revistas)) {
+			$totales = DB::table('revistas')
+				->join('entidad_editoras_revistas', 'entidad_editoras_revistas.id_revista', '=', 'revistas.id_revista')
+				->join('entidad_editoras', 'entidad_editoras.id', '=', 'entidad_editoras_revistas.id_entidad_editora')
+				->where('revistas.situacion', 'Descontinuada')
+				->select('entidad_editoras.nombre as name', DB::raw('count(*) as y'))
+				->groupBy(DB::raw('entidad_editoras.nombre'))
+				->get();
+		} else {
+			$totales = Revista::select(DB::raw("entidad_editoras.nombre as name, COUNT(*) as y"))
+				->join('entidad_editoras_revistas', 'entidad_editoras_revistas.id_revista', '=', 'revistas.id_revista')
+				->join('entidad_editoras', 'entidad_editoras.id', '=', 'entidad_editoras_revistas.id_entidad_editora')
+				->groupBy(DB::raw('entidad_editoras.nombre'))
+				->get();
+		}
+
+		return $totales;
+	}
+
+	public function agruparRevistasPorIndices($tipo, $area_id, $indice_id, $entidad_id, $subsistema_id, $old_revistas) {
+		$totales;
+		if (isset($tipo) || isset($area_id) || $subsistema_id) {
+
+			$totales = DB::table('revistas')
+				->join('indezadores_revistas', 'indezadores_revistas.id_revista', '=', 'revistas.id_revista')
+				->join('sistemas_indexadores', 'sistemas_indexadores.id', '=', 'indezadores_revistas.id_sistema')
+				->when($tipo, function ($query, $tipo) {
+					return $query->where('revistas.tipo_revista', $tipo);
+				})
+				->when($area_id, function ($query, $area_id) {
+					return $query->where('revistas.id_area_conocimiento', $area_id);
+				})
+				->when($subsistema_id, function ($query, $subsistema_id) {
+					return $query->where('revistas.id_subsistema', $subsistema_id);
+				})
+				->select('sistemas_indexadores.nombre as name', DB::raw('count(*) as y'))
+				->groupBy('sistemas_indexadores.nombre')
+				->get();
+		} elseif (isset($entidad_id)) {
+			$totales = DB::table('revistas')
+				->join('indezadores_revistas', 'indezadores_revistas.id_revista', '=', 'revistas.id_revista')
+				->join('sistemas_indexadores', 'sistemas_indexadores.id', '=', 'indezadores_revistas.id_sistema')
+				->join('entidad_editoras_revistas', 'entidad_editoras_revistas.id_revista', '=', 'revistas.id_revista')
+				->join('entidad_editoras', 'entidad_editoras.id', '=', 'entidad_editoras_revistas.id_entidad_editora')
+				->where('entidad_editoras.id', $entidad_id)
+				->select('sistemas_indexadores.nombre as name', DB::raw('count(*) as y'))
+				->groupBy('sistemas_indexadores.nombre')
+				->get();
+		} elseif (isset($indice_id)) {
+			$totales = DB::table('revistas')
+				->join('indezadores_revistas', 'indezadores_revistas.id_revista', '=', 'revistas.id_revista')
+				->join('sistemas_indexadores', 'sistemas_indexadores.id', '=', 'indezadores_revistas.id_sistema')
+				->where('sistemas_indexadores.id', $indice_id)
+				->select('sistemas_indexadores.nombre as name', DB::raw('count(*) as y'))
+				->groupBy('sistemas_indexadores.nombre')
+				->orderBy('sistemas_indexadores.nombre', 'asc')
+				->get();
+
+		} elseif (isset($old_revistas)) {
+			$totales = DB::table('revistas')
+				->join('indezadores_revistas', 'indezadores_revistas.id_revista', '=', 'revistas.id_revista')
+				->join('sistemas_indexadores', 'sistemas_indexadores.id', '=', 'indezadores_revistas.id_sistema')
+				->where('revistas.situacion', 'Descontinuada')
+				->select('sistemas_indexadores.nombre as name', DB::raw('count(*) as y'))
+				->groupBy('sistemas_indexadores.nombre')
+				->orderBy('sistemas_indexadores.nombre', 'asc')
+				->get();
+		} else {
+			$totales = Revista::select(DB::raw("sistemas_indexadores.nombre as name, COUNT(*) as y"))
+				->join('indezadores_revistas', 'indezadores_revistas.id_revista', '=', 'revistas.id_revista')
+				->join('sistemas_indexadores', 'sistemas_indexadores.id', '=', 'indezadores_revistas.id_sistema')
+				->groupBy(DB::raw('sistemas_indexadores.nombre'))
+				->get();
+		}
+
+		return $totales;
+	}
+
+	public function agruparRevistasPorSubsistemas($tipo, $area_id, $indice_id, $entidad_id, $subsistema_id, $old_revistas) {
+		$totales;
+		if (isset($tipo) || isset($area_id) || $subsistema_id) {
+
+			$totales = Revista::select(DB::raw("subsistemas.nombre as name, COUNT(*) as y"))
+				->join('subsistemas', 'subsistemas.id', '=', 'revistas.id_subsistema')
+				->when($tipo, function ($query, $tipo) {
+					return $query->where('revistas.tipo_revista', $tipo);
+				})
+				->when($area_id, function ($query, $area_id) {
+					return $query->where('revistas.id_area_conocimiento', $area_id);
+				})
+				->when($subsistema_id, function ($query, $subsistema_id) {
+					return $query->where('revistas.id_subsistema', $subsistema_id);
+				})
+				->groupBy(DB::raw('subsistemas.nombre'))
+				->orderBy('subsistemas.nombre', 'asc')
+				->get();
+		} elseif (isset($entidad_id)) {
+
+			$totales = Revista::select(DB::raw("subsistemas.nombre as name, COUNT(*) as y"))
+				->join('subsistemas', 'subsistemas.id', '=', 'revistas.id_subsistema')
+				->join('entidad_editoras_revistas', 'entidad_editoras_revistas.id_revista', '=', 'revistas.id_revista')
+				->join('entidad_editoras', 'entidad_editoras.id', '=', 'entidad_editoras_revistas.id_entidad_editora')
+				->where('entidad_editoras.id', $entidad_id)
+				->groupBy(DB::raw('subsistemas.nombre'))
+				->orderBy('subsistemas.nombre', 'asc')
+				->get();
+
+		} elseif (isset($indice_id)) {
+
+			$totales = Revista::select(DB::raw("subsistemas.nombre as name, COUNT(*) as y"))
+				->join('subsistemas', 'subsistemas.id', '=', 'revistas.id_subsistema')
+				->join('indezadores_revistas', 'indezadores_revistas.id_revista', '=', 'revistas.id_revista')
+				->join('sistemas_indexadores', 'sistemas_indexadores.id', '=', 'indezadores_revistas.id_sistema')
+				->where('sistemas_indexadores.id', $indice_id)
+				->groupBy(DB::raw('subsistemas.nombre'))
+				->orderBy('subsistemas.nombre', 'asc')
+				->get();
+
+		} elseif (isset($old_revistas)) {
+
+			$totales = Revista::select(DB::raw("subsistemas.nombre as name, COUNT(*) as y"))
+				->join('subsistemas', 'subsistemas.id', '=', 'revistas.id_subsistema')
+				->where('revistas.situacion', 'Descontinuada')
+				->groupBy(DB::raw('subsistemas.nombre'))
+				->orderBy('subsistemas.nombre', 'asc')
+				->get();
+
+		} else {
+			$totales = Revista::select(DB::raw("subsistemas.nombre as name, COUNT(*) as y"))
+				->join('subsistemas', 'subsistemas.id', '=', 'revistas.id_subsistema')
+				->groupBy(DB::raw('subsistemas.nombre'))
+				->orderBy('subsistemas.nombre', 'asc')
+				->get();
+		}
+
+		return $totales;
 	}
 }

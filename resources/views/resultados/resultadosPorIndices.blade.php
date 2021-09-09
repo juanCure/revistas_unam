@@ -8,6 +8,8 @@
         	{{-- Incluyendo la vista modal de la ficha --}}
         	@include('resultados.ficha')
         	@include('resultados.indicadores_modal')
+        	{{-- Incluyendo la ventana modal de la gráfica --}}
+        	@include('resultados.modal_chart')
     		<div class="col-md-9">
     			<ol class="breadcrumb">
     				<li><a href="{{ route('inicio') }}">
@@ -68,8 +70,8 @@
     							</select>
 
     							<select name="oldRevistas" id="oldRevistas" style="display: none;">
-    									<option {{ ($filtro == "Descontinuada" && $accion == 'oldRevistas') ? 'selected' : '' }} value="{{ $filtro}}">
-    										{{$filtro}}
+    									<option {{ ($filtro == "Descontinuada" && $accion == 'oldRevistas') ? 'selected' : '' }} value="{{ $filtro == "Descontinuada" ? $filtro : ''}}">
+    										{{ $filtro == "Descontinuada" ? $filtro : ''}}
     									</option>
     							</select>
     						</div>
@@ -122,12 +124,12 @@
 
 								<div class="col-md-2 text-right">
 									<select name="grafica" id="grafica" class="form-control  form-control input-sm" style="width:100;">
-									<option value="" selected="selected">Seleccione...</option>
-									<option value="1">Áreas del conocimiento</option>
-									<option value="2">Entidades académicas</option>
-									<option value="7">Indexaciones</option>
-									<option value="3">Subsistemas</option>
-									<option value="6">Tipos de revista</option>
+										<option value="" selected="selected">Seleccione...</option>
+										<option value="1">Áreas del conocimiento</option>
+										<option value="2">Entidades académicas</option>
+										<option value="7">Indexaciones</option>
+										<option value="3">Subsistemas</option>
+										<option value="6">Tipos de revista</option>
 									</select>
 								</div>
     						</div>
@@ -139,6 +141,9 @@
     </div> {{-- Terminal el div.row--}}
 </div> {{-- Terminal el div.container-fluid--}}
 
+{{-- Bibliotecas javascript y código para renderizar una gráfica Highcharts --}}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script>
 	// Función para obtener las revistas mediante los filtros
 	//
@@ -155,6 +160,102 @@
 		.fail(function( jqXHR, textStatus ) {
 			$(elemento_resultado).html("Ocurrión un error, intentalo más tarde");
 		});
+	}
+	/* Función para obtener los datos para la gŕafica que se carga en una ventana modal */
+	function load_modal_chart(){
+
+		var modal = $('#myModalChart');
+		var r = $("#grafica").val();
+		if (r != "") {
+			$.ajax({
+					url: "/grafica/",
+					// data: $("#form_revista").serialize() + '&r=' + r,
+					//url: '/grafica/' + $('select[name=grafica] option').filter(':selected').val(),
+					data: $('#form_revista').serialize(),
+					method: 'GET',
+					dataType: 'json',
+					// beforeSend: function(xhr) {
+					// 	modal.find('.modal-body').html(create_loader());
+					// }
+				})
+				.done(function(response) {
+					if (response.data.length === 0) {
+						console.log("El campo data es vacío");
+						modal.find('#modal-body').html("No se encontraron registros!");
+						modal.find("#modal-body").css("min-height", '50px');
+					} else {
+						var tipoChart = (r == '2') ? 'bar' : 'column';
+						if (r == '2') {
+							modal.find("#modal-body").css("min-height", '1500px');
+						} else {
+							modal.find("#modal-body").css("min-height", '550px');
+						}
+						Highcharts.chart('modal-body', {
+							chart: {
+								type: tipoChart
+							},
+							title: {
+								text: response.titulo
+							},
+							xAxis: {
+								type: 'category',
+							},
+							yAxis: {
+								title: {
+									text: 'Número de revistas'
+								}
+
+							},
+							legend: {
+								enabled: false
+							},
+							plotOptions: {
+								series: {
+									borderWidth: 0,
+									dataLabels: {
+										enabled: true,
+										//format: '{point.y:.1f}%'
+										format: '{point.y}'
+									}
+								},
+								column: {
+									groupPadding: null,
+									borderWidth: null,
+									dataLabels: {
+										enabled: null,
+										color: null,
+										style: {
+											fontSize: null,
+											"font-weight": "bold"
+										},
+										"formatter": function() {
+											return this.series.name + this.y + "";
+										}
+									}
+								}
+							},
+							credits: {
+								enabled: false
+							},
+							tooltip: {
+								headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+								pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>'
+								//pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+							},
+							series: [{
+								name: response.indice,
+								colorByPoint: true,
+								data: response.data
+							}]
+						});
+					}
+				})
+				.fail(function(jqXHR, textStatus) {
+					modal.find('#modal-body').html("Ocurrió un error durante el proceso, inténtelo más tarde.");
+				});
+		} else {
+			modal.find('#modal-body').html("<br><br><br><br><h4 class='text-center'>Debe seleccionar el tipo de gráfica a mostrar.</h4>");
+		}
 	}
 
     $(document).ready(function(){
@@ -182,6 +283,14 @@
 
             });
 
+        });
+
+
+        // Agregando la funcionalidad para disparar la ventana modal que contiene la gráfica con totales según los criterios seleccionados
+        $("#myModalChart").on("show.bs.modal", function(e) {
+            var selected_data = $('#form_revista').serialize();
+            console.log("Se ha disparado la ventana modal ", selected_data);
+            load_modal_chart();
         });
     });
 </script>

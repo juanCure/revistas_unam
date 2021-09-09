@@ -153,3 +153,7 @@ Route::get('oldRevistas', [BusquedaPorIndiceController::class, 'getRevistasDesco
 //
 Route::get('listado', [BusquedaPorIndiceController::class, 'postListadoRevistas'])->name('revistas.listado');
 // Route::post('listado', [BusquedaPorIndiceController::class, 'postListadoRevistas'])->name('revistas.listado');
+//
+//
+// Ruta para obtener los datos que se mostrarán en una gráfica en una vista modal
+Route::get('grafica', [BusquedaPorIndiceController::class, 'getTotales'])->name('resultados.grafica');
