@@ -1,0 +1,50 @@
+.jumbotron {
+  margin-bottom: 0;
+  overflow-y: hidden !important;
+}
+
+#logo_unam {
+  max-width: 200px;
+}
+
+.subheader {
+  max-width: 208px;
+}
+
+/* #particle_wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #373737;
+} */
+
+.form-check.searchType {
+}
+
+#searchRow {
+  margin: 4% 0;
+}
+
+#SearchOptionsCol {
+  padding: 2%;
+}
+
+#SearchOptionsCol > * {
+  margin: 0 2%;
+}
+
+.chart {
+  width: 100%;
+  height: 400px;
+}
+
+.card {
+  margin-bottom: 2.5%;
+}
+
+.chart-section {
+  margin-bottom: 2.5%;
+}
+

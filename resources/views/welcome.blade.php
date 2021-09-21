@@ -1,42 +1,130 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container">
-        <h1>Revistas UNAM</h1>
-        <div class="row">
-            @include('public_sidebar')
-            <div class="col-md-8">
-                <div class="panel panel-primary">
-                    {{-- <div class="panel-heading">
-                        <h3 class="panel-title">Laravel Donut HighChart Tutorial Example - NiceSnippets.com</h3>
-                    </div> --}}
-                    <div class="panel-body" align="center">
-                        <div id="pie_typos_chart" style="width:500px; height:300px;">
+    {{-- <div class="container-fluid"> --}}
+    <!-- Slider -->
+    <section>
+        <div class="row d-xl-flex justify-content-xl-center">
+            <div class="col-12 col-xl-8" style="padding: 2% 5%;">
+                <div class="simple-slider">
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide" style="background: url(&quot;https://cdn.bootstrapstudio.io/placeholders/1400x800.png&quot;) center center / cover no-repeat;"></div>
+                            <div class="swiper-slide" style="background: url(&quot;https://cdn.bootstrapstudio.io/placeholders/1400x800.png&quot;) center center / cover no-repeat;"></div>
+                            <div class="swiper-slide" style="background: url(&quot;https://cdn.bootstrapstudio.io/placeholders/1400x800.png&quot;) center center / cover no-repeat;"></div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-button-next"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="chart-section">
+        <!-- Indices para tipo de revista -->
+        <div class="row chart-row">
+            <div class="col-12 col-xl-6">
+                <div class="card" data-aos="zoom-in-right">
+                    <div class="card-body">
+                        <h4 class="card-title">Tipos de revistas</h4>
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-xl-3 col_list">
+                                <div>
+                                    {{-- <ul class="list-group" id="chart1_list"></ul> --}}
+                                    <ul class="list-group" id="chart1_list">
+                                        @foreach ($tipos_revistas as $revista)
+                                            <li class="list-group-item"><span><a href="{{ route('revistas.tipo', ['tipo' => $revista->tipo_revista]) }}">
+                                                {{ $revista->tipo_revista }}
+                                            </a></span></li>
+                                        @endforeach
+                                        <li class="list-group-item"><span><a href="{{ route('revistas.all')}}">Todos los tipos</a></span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-9 chart" id="pie_typos_chart" style="width:500px; height:300px;"></div>
+                            {{-- <div class="col-12 col-md-6 col-xl-9 chart" id="chart1">
+                                <div></div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
-                <br>
-                <div class="panel panel-primary">
-                    {{-- <div class="panel-heading">
-                        <h3 class="panel-title">Laravel Donut HighChart Tutorial Example - NiceSnippets.com</h3>
-                    </div> --}}
-                    <div class="panel-body" align="center">
-                        <div id="pie_areas_chart" style="width:500px; height:300px;">
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <div class="panel panel-primary">
-                    {{-- <div class="panel-heading">
-                        <h3 class="panel-title">Laravel Donut HighChart Tutorial Example - NiceSnippets.com</h3>
-                    </div> --}}
-                    <div class="panel-body" align="center">
-                        <div id="pie_indexaciones_chart" style="width:500px; height:500px;">
+            </div>
+            <!-- Indices para areas del conocimiento -->
+            <div class="col-12 col-xl-6">
+                <div class="card" data-aos="zoom-in-left">
+                    <div class="card-body">
+                        <h4 class="card-title">Áreas de conocimiento</h4>
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-xl-3 col_list">
+                                <div>
+                                    <ul class="list-group" id="chart2_list">
+                                        @foreach ($areas_conocimiento as $area)
+                                            <li class="list-group-item"><span><a href="{{ route('revistas.area', ['area_id' => $area->id ])}}">{{ $area->nombre }}</a></span></li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                            {{-- <div class="col-12 col-md-6 col-xl-9 chart" id="chart2">
+                                <div></div>
+                            </div> --}}
+                            <div class="col-12 col-md-6 col-xl-9 chart" id="pie_areas_chart" style="width:500px; height:300px;"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+    <section class="chart-section">
+        <div class="row chart-row">
+            <div class="col-12 col-xl-6">
+                <div class="card" data-aos="zoom-in-right">
+                    <div class="card-body">
+                        <h4 class="card-title">Indexaciones</h4>
+                        <div class="row" style="overflow: hidden;">
+                            <div class="col-12 col-md-6 col-xl-3 col_list">
+                                <div>
+                                    <ul class="list-group" id="chart3_list">
+                                        @foreach ($indexadores as $indice)
+                                            <li class="list-group-item"><span><a href="{{ route('revistas.indexaciones', ['indice_id' => $indice->id ])}}">{{ $indice->nombre }}</a></span></li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-9 chart" id="pie_indexaciones_chart" style="width:500px; height:500px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-xl-6">
+                <div class="card" data-aos="zoom-in-right">
+                    <div class="card-body">
+                        <h4 class="card-title">Otros índices</h4>
+                        <div class="row d-flex justify-content-center align-items-center" style="overflow: hidden;">
+                            <div class="col-12 col-sm-10 col-md-8 col-lg-10 col-xl-8 chart">
+                                <div></div>
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <span><a href="{{ route('subsistemas.all') }}">Subsistemas de la UNAM</span></a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span><a href="{{ route('entidades.all') }}">Entidades académicas de la UNAM</span></a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span><a href="{{ route('revistas.old') }}">Revistas Descontinuadas</span></a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span><a href="{{ route('revistas.all') }}">Todos los títulos</span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {{-- </div> --}}
+
 
     {{-- Bibliotecas javascript y código para renderizar una gráfica Highcharts --}}
     <script src="https://code.highcharts.com/highcharts.js"></script>
