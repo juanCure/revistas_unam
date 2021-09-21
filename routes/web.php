@@ -9,6 +9,7 @@ use App\Http\Controllers\IdiomaController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\RevistaController;
 use App\Http\Controllers\SistemaIndexadorController;
+use App\Http\Controllers\SolariumController;
 use App\Http\Controllers\SubsistemaController;
 use App\Http\Controllers\TemaController;
 use Illuminate\Support\Facades\Route;
@@ -157,3 +158,6 @@ Route::get('listado', [BusquedaPorIndiceController::class, 'postListadoRevistas'
 //
 // Ruta para obtener los datos que se mostrarán en una gráfica en una vista modal
 Route::get('grafica', [BusquedaPorIndiceController::class, 'getTotales'])->name('resultados.grafica');
+
+// Agregando una ruta para probar el ping en SolariumController
+Route::get('/ping', [SolariumController::class, 'ping'])->name('solr.ping');
