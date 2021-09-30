@@ -30,8 +30,6 @@ class MainController extends Controller {
 
 		$indexaciones_count = SistemaIndexador::select(['id', 'nombre'])->withCount('revistas')->orderBy('id')->get();
 
-		// dd($areas_count);
-
 		return view('welcome')->
 			with([
 			'tipos_revistas' => $typos,
