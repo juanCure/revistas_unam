@@ -161,3 +161,6 @@ Route::get('grafica', [BusquedaPorIndiceController::class, 'getTotales'])->name(
 
 // Agregando una ruta para probar el ping en SolariumController
 Route::get('/ping', [SolariumController::class, 'ping'])->name('solr.ping');
+
+// Busquedas
+Route::get('/busqueda', [SolariumController::class, 'busqueda'])->name('busquedaSolr');
