@@ -26,8 +26,8 @@
         </div>
     </div>
     <div class="row d-flex d-xl-flex justify-content-center justify-content-xl-center" id="searchRow">
-        <form action="{{ route('busquedaSolr') }}" method="GET" name="busqueda">
-        {{-- @csrf --}}
+        <form action="{{ route('solr.basic.search') }}" method="POST" name="busqueda">
+        @csrf
         <div class="col-12 col-sm-10 col-lg-6">
             <div class="row">
                     <div class="col-12 d-flex justify-content-center align-items-xl-center" id="SearchOptionsCol" style="padding-left: 0;">

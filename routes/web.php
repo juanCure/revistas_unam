@@ -163,4 +163,5 @@ Route::get('grafica', [BusquedaPorIndiceController::class, 'getTotales'])->name(
 Route::get('/ping', [SolariumController::class, 'ping'])->name('solr.ping');
 
 // Busquedas
-Route::get('/busqueda', [SolariumController::class, 'busqueda'])->name('busquedaSolr');
+Route::post('/busqueda', [SolariumController::class, 'search'])->name('solr.basic.search');
+Route::get('/busqueda', [SolariumController::class, 'search'])->name('solr.get.basic.search');

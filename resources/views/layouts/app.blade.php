@@ -234,9 +234,6 @@
     <script src="{{ asset('js/bs-init.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.3.1/js/swiper.jquery.min.js"></script>
-    <script src="{{ asset('js/themes/avocado.src.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
-    <script src="{{ asset('js/themes/dark-unica.js') }}"></script>
-    <script src="{{ asset('js/themes/sunset.src.js') }}"></script>
 </body>
 </html>
