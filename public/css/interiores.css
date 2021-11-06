@@ -1,0 +1,143 @@
+:root {
+  --link: #de181c;
+}
+
+a {
+  color: var(--link);
+}
+
+.breadcrumb {
+  background-color: #eeeded;
+}
+
+#results_article_breadcrumb {
+  margin-left: 10px;
+  text-transform: none;
+}
+
+#results_cards .card {
+  margin-bottom: 40px;
+}
+
+#results_cards .cards_col {
+  margin-bottom: 100px;
+  background: var(--white);
+  border-top-left-radius: 10px;
+}
+
+.data_col {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+@media (min-width: 992px) {
+  .data_col {
+    margin-top: 0;
+    margin-bottom: 40px;
+  }
+}
+
+#main_container {
+  margin-top: 5%;
+  padding-left: 3%;
+  padding-right: 3%;
+}
+
+/* ****** CARDS ************************* */
+
+.card-title {
+  text-align: left;
+  font-size: 1.2em;
+  padding: 0;
+  margin: 0;
+  padding: 5px;
+  padding-left: 10px;
+  width: 100%;
+  border-radius: 0;
+}
+
+.selected_item {
+  background-color: #eeeded !important;
+}
+
+/* *********** BREADCRUMB ************* */
+
+.breadcrumb a {
+  color: var(--link);
+  text-transform: uppercase;
+}
+
+.breadcrumb .breadcrumb-item {
+  font-size: .64rem;
+}
+
+@media (min-width: 576px) {
+  .breadcrumb .breadcrumb-item {
+    font-size: 1rem;
+  }
+}
+
+.breadcrumb .breadcrumb-item:last-child a {
+  pointer-events: none !important;
+  color: var(--dark);
+}
+
+#carousel-container {
+  margin-top: 50px;
+  padding-left: 3%;
+  padding-right: 3%;
+}
+
+#cards_row {
+  margin: 10px 7%;
+}
+
+#links_table a {
+  color: var(--dark);
+}
+
+/* #links_table i {
+  padding-top: 1px;
+  margin-left: 10px;
+  color:var(--link);
+} */
+
+.page_row {
+  background: white;
+}
+
+.page_row ul li, .page_row ol li {
+  font-weight: lighter;
+  font-family: Anaheim, sans-serif;
+}
+
+/* *****STATIC PAGES ******************************* */
+
+.static_page p {
+  padding-left: 15px;
+}
+
+.static_page h4 {
+  padding-left: 15px;
+}
+
+#heading_static_page {
+  border-bottom: solid 1px var(--link);
+  padding-bottom: 5px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  padding-left: 10px;
+}
+
+.static_page #heading_static_page {
+  padding-left: 10px;
+}
+
+#links_table {
+  padding-left: 15px;
+}
+
+.filter_col div {
+  margin-left: 15px;
+}
+

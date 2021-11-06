@@ -1,50 +1,379 @@
-.jumbotron {
-  margin-bottom: 0;
-  overflow-y: hidden !important;
+* {
+  font-family: Alatsi, sans-serif;
 }
 
-#logo_unam {
-  max-width: 200px;
+html, body {
+  overflow-x: hidden;
 }
 
-.subheader {
-  max-width: 208px;
+.page-link, a {
+  color: #de181c;
 }
 
-/* #particle_wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
+.page-link:hover, a:hover {
+  color: #9d1013 !important;
+  text-decoration: underline;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+  color: #fff;
+  border-color: #de181c;
+  background-color: #de181c;
+}
+
+.nav-link {
+}
+
+.navbar-toggler {
+  background: rgba(255,255,255,0.65);
+}
+
+#mainMenu {
+  max-height: 80px;
+  font-family: Alatsi, sans-serif;
+  padding-right: 0;
+}
+
+#mainMenu .nav-link {
+  color: var(--dark);
+}
+
+#share_container {
+  margin-right: 5%;
+}
+
+.share {
+  margin: 5%;
+}
+
+.share i {
+  font-size: 1.3em;
+  display: block;
+  padding: 2px;
+  color: white;
+}
+
+@media (min-width: 992px) {
+  #send_mail {
+    margin-left: 10px;
+    padding-left: 15px;
+    display: inline-block !important;
+    border-left: solid 1px #f48838;
+  }
+}
+
+#searchForm {
+  margin-top: 30px;
+}
+
+@media (min-width: 1200px) {
+  #searchForm {
+    margin-top: 120px;
+  }
+}
+
+#advanced_search_col {
+  background: rgba(0,0,0,0.42);
+  height: auto;
   width: 100%;
+  padding: 20px 0;
+}
+
+.advanced_span_col {
+  padding-bottom: 5px;
+}
+
+#advanced_search {
+  border-left: solid white 2px;
+  min-height: 40px;
+  padding: 0 20px;
+  color: white;
+}
+
+#advanced_search.active, #advanced_search:hover {
+  color: rgb(255,255,255) !important;
+  background-color: rgba(0,0,0,0.38);
+}
+
+#advanced_search i {
+  padding-top: 1px;
+  margin-left: 10px;
+}
+
+.year_label {
+  width: 60px;
+}
+
+.advanced_select {
+  width: 100px;
+  height: 40px;
+  background: transparent;
+  color: white;
+}
+
+.input_col {
+  margin-top: 10px;
+}
+
+.advanced_input {
+  width: 100%;
+}
+
+#journal_select {
+  width: 100%;
+}
+
+#subheading {
+  padding-top: 10px;
+  font-size: 1.1em;
+  letter-spacing: .3px;
+  text-shadow: 0px 0px 11px rgb(0,0,0);
+}
+
+#main_container {
+  margin-top: 5%;
+  padding-left: 3%;
+  padding-right: 3%;
+}
+
+/* *********** BREADCRUMB ************* */
+
+.breadcrumb a {
+  color: var(--link);
+  text-transform: uppercase;
+}
+
+.breadcrumb .breadcrumb-item {
+  font-size: .64rem;
+}
+
+@media (min-width: 576px) {
+  .breadcrumb .breadcrumb-item {
+    font-size: 1rem;
+  }
+}
+
+.breadcrumb .breadcrumb-item:last-child a {
+  pointer-events: none !important;
+  color: var(--dark);
+}
+
+#carousel-container {
+  margin-top: 50px;
+  padding-left: 3%;
+  padding-right: 3%;
+}
+
+#cards_row {
+  margin: 10px 7%;
+}
+
+.card-title {
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--light);
+  background-color: #636363;
+  padding: 1% 2%;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.index_page #tipos_list {
+  min-height: 300px;
+}
+
+.card .list-group-item {
+  border: none;
+  background: none;
+  /*margin: 0;*/
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.card .list-group-item a {
+  text-transform: uppercase;
+  display: flex;
+}
+
+.card .list-group-item :before {
+  margin-top: 4px;
+  display: flex;
+}
+
+.card .list-group-item i {
+  margin-right: 8px;
+}
+
+.card .list-group {
   height: 100%;
-  background-color: #373737;
-} */
-
-.form-check.searchType {
+  width: 95%;
+  background: transparent !important;
 }
 
-#searchRow {
-  margin: 4% 0;
+/* ****** */
+
+.card_container {
+  padding: 0;
 }
 
-#SearchOptionsCol {
-  padding: 2%;
+.card_row {
+  margin: 20px 0;
+  padding: 20px 0;
 }
 
-#SearchOptionsCol > * {
-  margin: 0 2%;
+.card_row:nth-child(odd) {
+  background-color: #f5f5f5;
 }
 
-.chart {
-  width: 100%;
-  height: 400px;
+.card_row .card {
+  background: transparent;
+  border: none;
 }
 
-.card {
-  margin-bottom: 2.5%;
+.card_row .card-body {
+  padding-right: 0;
+  padding-left: 0;
 }
 
-.chart-section {
-  margin-bottom: 2.5%;
+.card_row .list-group {
+  max-width: 95%;
+  padding-bottom: 20px;
+  padding-top: 20px;
+}
+
+.chart_col {
+  border: solid rgb(164,164,164) 1px;
+  max-width: 95%;
+}
+
+.card_row:last-child .list-group {
+  width: 100% !important;
+  background: red;
+}
+
+.highcharts_list {
+  border: solid silver 1px;
+}
+
+.highcharts-container {
+  background: none !important;
+}
+
+#indexaciones .highcharts-yaxis[data-z-index="2"] {
+  transform: translateX(-20px);
+}
+
+.highcharts-credits {
+  display: none;
+}
+
+.heading_sub {
+  background: rgb(210,210,210);
+  display: inline-block;
+  padding: 10px;
+  text-align: center;
+  box-shadow: -10px 11px 0px 0px rgb(137,137,137);
+}
+
+.issue_col {
+  background-color: white;
+  outline: solid rgb(245,245,245) 24px;
+}
+
+.issue_data, .issue_title {
+  position: absolute;
+  background: rgb(222,222,222);
+}
+
+.issue_col > div {
+  margin-top: 30px;
+  margin-bottom: 20%;
+}
+
+.issue_title {
+  left: 0px;
+  top: 0;
+}
+
+.issue_data {
+  bottom: -30px;
+  right: 25px;
+}
+
+.issue_data span {
+  display: block;
+  padding: 0 5px;
+}
+
+@media (min-width: 300px) {
+  #advanced_search {
+    margin-top: 20px;
+  }
+}
+
+@media (min-width: 768px) {
+  #logo_unam {
+    width: 147px;
+  }
+}
+
+@media (min-width: 768px) {
+  #advanced_search {
+    margin-top: 8px;
+  }
+}
+
+#issues_row, #related_sites_row {
+  margin-top: 40px;
+}
+
+#related_sites_row {
+  width: 90%;
+}
+
+@media (min-width: 992px) {
+  #related_sites_row {
+    width: 70%;
+  }
+}
+
+#related_sites_row img {
+  max-height: 70px;
+}
+
+.jumbotron.jumbotron-main a {
+  color: #de181c;
+}
+
+@media (min-width: 768px) {
+  #mainMenu {
+    font-size: .9em;
+  }
+}
+
+@media (min-width: 992px) {
+  #logo_unam {
+    height: 110px;
+    width: unset;
+  }
+}
+
+@media (min-width: 992px) {
+  #mainMenu {
+    font-size: 1em;
+  }
+}
+
+#footer a {
+  color: orange !important;
+}
+
+#footer a:hover {
+  color: #ffa115;
+}
+
+p {
+  font-weight: lighter;
+  font-family: Anaheim, sans-serif;
 }
 
