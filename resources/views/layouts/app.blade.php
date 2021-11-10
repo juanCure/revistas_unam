@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/interiores.css">
     <link rel="stylesheet" href="css/journal_view.css">
+    {{-- <link href="{{ asset('css/create-revista.css') }}" rel="stylesheet" id="bootstrap-css"> --}}
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
@@ -46,7 +47,7 @@
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
     <script src="js/chartThemes/sand-signika.js"></script>
     <script src="https://code.highcharts.com/modules/cylinder.js"></script>
-    
+
 
     @livewireStyles
 
@@ -69,7 +70,7 @@
                         <!-- Right Side Of Navbar -->
                         <ul class="navbar-nav ml-auto">
 
-                            @auth
+                            {{-- @auth --}}
                                 <li class="nav-item dropdown">
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                         {{ Auth::user()->name }}
@@ -87,7 +88,7 @@
                                         </form>
                                     </div>
                                 </li>
-                            @endauth
+                            {{-- @endauth --}}
 
                             <!-- Authentication Links -->
                             {{-- @guest
@@ -109,13 +110,14 @@
                     </div>
                 </div>
             </nav>
+            @yield('content')
         @else
             @include('public_header')
             {{-- Este es el contenido principal de cada vista --}}
             @yield('content')
 
             <!-- This is the footer template -->
-    
+
             <div class="footer-dark">
                 <footer id="footer">
                     <div class="container">

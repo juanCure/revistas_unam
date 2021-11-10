@@ -7,11 +7,11 @@
             <div>
                 <ul class="list-group" id="tipos_list">
                     @foreach ($tipos_revistas as $revista)
-                        <li><span><a href="{{ route('revistas.tipo', ['tipo' => $revista->tipo_revista]) }}">
-                            {{ $revista->tipo_revista }}
-                        </a></span></li>
+                        <li class="list-group-item"><a href="{{ route('revistas.tipo', ['tipo' => $revista->tipo_revista]) }}">
+                            <i class="fa fa-chevron-right"></i>{{ $revista->tipo_revista }}
+                        </a></li>
                     @endforeach
-                    <li><span><a href="{{ route('revistas.all')}}">Todos los tipos</a></span></li>
+                    <li class="list-group-item"><a href="{{ route('revistas.all')}}"><i class="fa fa-chevron-right"></i>Todos los tipos</a></li>
                 </ul>
             </div>
         </div>
@@ -22,7 +22,7 @@
             <div>
                 <ul class="list-group" id="areas_list">
                     @foreach ($areas_conocimiento as $area)
-                        <li><a href="{{ route('revistas.area', ['area_id' => $area->id ])}}">{{ $area->nombre }}</a></li>
+                        <li class="list-group-item"><a href="{{ route('revistas.area', ['area_id' => $area->id ])}}"><i class="fa fa-chevron-right"></i>{{ $area->nombre }}</a></li>
                     @endforeach
                 </ul>
             </div>
@@ -34,7 +34,7 @@
             <div>
                 <ul class="list-group" id="indexaciones_list">
                     @foreach ($indexadores as $indice)
-                        <li><a href="{{ route('revistas.indexaciones', ['indice_id' => $indice->id ])}}">{{ $indice->nombre }}</a></li>
+                        <li class="list-group-item"><a href="{{ route('revistas.indexaciones', ['indice_id' => $indice->id ])}}"><i class="fa fa-chevron-right"></i>{{ $indice->nombre }}</a></li>
                     @endforeach
                 </ul>
             </div>
@@ -46,16 +46,16 @@
             <div>
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <a href="{{ route('subsistemas.all') }}">Subsistemas de la UNAM</a>
+                        <a href="{{ route('subsistemas.all') }}"><i class="fa fa-chevron-right"></i>Subsistemas de la UNAM</a>
                     </li>
                     <li class="list-group-item">
-                        <a href="{{ route('entidades.all') }}">Entidades académicas de la UNAM</a>
+                        <a href="{{ route('entidades.all') }}"><i class="fa fa-chevron-right"></i>Entidades académicas de la UNAM</a>
                     </li>
                     <li class="list-group-item">
-                        <a href="{{ route('revistas.old') }}">Revistas Descontinuadas</a>
+                        <a href="{{ route('revistas.old') }}"><i class="fa fa-chevron-right"></i>Revistas Descontinuadas</a>
                     </li>
                     <li class="list-group-item">
-                        <a href="{{ route('revistas.all') }}">Todos los títulos</a>
+                        <a href="{{ route('revistas.all') }}"><i class="fa fa-chevron-right"></i>Todos los títulos</a>
                     </li>
                 </ul>
             </div>
