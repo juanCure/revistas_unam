@@ -169,6 +169,7 @@ class SolariumController extends Controller {
 		$strQuery = "(title:/[A-Z]*" . $searchTerm . "[A-Z]*/)";
 
 		if (isset($idMod) && $idMod == 0) {
+			//Busqueda por artículo
 			$query = $this->client->createSelect();
 			// get the facetset component
 			$facetSet = $query->getFacetSet();

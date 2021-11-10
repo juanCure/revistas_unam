@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('content')
 <div class="container-fluid" id="main_container">
-	{{-- <h1>Resultados</h1> --}}
     <div class="row" id="results_cards">
         	@include('public_sidebar')
         	{{-- Incluyendo la vista modal de la ficha --}}
@@ -28,16 +27,16 @@
 						    						<label class="letter">
 							    						{{ $letra }}
 							    						<input class="form-control abecedario" type="radio" name="abc" value="{{ $letra }}" onchange="data_ajax('{{ route('revistas.listado') }}', '#form_revista', '#revistas_resultado')">
-							    					</label>	
+							    					</label>
 						    					</div>
-						    					
+
 								        	@endforeach
 								        </div>
 					    			</div>
 								</div>
 
-								{{-- Hidden Box Select para enviar los filtros iniciales --}}
-								<div class="row">
+								{{-- Hidden Box Select for remaining the selected indexes --}}
+								<div class="row" style="display:none">
 									<select name="tipo" id="tipo" style="display: none;">
 										<option value selected="selected">Todos</option>
 										@foreach ($tipos_revistas as $revista)
@@ -101,7 +100,7 @@
 		        							<option value="50">50</option>
 		        							<option value="100">100</option>
 		        						</select>
-                                    </div>                                    
+                                    </div>
                                 </div>
                                 <div class="col-6 col-md-4 col-xl-3 d-flex d-xl-flex justify-content-center align-items-center justify-content-sm-center justify-content-xl-center align-items-xl-center filter_col">
                                     <div class="text-center d-xl-flex justify-content-xl-center" style="width: 100%;"><label class="d-xl-flex align-items-xl-center">Arbitrada</label>
@@ -139,10 +138,19 @@
 										</select>
                                     </div>
                                 </div>
-							</div> <!-- End .form-row .row-cols-5 -->
+                                <div class="col-12 col-md-4 col-xl-1 d-flex d-xl-flex justify-content-center justify-content-md-center align-items-md-center justify-content-lg-center justify-content-xl-center filter_col" id="col_download_btn"><button class="btn btn-danger btn-sm d-xl-flex justify-content-xl-center align-items-xl-center" id="download_btn" type="button" style="float: right;"><i class="fa fa-download" id="icono_descarga" style="/*margin-left: 10px;*/font-size: 1.4em;"></i></button></div>
+							</div> <!-- Ending for <div class="form-row .row-cols-5"> -->
 	    				</form>
 	                </div>
-	                @include("resultados.index")
+	                @if(count($revistas ?? '') == 0)
+						<div class="alert alert-warning">
+							No se encontraron resultados
+						</div>
+					@else
+						<div id="revistas_resultado">
+	                		@include("resultados.index")
+	                	</div>
+	                @endif
 	            </div>
 	        </div>
 
@@ -266,15 +274,21 @@
 		}
 	}
 
+	function load_dataSheet(){
+
+	}
+
     $(document).ready(function(){
 
     	// Agregando la funcionalidad para que funcione la ventana modal de la ficha
         $("#fichaRevistaModal").on("show.bs.modal", function(e) {
             var id = $(e.relatedTarget).data('id');
-            // console.log("data-id: ", id);
+            console.log("data-id: ", id);
             $.get( "/verFicha/" + id, function( data ) {
             	// console.log(data);
-                $(".modal-body").html(data);
+                $(".modal-body").html(data.body);
+                // console.log(data.title);
+                $("#data_title > a").html(data.title);
             });
 
         });

@@ -251,10 +251,12 @@ class BusquedaPorIndiceController extends Controller {
 	}
 
 	public function viewModal($revista_id) {
+
 		$revista = Revista::findOrFail($revista_id);
-		return view('revistas.ficha')->with([
-			'revista' => $revista,
-		])->render();
+		return response()->json([
+			'body' => view('revistas.ficha', compact('revista'))->render(),
+			'title' => $revista->titulo,
+		]);
 	}
 
 	public function getTodosTiposRevistas(Request $request) {
