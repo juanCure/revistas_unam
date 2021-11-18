@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
-	<div id="resultados_contenido" class="container-fluid">
+	{{-- <div id="resultados_contenido" class="container-fluid"> --}}
+	<div class="container-fluid" id="main_container">
 		@include("resultados.bSolrIndex")
 	</div>
 	<script>
@@ -55,7 +56,7 @@
 			        },
 			        success: function(data) {
 			        	console.log("It works!");
-			        	$('#resultados_contenido').html(data);
+			        	$('#main_container').html(data);
 			        	// $('#' + checkbox_id).attr('checked', true);
 			        },
 			        error: function() {
@@ -92,7 +93,7 @@
 			        },
 			        success: function(data) {
 			        	console.log("It works!");
-			        	$('#resultados_contenido').html(data);
+			        	$('#main_container').html(data);
 			        	// $('#' + checkbox_id).attr('checked', true);
 			        },
 			        error: function() {

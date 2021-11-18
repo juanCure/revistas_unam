@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/interiores.css">
     <link rel="stylesheet" href="css/journal_view.css">
+    <link rel="stylesheet" href="css/article_view.css">
     {{-- <link href="{{ asset('css/create-revista.css') }}" rel="stylesheet" id="bootstrap-css"> --}}
 
     <!-- Scripts -->
@@ -173,6 +174,7 @@
     {{-- <script src="js/chartData.js"></script> --}}
     <script src="js/main.js"></script>
     <script src="js/results_journal.js"></script>
+    <script src="js/results_article.js"></script>
 
     <script type="text/javascript">
         window.livewire.on('alert', param => {

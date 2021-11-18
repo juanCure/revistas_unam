@@ -1,87 +1,117 @@
-<div class="row">
-	{{-- filtros --}}
-	<div class="col-md-3">
-		<div class="filtros">
-			<p>Filtros de búsqueda</p>
-			<div id="publishDate">
-				<p>Año de publicación</p>
-				@foreach($publishDateArray as $item)
+<div class="row" id="results_cards">
+	<!-- Here starts the first column which contains the filters -->
+	<div class="col-lg-3 order-2 order-lg-1 cards_col">
+		<div class="card" id="card_filters">
+            <h4 class="d-xl-flex align-items-xl-center card-title"><span>Filtros de búsqueda</span></h4>
+            <div class="card-body card_body_filters">
+            	<section></section>
+                <section id="all_dates" style="margin: 0;">
+                    <h6>Año:</h6>
+                    <section id="first_dates">
+                    	<div class="row">
+                    		@foreach($publishDateArray as $item)
+                    			<div class="col-6 d-flex date_col">
+                                	<div class="custom-control custom-switch">
+									  <input class="custom-control-input" type="checkbox" id="formCheck-{{ $item['checkbox_id'] }}" name="pub_date" value="{{ $item['checkbox_id'] }}" onchange="doSomething(this)" {{ $item['is_checked'] ? 'checked' : '' }}>
+									  <label class="custom-control-label" for="formCheck-{{ $item['checkbox_id'] }}">
+									    {{ $item['checkbox_id'] }}
+									    <span class="filter_results">{{ $item['count'] }}</span>
+									  </label>
+									  {{-- <label>({{ $item['count'] }})</label> --}}
+									</div>
+                                </div>
+							@endforeach
+                        </div>
+                    </section>
+                </section>
+            </div><!-- Here ends the year filter -->
 
-					<div class="form-check">
-					  <input id="checkbox_{{ $item['checkbox_id'] }}" name="pub_date" class="form-check-input" type="checkbox" value="{{ $item['checkbox_id'] }}" onchange="doSomething(this)" {{ $item['is_checked'] ? 'checked' : '' }}>
-					  <label class="form-check-label">
-					    {{ $item['checkbox_id'] }}
-					  </label>
-					  <label>({{ $item['count'] }})</label>
-					</div>
-				@endforeach
+            <div class="card-body card_body_filters" id="card_body_journals">
+                <section></section>
+                <section id="all_journals" style="margin: 0;">
+                    <h6>Revistas</h6>
+                    <section id="first_journals">
+                        <div class="row">
+                        	@foreach ($journalsArray as $item)
+								<div class="col-12 d-flex date_col">
+									<div class="custom-control custom-switch">
+										<input class="custom-control-input" type="checkbox" id="formCheck-{{ $item['checkbox_id'] }}" name="journals" value="{{ $item['checkbox_id'] }}" onchange="doSomething(this)" {{ $item['is_checked'] ? 'checked' : '' }}>
+										<label class="custom-control-label" for="formCheck-{{ $item['checkbox_id'] }}">{{ $item['checkbox_id'] }}<span class="filter_results">{{ $item['count'] }}</span></label>
+									</div>
+								</div>
+							@endforeach
+                        </div>
+                    </section>
+                </section>
+            </div> <!-- Here ends the journals filter-->
+        </div>
+	</div> <!-- Here ends the first column -->
 
-			</div>
-			<br><br>
-			<div id="revistas">
-				<span>Revistas</span>
-				@foreach ($journalsArray as $item)
-					<div class="form-check">
-					  <input id="checkbox_{{ $item['checkbox_id'] }}" name="journals" class="form-check-input" type="checkbox" value="{{ $item['checkbox_id'] }}" onchange="doSomething(this)" {{ $item['is_checked'] ? 'checked' : '' }}>
-					  <label class="form-check-label">
-					    {{ $item['checkbox_id'] }}
-					  </label>
-					  <label>({{ $item['count'] }})</label>
-					</div>
-				@endforeach
-			</div>
-			{{-- <div id="revistas">
-				<span>Revistas</span>
-				@foreach ($unFilteredJournalsFacet as $value => $count)
-					<div class="form-check">
-					  <input name="journal" class="form-check-input" type="checkbox" value="{{$value}}">
-					  <label class="form-check-label">
-					    {{$value}}
-					  </label>
-					  <label>({{$count}})</label>
-					</div>
-				@endforeach
-			</div> --}}
+	<!-- Here starts the second column which has the results and the breadcrumb navigation -->
+	<div class="col-lg-9 order-1 order-lg-2 data_col" id="subsistemas_col" style="background: #ffffff;border-top-right-radius: 10px;">
+		<ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#"><span>Inicio</span></a></li>
+            <li class="breadcrumb-item"><a href="#"><span>Resultados de la busqueda:</span><span id="results_article_breadcrumb">{{$searchTerm}}</span></a></li>
+        </ol>
+        <div class="col-12">
+		    <div class="row" id="results_report_col">
+		        <div class="col d-flex d-xl-flex justify-content-center justify-content-sm-start justify-content-md-start align-items-xl-center"><span class="d-sm-flex align-items-sm-end align-items-md-end" id="results_counter">
+		        	Mostrando {{ $mypaginator->firstItem() }} a {{ $mypaginator->lastItem() }} de {{ $numFound }} artículos</div>
+		        <div class="col d-md-flex d-lg-flex justify-content-md-end justify-content-lg-end">
+		            {{-- Carga los enlaces de paginación --}}
+					{{ $mypaginator->links() }}
+		        </div>
+		    </div>
 		</div>
-
-	</div>
-	{{-- Resultados --}}
-	<div class="col-md-9">
-		<div class="resultados">
-			<h2>Búsqueda básica por artículo</h2>
-			<p>Resultados: {{$numFound}} artículos encontrados</p>
-		</div>
-		<div class="d-flex justify-content-center">
-			<p>Resultado por: <span id="searchText">{{$searchTerm}}</span></p>
-		</div>
-		<div class="resultados_contenido">
-			<p class="elementos">Mostrando {{ $mypaginator->firstItem() }} a {{ $mypaginator->lastItem() }} de {{ $numFound }} artículos</p>
-			{{ $mypaginator->links() }}
+		<br>
+        <div class="row page_row">
 			@foreach($resultset as $document)
-				<div class="articulo_detalles card">
-					<div class="card-body">
-						<h5 class="card-title">
-							{{-- Mostrando el título de la revista --}}
-							{{ $document['collection'] }}
-						</h5>
-						<p><span>Año: </span><span>{{ (isset($document['publishDate'])) ? $document['publishDate'] : '' }}</span></p>
-						<p><span>ISSN: </span><span>{{ $document['myownissn']}}</span></p>
-						<p class="card-text">{{ $document['title']}}</p>
-						<p class="card-text">{{ $document['author_facet'] }}</p>
-						{{-- <p class="card-text"><span>DOI: </span> <a href=""> {{ $document['doi'] != null ? $document['doi'] : '' }} </a></p> --}}
-						@if ($document['doi'] != null)
-							<div id="doi_container">
-								<span>DOI: </span>
-									<a target="_blank" href="https://doi.org/{{ $document['doi'] }}">
-										https://doi.org/{{ $document['doi'] }}
-									</a>
+				<div class="col-12 page_col">
+					<a class="journal_title" href="#">{{ $document['collection'] }}</a>
+					<div class="row no-gutters article_data_row">
+						<div class="col-11 data-col">
+							<div class="row no-gutters">
+								<div class="col-12 article_data">
+									<div class="row">
+										<div class="col-4 col-sm-3 col-md-2 col-xl-2">
+											<div class="data_container"><span class="data_label">Año</span><span class="data_value">{{ (isset($document['publishDate'])) ? $document['publishDate'] : '' }}</span></div>
+										</div>
+										<div class="col-8 col-sm-9 col-md-10">
+											<div class="data_container"><span class="data_label">ISSN</span><span class="data_value">{{ $document['myownissn'] }}</span></div>
+										</div>
+									</div>
+									<a class="article_link" href="#">{{ $document['title'] }}</a>
+									<p class="article_authors">{{ $document['author_facet'] }}</p>
+									<div class="data_container">
+										@if ($document['doi'] != null)
+											<span class="data_label">DOI</span><a class="text-break doi_link" target="_blank" href="https://doi.org/{{ $document['doi'] }}">https://doi.org/{{ $document['doi'] }}</a>
+										@endif
+									</div>
+									<div class="data_container"><span class="data_label">Palabras Clave</span>
+										<div class="keyword_caontainer"><a class="text-break keyword_link" href="#" target="_blank">políticas públicas</a><a class="text-break keyword_link" href="#" target="_blank">representaciones sociales</a><a class="text-break keyword_link" href="#" target="_blank">habitar</a><a class="text-break keyword_link" href="#" target="_blank">movilidades urbanas</a><a class="text-break keyword_link" href="#" target="_blank">pandemia</a><a class="text-break keyword_link" href="#" target="_blank">covid</a></div>
+									</div>
+									<div class="data_container"><a class="link_description" href="#description_container" data-toggle="collapse"><span class="data_label label_description">Descripción<i class="fa fa-plus-circle"></i></span></a>
+										<div id="description_container" class="card card-body collapse description_container">
+											<div>
+												<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Arcu ac tortor dignissim convallis aenean. Dignissim cras tincidunt lobortis feugiat vivamus. Egestas sed tempus urna et pharetra pharetra massa massa ultricies. Tortor at auctor urna nunc id cursus metus aliquam eleifend. Orci sagittis eu volutpat odio facilisis. Ut enim blandit volutpat maecenas volutpat blandit. Odio euismod lacinia at quis. Sapien faucibus et molestie ac feugiat sed lectus. Volutpat lacus laoreet non curabitur. Cras pulvinar mattis nunc sed blandit. Sapien eget mi proin sed libero enim sed.<br></p>
+												<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Arcu ac tortor dignissim convallis aenean. Dignissim cras tincidunt lobortis feugiat vivamus. Egestas sed tempus urna et pharetra pharetra massa massa ultricies. Tortor at auctor urna nunc id cursus metus aliquam eleifend. Orci sagittis eu volutpat odio facilisis. Ut enim blandit volutpat maecenas volutpat blandit. Odio euismod lacinia at quis. Sapien faucibus et molestie ac feugiat sed lectus. Volutpat lacus laoreet non curabitur. Cras pulvinar mattis nunc sed blandit. Sapien eget mi proin sed libero enim sed.<br></p>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
-						@endif
+						</div>
 					</div>
 				</div>
 			@endforeach
-
-			{{ $mypaginator->links() }}
 		</div>
-	</div>
+		<div class="col-12">
+		    <div class="row">
+		        <div class="col d-md-flex d-lg-flex justify-content-md-end justify-content-lg-end">
+		            {{-- Carga los enlaces de paginación --}}
+					{{ $mypaginator->links() }}
+		        </div>
+		    </div>
+		</div>
+	</div> <!-- Here ends the second column -->
 </div>
