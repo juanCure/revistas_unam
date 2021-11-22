@@ -1,129 +1,136 @@
 @extends('layouts.app')
 @section('content')
-    {{-- <div class="container-fluid"> --}}
-    <!-- Slider -->
-    <section>
-        <div class="row d-xl-flex justify-content-xl-center">
-            <div class="col-12 col-xl-8" style="padding: 2% 5%;">
-                <div class="simple-slider">
-                    <div class="swiper-container">
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide" style="background: url(&quot;https://cdn.bootstrapstudio.io/placeholders/1400x800.png&quot;) center center / cover no-repeat;"></div>
-                            <div class="swiper-slide" style="background: url(&quot;https://cdn.bootstrapstudio.io/placeholders/1400x800.png&quot;) center center / cover no-repeat;"></div>
-                            <div class="swiper-slide" style="background: url(&quot;https://cdn.bootstrapstudio.io/placeholders/1400x800.png&quot;) center center / cover no-repeat;"></div>
-                        </div>
-                        <div class="swiper-pagination"></div>
-                        <div class="swiper-button-prev"></div>
-                        <div class="swiper-button-next"></div>
-                    </div>
-                </div>
+
+   <!-- Here starts the content of the index view -->
+    <div class="container-fluid" id="carousel-container">
+        <div class="carousel slide" data-ride="carousel" id="carousel-1">
+            <div class="carousel-inner">
+                <div class="carousel-item active"><img class="w-100 d-block" src="{{ asset('img/carousel/1.jpg')}}" alt="Slide Image"></div>
+                <div class="carousel-item"><img class="w-100 d-block" src="{{ asset('img/carousel/2.jpg')}}" alt="Slide Image"></div>
             </div>
+            <div><a class="carousel-control-prev" href="#carousel-1" role="button" data-slide="prev"><span class="carousel-control-prev-icon"></span><span class="sr-only">Previous</span></a><a class="carousel-control-next" href="#carousel-1" role="button" data-slide="next"><span class="carousel-control-next-icon"></span><span class="sr-only">Next</span></a></div>
         </div>
-    </section>
-    <section class="chart-section">
-        <!-- Indices para tipo de revista -->
-        <div class="row chart-row">
-            <div class="col-12 col-xl-6">
-                <div class="card" data-aos="zoom-in-right">
+        <section></section>
+    </div>
+    <div class="container-fluid card_container" style="/*background: #f5f5f5;*/">
+        <div class="row no-gutters d-xl-flex justify-content-xl-center card_row">
+            <div class="col-10 col-xl-8 offset-1 offset-xl-0">
+                <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Tipos de revistas</h4>
-                        <div class="row">
-                            <div class="col-12 col-md-6 col-xl-3 col_list">
-                                <div>
-                                    {{-- <ul class="list-group" id="chart1_list"></ul> --}}
-                                    <ul class="list-group" id="chart1_list">
-                                        @foreach ($tipos_revistas as $revista)
-                                            <li class="list-group-item"><span><a href="{{ route('revistas.tipo', ['tipo' => $revista->tipo_revista]) }}">
-                                                {{ $revista->tipo_revista }}
-                                            </a></span></li>
-                                        @endforeach
-                                        <li class="list-group-item"><span><a href="{{ route('revistas.all')}}">Todos los tipos</a></span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6 col-xl-9 chart" id="pie_typos_chart" style="width:500px; height:300px;"></div>
-                            {{-- <div class="col-12 col-md-6 col-xl-9 chart" id="chart1">
-                                <div></div>
-                            </div> --}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Indices para areas del conocimiento -->
-            <div class="col-12 col-xl-6">
-                <div class="card" data-aos="zoom-in-left">
-                    <div class="card-body">
-                        <h4 class="card-title">Áreas de conocimiento</h4>
-                        <div class="row">
-                            <div class="col-12 col-md-6 col-xl-3 col_list">
-                                <div>
-                                    <ul class="list-group" id="chart2_list">
-                                        @foreach ($areas_conocimiento as $area)
-                                            <li class="list-group-item"><span><a href="{{ route('revistas.area', ['area_id' => $area->id ])}}">{{ $area->nombre }}</a></span></li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-                            {{-- <div class="col-12 col-md-6 col-xl-9 chart" id="chart2">
-                                <div></div>
-                            </div> --}}
-                            <div class="col-12 col-md-6 col-xl-9 chart" id="pie_areas_chart" style="width:500px; height:300px;"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="chart-section">
-        <div class="row chart-row">
-            <div class="col-12 col-xl-6">
-                <div class="card" data-aos="zoom-in-right">
-                    <div class="card-body">
-                        <h4 class="card-title">Indexaciones</h4>
-                        <div class="row" style="overflow: hidden;">
-                            <div class="col-12 col-md-6 col-xl-3 col_list">
-                                <div>
-                                    <ul class="list-group" id="chart3_list">
-                                        @foreach ($indexadores as $indice)
-                                            <li class="list-group-item"><span><a href="{{ route('revistas.indexaciones', ['indice_id' => $indice->id ])}}">{{ $indice->nombre }}</a></span></li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6 col-xl-9 chart" id="pie_indexaciones_chart" style="width:500px; height:500px;"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-xl-6">
-                <div class="card" data-aos="zoom-in-right">
-                    <div class="card-body">
-                        <h4 class="card-title">Otros índices</h4>
-                        <div class="row d-flex justify-content-center align-items-center" style="overflow: hidden;">
-                            <div class="col-12 col-sm-10 col-md-8 col-lg-10 col-xl-8 chart">
-                                <div></div>
-                                <ul class="list-group">
-                                    <li class="list-group-item">
-                                        <span><a href="{{ route('subsistemas.all') }}">Subsistemas de la UNAM</span></a>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <span><a href="{{ route('entidades.all') }}">Entidades académicas de la UNAM</span></a>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <span><a href="{{ route('revistas.old') }}">Revistas Descontinuadas</span></a>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <span><a href="{{ route('revistas.all') }}">Todos los títulos</span></a>
-                                    </li>
+                        <div class="row no-gutters">
+                            <div class="col-12 col-md-5 col-lg-5 d-xl-flex align-items-xl-center">
+                                <ul class="list-group highcharts_list" id="tipos_list">
+                                    @foreach ($tipos_revistas as $revista)
+                                        <li class="list-group-item">
+                                            <a href="{{ route('revistas.tipo', ['tipo' => $revista->tipo_revista]) }}"><i class="fa fa-chevron-right"></i>
+                                                {{ $revista->tipo_revista }}</a></li>
+                                    @endforeach
+                                    <li class="list-group-item"><a href="{{ route('revistas.all')}}"><i class="fa fa-chevron-right"></i>Todos los tipos</a></li>
                                 </ul>
                             </div>
+                            <div class="col-12 col-md-7 col-lg-7 chart_col" id="pie_typos_chart" style="width:500px; height:300px;"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    {{-- </div> --}}
+        <div class="row no-gutters d-xl-flex justify-content-xl-center card_row">
+            <div class="col-10 col-xl-8 offset-1 offset-xl-0">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Áreas del conocimiento</h4>
+                        <div class="row no-gutters">
+                            <div class="col-12 col-md-5">
+                                <ul class="list-group highcharts_list" id="areas_list">
+                                    @foreach ($areas_conocimiento as $area)
+                                        <li class="list-group-item"><a href="{{ route('revistas.area', ['area_id' => $area->id ])}}"><i class="fa fa-chevron-right"></i>{{ $area->nombre }}</a></li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            <div class="col-12 col-md-7 chart_col" id="areas"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row no-gutters d-xl-flex justify-content-xl-center card_row">
+            <div class="col-10 col-xl-8 offset-1 offset-xl-0">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Indexaciones</h4>
+                        <div class="row no-gutters">
+                            <div class="col-12 col-md-5">
+                                <ul class="list-group highcharts_list" id="indexaciones_list">
+                                    @foreach ($indexadores as $indice)
+                                        <li class="list-group-item"><a href="{{ route('revistas.indexaciones', ['indice_id' => $indice->id ])}}"><i class="fa fa-chevron-right"></i>{{ $indice->nombre }}</a></li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            <div class="col-12 col-md-7 chart_col" id="pie_indexaciones_chart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row no-gutters d-xl-flex justify-content-xl-center card_row">
+            <div class="col-10 col-xl-8 offset-1 offset-xl-0">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Otros Índices</h4>
+                        <div class="row no-gutters">
+                            <div class="col-12">
+                                <div style="border: solid rgb(164,164,164) 1px;">
+                                    <ul class="list-group" style="max-width: 100% !important;/*margin: 0;*//*padding: 0;*/">
+                                        <li class="list-group-item"><a href="{{ route('subsistemas.all') }}"><i class="fa fa-chevron-right"></i>Subsistemas de la UNAM</a></li>
+                                        <li class="list-group-item"><a href="{{ route('entidades.all') }}"><i class="fa fa-chevron-right"></i>Entidades académicas de la UNAM</a></li>
+                                        <li class="list-group-item"><a href="{{ route('revistas.old') }}"><i class="fa fa-chevron-right"></i>Revistas Descontinuadas</a></li>
+                                        <li class="list-group-item"><a href="{{ route('revistas.all') }}"><i class="fa fa-chevron-right"></i>Todos los títulos</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row no-gutters d-xl-flex justify-content-xl-center card_row issues_row">
+            <div class="col-10 col-xl-8 offset-1 offset-xl-0">
+                <h6 class="heading_sub">Números recientes</h6>
+                <div class="row" id="issues_row" style="margin-top: 20px;">
+                    <div class="col-12 col-sm-6 col-lg-3 d-flex d-xl-flex justify-content-center justify-content-xl-center issue_col">
+                        <div class="issue" style="width: 150px;"><img class="img-fluid" src="{{ asset('img/samplers/1.jpg')}}"></div><span class="issue_title">Investigaciones Estéticas</span>
+                        <div class="issue_data"><span class="issue_type">Investigación</span><span class="issue_num">Num.117</span></div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3 d-flex d-xl-flex justify-content-center justify-content-xl-center issue_col">
+                        <div class="issue" style="width: 150px;"><img class="img-fluid" src="{{ asset('img/samplers/2.jpg')}}"></div><span class="issue_title">Investigaciones Estéticas</span>
+                        <div class="issue_data"><span class="issue_type">Investigación</span><span class="issue_num">Num.117</span></div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3 d-flex d-xl-flex justify-content-center justify-content-xl-center issue_col">
+                        <div class="d-xl-flex align-items-xl-center issue" style="width: 150px;"><img class="img-fluid" src="{{ asset('img/samplers/3.jpg')}}"></div><span class="issue_title">Investigaciones Estéticas</span>
+                        <div class="issue_data"><span class="issue_type">Investigación</span><span class="issue_num">Num.117</span></div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3 d-flex d-xl-flex justify-content-center justify-content-xl-center issue_col">
+                        <div class="issue" style="width: 150px;"><img class="img-fluid" src="{{ asset('img/samplers/4.jpg')}}"></div><span class="issue_title">Investigaciones Estéticas</span>
+                        <div class="issue_data"><span class="issue_type">Investigación</span><span class="issue_num">Num.117</span></div>
+                    </div>
+                </div>
+                <div></div>
+            </div>
+        </div>
+        <div class="row no-gutters d-xl-flex justify-content-xl-center card_row issues_row">
+            <div class="col-10 col-xl-8 offset-1 offset-xl-0">
+                <h6 class="heading_sub">Sitios relacionados</h6>
+                <div class="d-flex d-lg-flex d-xl-flex justify-content-center justify-content-lg-center justify-content-xl-center">
+                    <div class="row d-flex justify-content-center" id="related_sites_row">
+                        <div class="col d-xl-flex justify-content-xl-center align-items-xl-center"><img class="img-fluid" src="{{ asset('img/sites/fomento_editorial.png')}}"></div>
+                        <div class="col d-flex d-xl-flex justify-content-center justify-content-xl-center align-items-xl-center"><img class="img-fluid" src="{{ asset('img/sites/librosOA.png')}}"></div>
+                        <div class="col d-flex d-xl-flex justify-content-end justify-content-xl-center align-items-xl-center"><img class="img-fluid" src="{{ asset('img/sites/libunam12.png')}}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- Here ends the container for the index view -->
 
 
     {{-- Bibliotecas javascript y código para renderizar una gráfica Highcharts --}}
@@ -206,7 +213,7 @@
                         alpha: 45,
                         beta: 0
                     },
-                    renderTo: 'pie_areas_chart',
+                    renderTo: 'areas',
                     plotBackgroundColor: null,
                     plotBorderWidth: null,
                     plotShadow: false
