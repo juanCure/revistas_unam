@@ -50,7 +50,7 @@
 	<!-- Here starts the second column which has the results and the breadcrumb navigation -->
 	<div class="col-lg-9 order-1 order-lg-2 data_col" id="subsistemas_col" style="background: #ffffff;border-top-right-radius: 10px;">
 		<ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#"><span>Inicio</span></a></li>
+            <li class="breadcrumb-item"><a href="{{ route('inicio')}}"><span>Inicio</span></a></li>
             <li class="breadcrumb-item"><a href="#"><span>Resultados de la busqueda:</span><span id="results_article_breadcrumb">{{$searchTerm}}</span></a></li>
         </ol>
         <div class="col-12">
@@ -80,24 +80,42 @@
 											<div class="data_container"><span class="data_label">ISSN</span><span class="data_value">{{ $document['myownissn'] }}</span></div>
 										</div>
 									</div>
-									<a class="article_link" href="#">{{ $document['title'] }}</a>
+									<a target="_blank" class="article_link" href="{{ $document['url'] }}">{{ $document['title'] }}</a>
 									<p class="article_authors">{{ $document['author_facet'] }}</p>
 									<div class="data_container">
-										@if ($document['doi'] != null)
-											<span class="data_label">DOI</span><a class="text-break doi_link" target="_blank" href="https://doi.org/{{ $document['doi'] }}">https://doi.org/{{ $document['doi'] }}</a>
+										@if ( isset($document['doi_txt']) && $document['doi_txt'] != null)
+											<span class="data_label">DOI</span><a class="text-break doi_link" target="_blank" href="https://doi.org/{{ $document['doi_txt'] }}">https://doi.org/{{ $document['doi_txt'] }}</a>
 										@endif
 									</div>
-									<div class="data_container"><span class="data_label">Palabras Clave</span>
-										<div class="keyword_caontainer"><a class="text-break keyword_link" href="#" target="_blank">políticas públicas</a><a class="text-break keyword_link" href="#" target="_blank">representaciones sociales</a><a class="text-break keyword_link" href="#" target="_blank">habitar</a><a class="text-break keyword_link" href="#" target="_blank">movilidades urbanas</a><a class="text-break keyword_link" href="#" target="_blank">pandemia</a><a class="text-break keyword_link" href="#" target="_blank">covid</a></div>
-									</div>
-									<div class="data_container"><a class="link_description" href="#description_container" data-toggle="collapse"><span class="data_label label_description">Descripción<i class="fa fa-plus-circle"></i></span></a>
-										<div id="description_container" class="card card-body collapse description_container">
-											<div>
-												<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Arcu ac tortor dignissim convallis aenean. Dignissim cras tincidunt lobortis feugiat vivamus. Egestas sed tempus urna et pharetra pharetra massa massa ultricies. Tortor at auctor urna nunc id cursus metus aliquam eleifend. Orci sagittis eu volutpat odio facilisis. Ut enim blandit volutpat maecenas volutpat blandit. Odio euismod lacinia at quis. Sapien faucibus et molestie ac feugiat sed lectus. Volutpat lacus laoreet non curabitur. Cras pulvinar mattis nunc sed blandit. Sapien eget mi proin sed libero enim sed.<br></p>
-												<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Arcu ac tortor dignissim convallis aenean. Dignissim cras tincidunt lobortis feugiat vivamus. Egestas sed tempus urna et pharetra pharetra massa massa ultricies. Tortor at auctor urna nunc id cursus metus aliquam eleifend. Orci sagittis eu volutpat odio facilisis. Ut enim blandit volutpat maecenas volutpat blandit. Odio euismod lacinia at quis. Sapien faucibus et molestie ac feugiat sed lectus. Volutpat lacus laoreet non curabitur. Cras pulvinar mattis nunc sed blandit. Sapien eget mi proin sed libero enim sed.<br></p>
+									@if (isset($document['pclave_txt_mv']))
+										<div class="data_container">
+											<span class="data_label">Palabras Clave:</span>
+											<div class="keywor_caontainer">
+												<p>{{ $document['pclave_txt_mv'] }}</p>
 											</div>
 										</div>
-									</div>
+									@endif
+									{{-- <div class="data_container">
+										<span class="data_label">Palabras Clave</span>
+										<div class="keyword_caontainer">
+											<a class="text-break keyword_link" href="#" target="_blank">políticas públicas</a>
+											<a class="text-break keyword_link" href="#" target="_blank">representaciones sociales</a>
+											<a class="text-break keyword_link" href="#" target="_blank">habitar</a>
+											<a class="text-break keyword_link" href="#" target="_blank">movilidades urbanas</a>
+											<a class="text-break keyword_link" href="#" target="_blank">pandemia</a>
+											<a class="text-break keyword_link" href="#" target="_blank">covid</a>
+										</div>
+									</div> --}}
+									@if (isset($document['description']))
+										<div class="data_container"><a class="link_description" href="#description_container" data-toggle="collapse"><span class="data_label label_description">Descripción<i class="fa fa-plus-circle"></i></span></a>
+											<div id="description_container" class="card card-body collapse description_container">
+												<div>
+													<p>{{ $document['description'] }}</p>
+												</div>
+											</div>
+										</div>
+									@endif
+
 								</div>
 							</div>
 						</div>

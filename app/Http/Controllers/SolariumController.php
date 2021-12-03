@@ -176,7 +176,7 @@ class SolariumController extends Controller {
 
 			$query->setQuery($strQuery);
 
-			$query->setFields(array('collection', 'title', 'author_facet', 'publishDate', 'issn'));
+			$query->setFields(array('collection', 'title', 'author_facet', 'publishDate', 'issn', 'url', 'pclave_txt_mv', 'doi_txt', 'description'));
 
 			// FilterQueries
 			// Filter all the documents which their publishdate is 2018 and 2016
@@ -188,6 +188,7 @@ class SolariumController extends Controller {
 			if (isset($selected_publishDates)) {
 				$collection_publishDates = collect($selected_publishDates);
 				$strFilterQuery = "publishDate:({$collection_publishDates->implode(' or ')})";
+				dump($strFilterQuery);
 				$query->createFilterQuery('publishdate')->setQuery($strFilterQuery)->addTag('fecha_publicacion');
 			}
 			// If the selected_journals array is set then iterate through it to create a filterQuery
@@ -219,7 +220,7 @@ class SolariumController extends Controller {
 
 			// this executes the query and returns the result
 			$resultset = $this->client->execute($query);
-			// dump($resultset);
+			dump($resultset);
 			// $publishDateFacet = $resultset->getFacetSet()->getFacet('pub_date');
 			$unFilteredPublishDateFacet = $resultset->getFacetSet()->getFacet('unfiltered');
 			// $journalsFacet = $resultset->getFacetSet()->getFacet('journals');
@@ -230,6 +231,7 @@ class SolariumController extends Controller {
 			$mypaginator = $this->paginate($request, $resultset, $numFound, $resultsPerPage, $page);
 			$publishDateArray = $this->processFacet($unFilteredPublishDateFacet, $selected_publishDates)->toArray();
 			$journalsArray = $this->processFacet($unFilteredJournalsFacet, $selected_journals)->toArray();
+			dump($mypaginator);
 
 			if ($request->ajax()) {
 				return view('resultados.bSolrIndex', [
@@ -241,6 +243,7 @@ class SolariumController extends Controller {
 					'selected_publishDates' => $selected_publishDates,
 					'journalsArray' => $journalsArray,
 					'selected_journals' => $selected_journals,
+					'path' => $request->path(),
 				])->render();
 			}
 			return view('resultados.resultadosBusquedaPorArticulos', [
@@ -252,6 +255,7 @@ class SolariumController extends Controller {
 				'selected_publishDates' => $selected_publishDates,
 				'journalsArray' => $journalsArray,
 				'selected_journals' => $selected_journals,
+				'path' => $request->path(),
 			]);
 		} else {
 			// dump("Estoy en la busqueda por revista");
@@ -340,5 +344,111 @@ class SolariumController extends Controller {
 		}
 
 		return $collection_facet;
+	}
+
+	public function advancedSearching(Request $request) {
+		$selected_publishDates = $request->input('selected_publishDates');
+		$selected_journals = $request->input('selected_journals');
+		$requested_journal = $request->input('requested_journal');
+		$publish_date_from = $request->input('publish_date_from');
+		$publish_date_to = $request->input('publish_date_to');
+		$firstname = $request->input('firstname');
+		$lastname = $request->input('lastname');
+		$searchTerm = $request->input('searchTerm');
+		$query = $this->client->createSelect();
+		// get the facetset component
+		$facetSet = $query->getFacetSet();
+
+		$resultsPerPage = 15;
+		$startPage = $query->getStart();
+		$page = max(0, Paginator::resolveCurrentPage());
+		$offset = ($page * $resultsPerPage) - $resultsPerPage;
+		// Set the number of results to return
+		$query->setRows($resultsPerPage);
+		// Set the 0-based result to start from, taking into account pagination
+		$query->setStart($offset);
+
+		// $fq_journal = "collection:\"Investigaciones Geográficas\"";
+		// $query->createFilterQuery('fq_journal')->setQuery($fq_journal);
+		if (isset($publish_date_from)) {
+			if (isset($publish_date_to)) {
+				$fq_dates = "publishDate:[" . $publish_date_from . " TO " . $publish_date_to . "]";
+			} else {
+				$fq_dates = "publishDate:[" . $publish_date_from . " TO * ]";
+			}
+
+			$query->createFilterQuery('fq_dates')->setQuery($fq_dates);
+		}
+
+		// $fq_author = "author_facet:\"Ordorika, Imanol\"";
+		// $query->createFilterQuery('fq_author')->setQuery($fq_author);
+		// $fq_title = "title:\"ciencia\"";
+		// $query->createFilterQuery('fq_title')->setQuery($fq_title);
+
+		if (isset($requested_journal)) {
+			$fq_journal = "collection:\"" . $requested_journal . "\"";
+			// dd($fq_journal);
+			$query->createFilterQuery('fq_journal')->setQuery($fq_journal);
+		}
+
+		if (isset($firstname)) {
+			if (isset($lastname)) {
+				$fq_author = "author_facet:\"" . $lastname . ", " . $firstname . "\"";
+			} else {
+				$fq_author = "author_facet:\"" . $firstname . "\"";
+			}
+			$query->createFilterQuery('author')->setQuery($fq_author);
+		}
+		if (isset($searchTerm)) {
+			$fq_searchTerm = "title:\"{$searchTerm}\"";
+			$query->createFilterQuery('title')->setQuery($fq_searchTerm)->addTag('fq_title');
+		}
+
+		// FacetFields
+		// Creating a facet over the publishDate field
+		$facetSet->createFacetField('unfiltered')->setField('publishDate')->setMinCount(1)->getLocalParameters()->addExcludes(['fecha_publicacion']);
+
+		$facetSet->createFacetField('unFilteredJournals')->setField('collection')->setMinCount(1);
+
+		$resultset = $this->client->execute($query);
+		$numFound = $resultset->getNumFound();
+
+		$unFilteredPublishDateFacet = $resultset->getFacetSet()->getFacet('unfiltered');
+		// $journalsFacet = $resultset->getFacetSet()->getFacet('journals');
+		$unFilteredJournalsFacet = $resultset->getFacetSet()->getFacet('unFilteredJournals');
+		$publishDateArray = $this->processFacet($unFilteredPublishDateFacet, $selected_publishDates)->toArray();
+		$journalsArray = $this->processFacet($unFilteredJournalsFacet, $selected_journals)->toArray();
+
+		$resultset = $this->proccessResultSet($resultset);
+		$mypaginator = $this->paginate($request, $resultset, $numFound, $resultsPerPage, $page);
+
+		if ($request->ajax()) {
+			return view('resultados.bSolrIndex', [
+				'resultset' => $resultset,
+				'numFound' => $numFound,
+				'searchTerm' => $searchTerm,
+				'mypaginator' => $mypaginator,
+				'publishDateArray' => $publishDateArray,
+				'selected_publishDates' => $selected_publishDates,
+				'journalsArray' => $journalsArray,
+				'selected_journals' => $selected_journals,
+				'path' => $request->path(),
+			])->render();
+		}
+		return view('resultados.resultadosBusquedaAvanzada', [
+			'resultset' => $resultset,
+			'numFound' => $numFound,
+			'mypaginator' => $mypaginator,
+			'publishDateArray' => $publishDateArray,
+			'journalsArray' => $journalsArray,
+			'searchTerm' => $searchTerm,
+			'selected_publishDates' => $selected_publishDates,
+			'selected_journals' => $selected_journals,
+			'requested_journal' => $requested_journal,
+			'selected_from' => $publish_date_from,
+			'selected_to' => $publish_date_to,
+			'path' => $request->path(),
+		]);
+
 	}
 }

@@ -49,27 +49,27 @@ $('#advanced_search').on('click', function(){
 	$(this).toggleClass('active')
 })
 
-for (var i = generateArrayOfYears().length - 1; i >= 0; i--) {
-let	year = generateArrayOfYears()[i]
-$('<option/>', {
-	'value': year
-}).html(year).appendTo('#year_col .advanced_select')
+// for (var i = generateArrayOfYears().length - 1; i >= 0; i--) {
+// let	year = generateArrayOfYears()[i]
+// $('<option/>', {
+// 	'value': year
+// }).html(year).appendTo('#year_col .advanced_select')
 
-}
+// }
 
-for (var i = allJournals.length - 1; i >= 0; i--) {
+// for (var i = allJournals.length - 1; i >= 0; i--) {
   
-$('<option/>', {
-	'value': 'journal_' + (i+1)
-}).html(allJournals[i]).appendTo('#journal_select')
+// $('<option/>', {
+// 	'value': 'journal_' + (i+1)
+// }).html(allJournals[i]).appendTo('#journal_select')
 
-}
+// }
 
-$('#year_col .advanced_select').on('change', function(){
+// $('#year_col .advanced_select').on('change', function(){
 
-	fixYearRange();
+// 	fixYearRange();
 
-})
+// })
 
 
  

@@ -36,6 +36,7 @@
 			if(element.checked) {
 				if(checkbox_name == "pub_date") {
 					selected_publish_date.push(checkbox_value);
+					console.log("this is selected publish dates: ", selected_publish_date);
 				}
 				if(checkbox_name == "journals") {
 					selected_journals.push(checkbox_value);

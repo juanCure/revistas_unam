@@ -6,7 +6,7 @@
     <div id="jumbotron_background" class="a"></div>
     <div class="container center-vertically-holder" style="margin-top:-20px;">
         <div class="row" style="padding-top: 34px;padding-bottom: 10px;margin-top: 0;">
-            <div class="col-6 col-md-4 col-lg-2 col-xl-2 d-flex d-xl-flex justify-content-md-start justify-content-xl-end align-items-xl-center"><img class="img-fluid" id="logo_unam" src="img/logo%20revistas_blanco.svg"></div>
+            <div class="col-6 col-md-4 col-lg-2 col-xl-2 d-flex d-xl-flex justify-content-md-start justify-content-xl-end align-items-xl-center"><a href="{{ route('inicio') }}"><img class="img-fluid" id="logo_unam" src="img/logo%20revistas_blanco.svg"></a></div>
             <div class="col-6 col-md-8 col-lg-10 col-xl-10 d-flex justify-content-xl-end align-items-xl-start">
                 <div class="d-flex justify-content-end align-items-start" style="position: relative;/*width: 100%;*/">
                     <nav class="navbar navbar-light navbar-expand-md navigation-clean" id="mainMenu">
@@ -66,7 +66,9 @@
                 </div>
             </div>
         </section>
-        <form class="d-xl-flex justify-content-xl-start">
+        {{-- The advance searching form --}}
+        <form action="{{ route('solr.advanced.search') }}" method="POST" name="advanced" class="d-xl-flex justify-content-xl-start">
+            @csrf
             <div class="form-row" style="width: 100%;">
                 <div class="col collapse" id="advanced_search_col">
                     <div class="container text-center d-flex d-xl-flex justify-content-center align-items-center justify-content-md-start justify-content-xl-center align-items-xl-center">
@@ -74,25 +76,54 @@
                             <div class="col-12 col-md-6 d-flex justify-content-start">
                                 <div class="form-row" style="width: 100%;">
                                     <div class="col-12 d-flex justify-content-start advanced_span_col"><span class="advanced_span_col" style="display: initial;">En la(s)&nbsp; revista(s):</span></div>
-                                    <div class="col-12"><select class="form-control advanced_select" id="journal_select">
-                                            <option value="12" selected="">Selecciona una revista</option>
-                                        </select></div>
+                                    <div class="col-12">
+                                        @inject('solrService', 'App\Services\SolrService')
+                                        <select name="requested_journal" class="form-control advanced_select" id="journal_select">
+                                            <option value="" selected="">Selecciona una revista</option>
+                                            {{-- @foreach ($harvestedJournals as $journal => $value) --}}
+                                            @foreach ($solrService->getHarvestedJournals() as $journal)
+                                                <option value="{{ $journal }}" {{ (isset($requested_journal) && $journal == $requested_journal) ? 'selected' : '' }}>{{ $journal }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6" id="year_col">
                                 <div class="form-row" style="border-left: solid 1px;">
                                     <div class="col-12 d-flex justify-content-start advanced_span_col"><span class="advanced_span_col" style="display: initial;margin-left: 55px;">Periodo de publicación:</span></div>
-                                    <div class="col-12 col-sm-6 d-flex justify-content-start align-items-center justify-content-sm-start justify-content-xl-end input_col"><label class="text-left year_label">Desde</label><select class="form-control advanced_select" id="select_from">
+                                    <div class="col-12 col-sm-6 d-flex justify-content-start align-items-center justify-content-sm-start justify-content-xl-end input_col"><label class="text-left year_label">Desde</label>
+                                        <select name="publish_date_from" class="form-control advanced_select" id="select_from">
                                             <option value="" selected="false" class="place_holder_year" disabled="true">Año</option>
-                                        </select></div>
-                                    <div class="col-12 col-sm-6 d-flex justify-content-start align-items-center justify-content-xl-end input_col"><label class="text-left year_label">Hasta</label><select class="form-control advanced_select" id="select_to">
+                                            @foreach ($solrService->getPublishingDates() as $date)
+                                                <option value="{{ $date }}" {{ (isset($selected_from) && $date == $selected_from) ? 'selected' : '' }}>{{ $date }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-12 col-sm-6 d-flex justify-content-start align-items-center justify-content-xl-end input_col"><label class="text-left year_label">Hasta</label>
+                                        <select name="publish_date_to" class="form-control advanced_select" id="select_to">
                                             <option value="default" selected="false" class="place_holder_year" disabled="true">Año</option>
-                                        </select></div>
+                                            @foreach ($solrService->getPublishingDates() as $date)
+                                                <option value="{{ $date }}" {{ (isset($selected_to) && $date == $selected_to) ? 'selected' : '' }}>{{ $date }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-lg-6 col-xl-5 input_col"><label style="display: flex;">Autor:</label><input class="form-control advanced_select advanced_input" type="text"></div>
-                            <div class="col-12 col-lg-6 col-xl-5 input_col"><label style="display: flex;">Título:</label><input class="form-control advanced_select advanced_input" type="text"></div>
-                            <div class="col d-flex justify-content-end align-items-center justify-content-xl-end align-items-xl-end input_col"><button class="btn btn-danger" type="button" style="height: 40px;background: linear-gradient(#ff584d 0%, #ff892d 56%, rgb(255,171,45) 85%), #FF892D;/*color: rgb(33, 37, 41);*/letter-spacing: 2px;">Buscar</button></div>
+                            <div class="col-12 col-lg-6 col-xl-5 input_col">
+                                <label style="display: flex;">Nombres:</label>
+                                <input name="firstname" class="form-control advanced_select advanced_input" type="text">
+                            </div>
+                            <div class="col-12 col-lg-6 col-xl-5 input_col">
+                                <label style="display: flex;">Apellidos:</label>
+                                <input name="lastname" class="form-control advanced_select advanced_input" type="text">
+                            </div>
+                            <div class="col-12 col-lg-6 col-xl-5 input_col">
+                                <label style="display: flex;">Título:</label>
+                                <input name="searchTerm" class="form-control advanced_select advanced_input" type="text">
+                            </div>
+                            <div class="col d-flex justify-content-end align-items-center justify-content-xl-end align-items-xl-end input_col">
+                                <button class="btn btn-danger" type="submit" style="height: 40px;background: linear-gradient(#ff584d 0%, #ff892d 56%, rgb(255,171,45) 85%), #FF892D;/*color: rgb(33, 37, 41);*/letter-spacing: 2px;">Buscar</button>
+                            </div>
                         </div>
                     </div>
                 </div>

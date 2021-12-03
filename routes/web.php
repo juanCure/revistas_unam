@@ -165,3 +165,5 @@ Route::get('/ping', [SolariumController::class, 'ping'])->name('solr.ping');
 // Busquedas
 Route::post('/busqueda', [SolariumController::class, 'search'])->name('solr.basic.search');
 Route::get('/busqueda', [SolariumController::class, 'search'])->name('solr.get.basic.search');
+Route::post('/avanzada', [SolariumController::class, 'advancedSearching'])->name('solr.advanced.search');
+Route::get('/avanzada', [SolariumController::class, 'advancedSearching'])->name('solr.get.advanced.search');
