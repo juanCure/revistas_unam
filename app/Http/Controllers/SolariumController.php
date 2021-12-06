@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
+use Solarium\QueryType\Select\Query\Query;
 
 class SolariumController extends Controller {
 	protected $client, $indicesServicio;
@@ -171,6 +172,8 @@ class SolariumController extends Controller {
 		if (isset($idMod) && $idMod == 0) {
 			//Busqueda por artículo
 			$query = $this->client->createSelect();
+			// This line is very important because the default query operator is AND, and it should be OR
+			$query->setQueryDefaultOperator(Query::QUERY_OPERATOR_OR);
 			// get the facetset component
 			$facetSet = $query->getFacetSet();
 
@@ -188,7 +191,6 @@ class SolariumController extends Controller {
 			if (isset($selected_publishDates)) {
 				$collection_publishDates = collect($selected_publishDates);
 				$strFilterQuery = "publishDate:({$collection_publishDates->implode(' or ')})";
-				dump($strFilterQuery);
 				$query->createFilterQuery('publishdate')->setQuery($strFilterQuery)->addTag('fecha_publicacion');
 			}
 			// If the selected_journals array is set then iterate through it to create a filterQuery
@@ -220,7 +222,6 @@ class SolariumController extends Controller {
 
 			// this executes the query and returns the result
 			$resultset = $this->client->execute($query);
-			dump($resultset);
 			// $publishDateFacet = $resultset->getFacetSet()->getFacet('pub_date');
 			$unFilteredPublishDateFacet = $resultset->getFacetSet()->getFacet('unfiltered');
 			// $journalsFacet = $resultset->getFacetSet()->getFacet('journals');
@@ -231,7 +232,6 @@ class SolariumController extends Controller {
 			$mypaginator = $this->paginate($request, $resultset, $numFound, $resultsPerPage, $page);
 			$publishDateArray = $this->processFacet($unFilteredPublishDateFacet, $selected_publishDates)->toArray();
 			$journalsArray = $this->processFacet($unFilteredJournalsFacet, $selected_journals)->toArray();
-			dump($mypaginator);
 
 			if ($request->ajax()) {
 				return view('resultados.bSolrIndex', [
@@ -347,14 +347,21 @@ class SolariumController extends Controller {
 	}
 
 	public function advancedSearching(Request $request) {
+		// The both below are the filters
 		$selected_publishDates = $request->input('selected_publishDates');
+		// dump("Selected publish dates: ");
+		// dump($selected_publishDates);
 		$selected_journals = $request->input('selected_journals');
+		// dump("Selected journals: ");
+		// dump($selected_journals);
+		// The next 6 fields are the available searching parameters
 		$requested_journal = $request->input('requested_journal');
 		$publish_date_from = $request->input('publish_date_from');
 		$publish_date_to = $request->input('publish_date_to');
 		$firstname = $request->input('firstname');
 		$lastname = $request->input('lastname');
 		$searchTerm = $request->input('searchTerm');
+
 		$query = $this->client->createSelect();
 		// get the facetset component
 		$facetSet = $query->getFacetSet();
@@ -370,7 +377,7 @@ class SolariumController extends Controller {
 
 		// $fq_journal = "collection:\"Investigaciones Geográficas\"";
 		// $query->createFilterQuery('fq_journal')->setQuery($fq_journal);
-		if (isset($publish_date_from)) {
+		if (isset($publish_date_from) && $selected_publishDates == null) {
 			if (isset($publish_date_to)) {
 				$fq_dates = "publishDate:[" . $publish_date_from . " TO " . $publish_date_to . "]";
 			} else {
@@ -378,6 +385,11 @@ class SolariumController extends Controller {
 			}
 
 			$query->createFilterQuery('fq_dates')->setQuery($fq_dates);
+		} elseif (isset($selected_publishDates)) {
+			// I need to set a query filter with the selected years in the publish date filter
+			$collection_publishDates = collect($selected_publishDates);
+			$strFilterQuery = "publishDate:({$collection_publishDates->implode(' or ')})";
+			$query->createFilterQuery('publishdate')->setQuery($strFilterQuery)->addTag('fecha_publicacion');
 		}
 
 		// $fq_author = "author_facet:\"Ordorika, Imanol\"";
@@ -400,8 +412,11 @@ class SolariumController extends Controller {
 			$query->createFilterQuery('author')->setQuery($fq_author);
 		}
 		if (isset($searchTerm)) {
-			$fq_searchTerm = "title:\"{$searchTerm}\"";
-			$query->createFilterQuery('title')->setQuery($fq_searchTerm)->addTag('fq_title');
+			$searchTerm = trim($searchTerm);
+			$searchTerm = str_replace(":", "\:", $searchTerm);
+			$strQuery = "(title:/[A-Z]*" . $searchTerm . "[A-Z]*/)";
+			// $fq_searchTerm = "title:\"{$searchTerm}\"";
+			$query->createFilterQuery('title')->setQuery($strQuery)->addTag('fq_title');
 		}
 
 		// FacetFields
