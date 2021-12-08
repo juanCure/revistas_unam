@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Revista;
 use App\Services\IndicesServicio;
+use App\Services\SolrService;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
@@ -11,11 +12,12 @@ use Illuminate\Support\Collection;
 use Solarium\QueryType\Select\Query\Query;
 
 class SolariumController extends Controller {
-	protected $client, $indicesServicio;
+	protected $client, $indicesServicio, $solrService;
 
-	public function __construct(\Solarium\Client $client, IndicesServicio $indicesServicio) {
+	public function __construct(\Solarium\Client $client, IndicesServicio $indicesServicio, SolrService $solrService) {
 		$this->client = $client;
 		$this->indicesServicio = $indicesServicio;
+		$this->solrService = $solrService;
 	}
 
 	public function ping() {
@@ -165,9 +167,10 @@ class SolariumController extends Controller {
 		$searchTerm = $request->input('buscar');
 		$selected_publishDates = $request->input('selected_publishDates');
 		$selected_journals = $request->input('selected_journals');
-		$searchTerm = trim($searchTerm);
-		$searchTerm = str_replace(":", "\:", $searchTerm);
-		$strQuery = "(title:/[A-Z]*" . $searchTerm . "[A-Z]*/)";
+		// $searchTerm = trim($searchTerm);
+		// $searchTerm = str_replace(":", "\:", $searchTerm);
+		// $strQuery = "(title:/[A-Z]*" . $searchTerm . "[A-Z]*/)";
+		$strQuery = $this->solrService->cleanInputSearchTerm($searchTerm);
 
 		if (isset($idMod) && $idMod == 0) {
 			//Busqueda por artículo
@@ -358,8 +361,7 @@ class SolariumController extends Controller {
 		$requested_journal = $request->input('requested_journal');
 		$publish_date_from = $request->input('publish_date_from');
 		$publish_date_to = $request->input('publish_date_to');
-		$firstname = $request->input('firstname');
-		$lastname = $request->input('lastname');
+		$author_name = $request->input('author_name');
 		$searchTerm = $request->input('searchTerm');
 
 		$query = $this->client->createSelect();
@@ -403,19 +405,12 @@ class SolariumController extends Controller {
 			$query->createFilterQuery('fq_journal')->setQuery($fq_journal);
 		}
 
-		if (isset($firstname)) {
-			if (isset($lastname)) {
-				$fq_author = "author_facet:\"" . $lastname . ", " . $firstname . "\"";
-			} else {
-				$fq_author = "author_facet:\"" . $firstname . "\"";
-			}
-			$query->createFilterQuery('author')->setQuery($fq_author);
+		if (isset($author_name)) {
+			$strQuery = "author:{$author_name}";
+			$query->createFilterQuery('author')->setQuery($strQuery);
 		}
 		if (isset($searchTerm)) {
-			$searchTerm = trim($searchTerm);
-			$searchTerm = str_replace(":", "\:", $searchTerm);
-			$strQuery = "(title:/[A-Z]*" . $searchTerm . "[A-Z]*/)";
-			// $fq_searchTerm = "title:\"{$searchTerm}\"";
+			$strQuery = $this->solrService->cleanInputSearchTerm($searchTerm);
 			$query->createFilterQuery('title')->setQuery($strQuery)->addTag('fq_title');
 		}
 
@@ -462,6 +457,8 @@ class SolariumController extends Controller {
 			'requested_journal' => $requested_journal,
 			'selected_from' => $publish_date_from,
 			'selected_to' => $publish_date_to,
+			'author_name' => $author_name,
+			'searchTerm' => $searchTerm, 
 			'path' => $request->path(),
 		]);
 

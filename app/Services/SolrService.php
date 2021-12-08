@@ -40,4 +40,12 @@ class SolrService {
 		return $dates_collection->sortDesc()->values()->all();
 	}
 
+	public function cleanInputSearchTerm($searchTerm) {
+		$searchTerm = trim($searchTerm);
+		$searchTerm = str_replace(":", "\:", $searchTerm);
+		$strQuery = "title:" . $searchTerm;
+		// dump($strQuery);
+		return $strQuery;
+	}
+
 }

@@ -93,7 +93,8 @@
                                     <div class="col-12 d-flex justify-content-start advanced_span_col"><span class="advanced_span_col" style="display: initial;margin-left: 55px;">Periodo de publicación:</span></div>
                                     <div class="col-12 col-sm-6 d-flex justify-content-start align-items-center justify-content-sm-start justify-content-xl-end input_col"><label class="text-left year_label">Desde</label>
                                         <select name="publish_date_from" class="form-control advanced_select" id="select_from">
-                                            <option value="" selected="false" class="place_holder_year" disabled="true">Año</option>
+                                            {{-- <option value="" selected="false" class="place_holder_year" disabled="true">Año</option> --}}
+                                            <option value="" selected="" class="place_holder_year">Año</option>
                                             @foreach ($solrService->getPublishingDates() as $date)
                                                 <option value="{{ $date }}" {{ (isset($selected_from) && $date == $selected_from) ? 'selected' : '' }}>{{ $date }}</option>
                                             @endforeach
@@ -101,7 +102,8 @@
                                     </div>
                                     <div class="col-12 col-sm-6 d-flex justify-content-start align-items-center justify-content-xl-end input_col"><label class="text-left year_label">Hasta</label>
                                         <select name="publish_date_to" class="form-control advanced_select" id="select_to">
-                                            <option value="default" selected="false" class="place_holder_year" disabled="true">Año</option>
+                                            {{-- <option value="default" selected="false" class="place_holder_year" disabled="true">Año</option> --}}
+                                            <option value="" selected="" class="place_holder_year">Año</option>
                                             @foreach ($solrService->getPublishingDates() as $date)
                                                 <option value="{{ $date }}" {{ (isset($selected_to) && $date == $selected_to) ? 'selected' : '' }}>{{ $date }}</option>
                                             @endforeach
@@ -110,12 +112,8 @@
                                 </div>
                             </div>
                             <div class="col-12 col-lg-6 col-xl-5 input_col">
-                                <label style="display: flex;">Nombres:</label>
-                                <input name="firstname" class="form-control advanced_select advanced_input" type="text">
-                            </div>
-                            <div class="col-12 col-lg-6 col-xl-5 input_col">
-                                <label style="display: flex;">Apellidos:</label>
-                                <input name="lastname" class="form-control advanced_select advanced_input" type="text">
+                                <label style="display: flex;">Autor:</label>
+                                <input name="author_name" class="form-control advanced_select advanced_input" type="text">
                             </div>
                             <div class="col-12 col-lg-6 col-xl-5 input_col">
                                 <label style="display: flex;">Título:</label>
