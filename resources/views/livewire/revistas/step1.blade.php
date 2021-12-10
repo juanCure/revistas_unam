@@ -28,6 +28,12 @@
             </div>
 
             <div class="form-group">
+                @error('issne')<div class="alert alert-danger">{{ $message }}</div> @enderror
+                <label for="issn">Ruta a la revista:</label>
+                <input type="text" wire:model="ojs_ruta" class="form-control" id="ojs_ruta" >
+            </div>
+
+            <div class="form-group">
                 @error('anio_inicio') <div class="alert alert-danger">{{ $message }}</div> @enderror
                 <label for="issn">Año de inicio <i class="fa fa-asterisk" aria-hidden="true"></i>:</label>
                 <input type="text" wire:model="anio_inicio" class="form-control" id="anio_inicio" >

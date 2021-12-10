@@ -1,5 +1,5 @@
 <div class="form-group">
-    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nueva área" wire:model="nombre">
+    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="" wire:model="nombre">
     @error('nombre') <span class="text-danger">{{ $message }}</span>@enderror
 </div>
 <button wire:click.prevent="store()" class="btn btn-success">Crear</button>

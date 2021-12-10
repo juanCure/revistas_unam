@@ -122,6 +122,8 @@ class RevistaController extends Controller {
 		$revista->entidades_editoras()->detach();
 		$revista->idiomas()->detach();
 		$revista->temas()->detach();
+		$revista->sistemas_indexadores()->detach();
+		$revista->responsables()->detach();
 		$revista->delete();
 		return redirect()
 			->route('revistas.index')
