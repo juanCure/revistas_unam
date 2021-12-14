@@ -16,16 +16,16 @@
 
                                     <li class="nav-item"><a href="{{ route('inicio') }}" class="nav-link active">Inicio</a></li>
                                     <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#">Sobre Revistas</a>
-                                        <div class="dropdown-menu"><a class="dropdown-item" href="informacion.html">Información General</a><a class="dropdown-item" href="Normas.html">Normas Operativas</a><a class="dropdown-item" href="Estructuras.html">Estructuras Organizacionales</a></div>
+                                        <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('static.information') }}">Información General</a><a class="dropdown-item" href="{{ route('static.normas') }}">Normas Operativas</a><a class="dropdown-item" href="{{ route('static.estructuras') }}">Estructuras Organizacionales</a></div>
                                     </li>
-                                    <li class="nav-item"><a class="nav-link" href="ingreso.html">Lineamientos universitarios</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{{ route('static.contacto')}}">Lineamientos universitarios</a></li>
                                     <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#">Servicios</a>
                                         <div class="dropdown-menu">
                                             <a href="{{ route('login') }}" class="dropdown-item">Iniciar Sesión</a>
-                                            <a class="dropdown-item" href="profesionalizacion.html">Profesionalización de Editores</a><a class="dropdown-item" href="asesorías.html">Asesorías y Consulta</a><a class="dropdown-item" href="programa.html">Programa de Cursos y Talleres</a><a class="dropdown-item" href="plataforma.html">Plataforma de Gestión Editorial</a><a class="dropdown-item" href="diseno.html">Diseño Gráfico Web&nbsp;</a><a class="dropdown-item" href="derechos.html">Derechos de Autor</a></div>
+                                            <a class="dropdown-item" href="{{ route('static.profesionalizacion') }}">Profesionalización de Editores</a><a class="dropdown-item" href="{{ route('static.asesorias') }}">Asesorías y Consulta</a><a class="dropdown-item" href="#">Programa de Cursos y Talleres</a><a class="dropdown-item" href="{{ route('static.plataforma') }}">Plataforma de Gestión Editorial</a><a class="dropdown-item" href="{{ route('static.disenio') }}">Diseño Gráfico Web&nbsp;</a><a class="dropdown-item" href="{{ route('static.derechos') }}">Derechos de Autor</a></div>
                                     </li>
                                     <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#">Temas de interés</a>
-                                        <div class="dropdown-menu"><a class="dropdown-item" href="material.html">Material de apoyo</a><a class="dropdown-item" href="enlaces.html">Enlaces</a><a class="dropdown-item" href="open_access.html">Open Access</a></div>
+                                        <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('static.material') }}">Material de apoyo</a><a class="dropdown-item" href="{{ route('static.enlaces') }}">Enlaces</a><a class="dropdown-item" href="{{ route('static.acceso') }}">Open Access</a></div>
                                     </li>
                                     <li class="nav-item"><a class="nav-link" href="ingreso.html">Contacto</a></li>
                                 </ul>

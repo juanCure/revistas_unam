@@ -1,12 +1,13 @@
 {{-- Tipos de revistas indices --}}
 
 <div class="col-lg-3 order-2 order-lg-1 cards_col">
+    @inject('indicesServicio', 'App\Services\IndicesServicio')
     <div class="card" id="card_tipos">
         <h4 class="d-xl-flex align-items-xl-center card-title"><span>Tipos de revistas</span></h4>
         <div class="card-body">
             <div>
                 <ul class="list-group" id="tipos_list">
-                    @foreach ($tipos_revistas as $revista)
+                    @foreach ($tipos_revistas = $indicesServicio->getIndices()['typos'] as $revista)
                         <li class="list-group-item"><a href="{{ route('revistas.tipo', ['tipo' => $revista->tipo_revista]) }}">
                             <i class="fa fa-chevron-right"></i>{{ $revista->tipo_revista }}
                         </a></li>
@@ -21,7 +22,7 @@
         <div class="card-body">
             <div>
                 <ul class="list-group" id="areas_list">
-                    @foreach ($areas_conocimiento as $area)
+                    @foreach ($areas_conocimiento = $indicesServicio->getIndices()['areas'] as $area)
                         <li class="list-group-item"><a href="{{ route('revistas.area', ['area_id' => $area->id ])}}"><i class="fa fa-chevron-right"></i>{{ $area->nombre }}</a></li>
                     @endforeach
                 </ul>
@@ -33,7 +34,7 @@
         <div class="card-body">
             <div>
                 <ul class="list-group" id="indexaciones_list">
-                    @foreach ($indexadores as $indice)
+                    @foreach ($indexadores = $indicesServicio->getIndices()['indexadores'] as $indice)
                         <li class="list-group-item"><a href="{{ route('revistas.indexaciones', ['indice_id' => $indice->id ])}}"><i class="fa fa-chevron-right"></i>{{ $indice->nombre }}</a></li>
                     @endforeach
                 </ul>

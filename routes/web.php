@@ -167,3 +167,18 @@ Route::post('/busqueda', [SolariumController::class, 'search'])->name('solr.basi
 Route::get('/busqueda', [SolariumController::class, 'search'])->name('solr.get.basic.search');
 Route::post('/avanzada', [SolariumController::class, 'advancedSearching'])->name('solr.advanced.search');
 Route::get('/avanzada', [SolariumController::class, 'advancedSearching'])->name('solr.get.advanced.search');
+
+// Definiendo rutas a las vistas estáticas
+
+Route::view('informacion', 'static.information')->name('static.information');
+Route::view('asesorias', 'static.asesorias')->name('static.asesorias');
+Route::view('normas', 'static.normas')->name('static.normas');
+Route::view('estructuras', 'static.estructuras')->name('static.estructuras');
+Route::view('contacto', 'static.contacto')->name('static.contacto');
+Route::view('profesionalizacion', 'static.profesionalizacion')->name('static.profesionalizacion');
+Route::view('plataforma', 'static.plataforma')->name('static.plataforma');
+Route::view('disenio', 'static.diseño')->name('static.disenio');
+Route::view('derechos', 'static.derechos')->name('static.derechos');
+Route::view('material', 'static.material')->name('static.material');
+Route::view('acceso', 'static.acceso_abierto')->name('static.acceso');
+Route::view('enlaces', 'static.enlaces')->name('static.enlaces');
