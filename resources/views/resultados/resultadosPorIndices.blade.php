@@ -124,9 +124,9 @@
                                 </div>
 
                                 <div class="col-12 col-sm-6 col-md-8 col-xl-3 text-center filter_col">
-                                    <div class="d-md-flex justify-content-xl-center"><label class="d-xl-flex align-items-xl-center"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-bar-chart-fill" style="/*transform: scale(1.5);*/color: var(--gray-dark);font-size: 2em;">
+                                    <div class="d-md-flex justify-content-xl-center"><a href="#myModalChart" data-toggle="modal"><label class="d-xl-flex align-items-xl-center"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-bar-chart-fill" style="/*transform: scale(1.5);*/color: var(--gray-dark);font-size: 2em;">
                                             <path d="M1 11a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3zm5-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V2z"></path>
-                                        </svg></label>
+                                        </svg></label></a>
 
                                         <select name="grafica" class="border rounded-pill form-control" id="select_registro-2" style="width:100;">
 											<option value="" selected="selected">Seleccione...</option>
