@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EntidadEditora;
 use App\Services\IndicesServicio;
+use Illuminate\Http\Request;
 
 class EntidadEditoraController extends Controller {
 
@@ -31,10 +32,12 @@ class EntidadEditoraController extends Controller {
 	 * @return Array - un arrelgo de subsistema
 	 */
 
-	public function entidades() {
+	public function entidades(Request $request) {
+		$per_page = $request->per_page ?? 20;
 		$indices = $this->indicesServicio->getIndices();
+		$entidades = EntidadEditora::orderBy('nombre', 'asc')->paginate($per_page)->withQueryString();
 		return view('entidad_editoras.public.index')->with([
-			'entidades' => EntidadEditora::orderBy('nombre', 'asc')->get(),
+			'entidades' => $entidades,
 			'tipos_revistas' => $indices['typos'],
 			'areas_conocimiento' => $indices['areas'],
 			'indexadores' => $indices['indexadores'],
