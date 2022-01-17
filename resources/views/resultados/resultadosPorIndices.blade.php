@@ -138,7 +138,11 @@
 										</select>
                                     </div>
                                 </div>
-                                <div class="col-12 col-md-4 col-xl-1 d-flex d-xl-flex justify-content-center justify-content-md-center align-items-md-center justify-content-lg-center justify-content-xl-center filter_col" id="col_download_btn"><button class="btn btn-danger btn-sm d-xl-flex justify-content-xl-center align-items-xl-center" id="download_btn" type="button" style="float: right;"><i class="fa fa-download" id="icono_descarga" style="/*margin-left: 10px;*/font-size: 1.4em;"></i></button></div>
+                                <div class="col-12 col-md-4 col-xl-1 d-flex d-xl-flex justify-content-center justify-content-md-center align-items-md-center justify-content-lg-center justify-content-xl-center filter_col" id="col_download_btn">
+                                	<button class="btn btn-danger btn-sm d-xl-flex justify-content-xl-center align-items-xl-center" id="download_btn" type="button" style="float: right;">
+                                		<i class="fa fa-download" id="icono_descarga" style="/*margin-left: 10px;*/font-size: 1.4em;"></i>
+                                	</button>
+                                </div>
 							</div> <!-- Ending for <div class="form-row .row-cols-5"> -->
 	    				</form>
 	                </div>
@@ -273,9 +277,15 @@
 			modal.find('#modal-body').html("<br><br><br><br><h4 class='text-center'>Debe seleccionar el tipo de gráfica a mostrar.</h4>");
 		}
 	}
+	// Funcion para exportar la tabla de resultados en un archivo excel
+	function load_dataSheet(type){
+		var data = document.getElementById('results-table');
 
-	function load_dataSheet(){
+        var file = XLSX.utils.table_to_book(data, {sheet: "sheet1"});
 
+        XLSX.write(file, { bookType: type, bookSST: true, type: 'base64' });
+
+        XLSX.writeFile(file, 'file.' + type);
 	}
 
     $(document).ready(function(){
@@ -313,6 +323,12 @@
             var selected_data = $('#form_revista').serialize();
             console.log("Se ha disparado la ventana modal ", selected_data);
             load_modal_chart();
+        });
+
+        // Agregando un evento al botón para descargar los resultados en archivo excel
+        $("#download_btn").on("click", function(e) {
+        	console.log("Click en el botón para descargar resultados");
+        	load_dataSheet("xlsx");
         });
     });
 </script>

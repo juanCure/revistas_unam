@@ -48,6 +48,8 @@
     <script src="{{ asset('js/chartThemes/sand-signika.js') }}"></script>
     <script src="https://code.highcharts.com/modules/cylinder.js"></script>
 
+    <script type="text/javascript" src="{{ asset('js/sheetjs.min.js') }}"></script>
+
 
     @livewireStyles
 
@@ -111,7 +113,7 @@
                 </div>
             </div>
         </nav>
-        
+
         {{-- Este es el contenido principal de cada vista --}}
         @yield('content')
 
