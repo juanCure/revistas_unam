@@ -182,3 +182,6 @@ Route::view('derechos', 'static.derechos')->name('static.derechos');
 Route::view('material', 'static.material')->name('static.material');
 Route::view('acceso', 'static.acceso_abierto')->name('static.acceso');
 Route::view('enlaces', 'static.enlaces')->name('static.enlaces');
+
+// Ruta para exportar el resultado de la busqueda por revistas en formato excel
+Route::post('revistas_export', [RevistaController::class, 'export'])->name('revistas.export');
