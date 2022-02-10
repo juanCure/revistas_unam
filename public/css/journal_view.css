@@ -136,6 +136,10 @@
   transform: scale(1.3);
 }
 
+#results_report_col {
+  min-height: 50px;
+}
+
 #results_report_col:after {
   content: '';
   position: absolute;
