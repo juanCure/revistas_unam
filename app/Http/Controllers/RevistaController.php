@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\RevistasExport;
 use App\Http\Requests\RevistaRequest;
 use App\Models\Editorial;
 use App\Models\Revista;
+use App\Services\IndicesServicio;
+use Illuminate\Http\Request;
 
 class RevistaController extends Controller {
 
-	public function __construct() {
+	public $indicesServicio;
+
+	public function __construct(IndicesServicio $indicesServicio) {
 		// Restringiendo a que rutas se puede acceder sin necesidad de estar logueado
 		// Para este ejemplo particular se podrá acceder a index y show
-		// $this->middleware('auth')->except(['index', 'show']);
-		$this->middleware('auth');
+		$this->middleware('auth')->except(['export']);
+		// $this->middleware('auth');
+		$this->indicesServicio = $indicesServicio;
 	}
 
 	public function index() {
@@ -128,5 +134,12 @@ class RevistaController extends Controller {
 		return redirect()
 			->route('revistas.index')
 			->with(['success' => "La revista \"{$revista->titulo}\" fue borrada"]);
+	}
+
+	public function export(Request $request) {
+		// Aquí debó llamar a la clase exportadora de revistas
+		// return Excel::download(new RevistasExport, 'revistas.xlsx');
+
+		return (new RevistasExport($request, $this->indicesServicio))->download('revistas.xlsx');
 	}
 }
