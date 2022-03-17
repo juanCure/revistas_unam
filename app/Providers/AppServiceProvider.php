@@ -23,5 +23,10 @@ class AppServiceProvider extends ServiceProvider {
 	public function boot() {
 		// Estableciendo que se utilizará Bootstrap para los enlaces de paginación
 		Paginator::useBootstrap();
+		// Lo siguiente fue agregado para forzar que todas las rutas, enlaces a assets y enlaces de paginación
+		// sean solicitados vía HTTPS
+		if (env('APP_ENV') === 'production') {
+			$this->app['request']->server->set('HTTPS', true);
+		}
 	}
 }
