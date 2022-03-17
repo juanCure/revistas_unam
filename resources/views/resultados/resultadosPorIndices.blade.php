@@ -165,7 +165,9 @@
 {{-- Bibliotecas javascript y código para renderizar una gráfica Highcharts --}}
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script>
+<script type="text/javascript">
+	// Obteniendo la URL DE LA APP
+	var APP_URL = {!! json_encode(url('/')) !!}
 	// Función para obtener las revistas mediante los filtros
 	//
 	function data_ajax(path, form_recurso, elemento_resultado){
@@ -189,7 +191,7 @@
 		var r = $("#grafica").val();
 		if (r != "") {
 			$.ajax({
-					url: "/grafica/",
+					url: APP_URL + "/grafica/",
 					// data: $("#form_revista").serialize() + '&r=' + r,
 					//url: '/grafica/' + $('select[name=grafica] option').filter(':selected').val(),
 					data: $('#form_revista').serialize(),
@@ -284,7 +286,7 @@
         $("#fichaRevistaModal").on("show.bs.modal", function(e) {
             var id = $(e.relatedTarget).data('id');
             console.log("data-id: ", id);
-            $.get( "/verFicha/" + id, function( data ) {
+            $.get( APP_URL + "/verFicha/" + id, function( data ) {
             	// console.log(data);
                 $(".modal-body").html(data.body);
                 // console.log(data.title);
@@ -296,7 +298,7 @@
         // Agregando la funcionalidad para que funcione la ventana modal de los indicadores
         $("#indicadorModal").on("show.bs.modal", function(e) {
             var id = $(e.relatedTarget).data('id');
-            $.get( "/indicador/" + id, function( data ) {
+            $.get( APP_URL + "/indicador/" + id, function( data ) {
             	if(data.indicador != null) {
             		$(".modal-body").html(data.indicador);
             	} else {
