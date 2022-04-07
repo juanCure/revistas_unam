@@ -12,6 +12,9 @@
       <div class="modal-body">
       </div>
       <div class="modal-footer">
+        <a class="btn btn-secondary" href="#"> Ir a la revista</a>
+        {{-- <button onclick="location.href=''" class="btn btn-secondary" type="button" data-dismiss="modal">Ir a la revista</button> --}}
+        <button class="btn btn-danger" type="button" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
   </div>

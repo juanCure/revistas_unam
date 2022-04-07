@@ -287,10 +287,9 @@
             var id = $(e.relatedTarget).data('id');
             console.log("data-id: ", id);
             $.get( APP_URL + "/verFicha/" + id, function( data ) {
-            	// console.log(data);
                 $(".modal-body").html(data.body);
-                // console.log(data.title);
-                $("#data_title > a").html(data.title);
+                $("#data_title > a").html(data.title).attr('href', data.url);
+                $(".modal-footer > a").attr('href', data.url);
             });
 
         });

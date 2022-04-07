@@ -256,6 +256,7 @@ class BusquedaPorIndiceController extends Controller {
 		return response()->json([
 			'body' => view('revistas.ficha', compact('revista'))->render(),
 			'title' => $revista->titulo,
+			'url' => $revista->ojs_ruta,
 		]);
 	}
 
