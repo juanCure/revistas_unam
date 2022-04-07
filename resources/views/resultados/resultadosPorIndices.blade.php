@@ -319,6 +319,3 @@
     });
 </script>
 @endsection
-@push('styles_for_journals')
-<link rel="stylesheet" href="{{ asset('css/journal_view.css') }}">
-@endpush

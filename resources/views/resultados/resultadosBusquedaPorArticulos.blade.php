@@ -107,6 +107,3 @@
 		}
 	</script>
 @endsection
-@push('styles_for_articles')
-<link rel="stylesheet" href="{{ asset('css/article_view.css') }}">
-@endpush
