@@ -5,6 +5,8 @@
 		@include("resultados.bSolrIndex")
 	</div>
 	<script>
+		// Obteniendo la URL DE LA APP
+		var APP_URL = {!! json_encode(url('/')) !!};
 		// Agregando la funcionalidad para hacer una consulta cuando se selecciona alguno de los distintos checkboxes de los filtros
 		//
 		//
@@ -47,7 +49,7 @@
 						'X-CSRF-TOKEN': '{{ csrf_token() }}'
 					},
 			        type: "POST",
-			        url: "/busqueda",
+			        url: APP_URL + "/busqueda",
 			        async: true,
 			        data: {
 			        	'idMod': 0,
@@ -84,7 +86,7 @@
 						'X-CSRF-TOKEN': '{{ csrf_token() }}'
 					},
 			        type: "POST",
-			        url: "/busqueda",
+			        url: APP_URL + "/busqueda",
 			        async: true,
 			        data: {
 			        	'idMod': 0,
@@ -105,3 +107,6 @@
 		}
 	</script>
 @endsection
+@push('styles_for_articles')
+<link rel="stylesheet" href="{{ asset('css/article_view.css') }}">
+@endpush

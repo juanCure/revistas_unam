@@ -30,8 +30,10 @@
     <link rel="stylesheet" href="{{ asset('css/jumbotron.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     <link rel="stylesheet" href="{{ asset('css/interiores.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/journal_view.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/article_view.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('css/journal_view.css') }}"> --}}
+    @stack('styles_for_journals')
+    {{-- <link rel="stylesheet" href="{{ asset('css/article_view.css') }}"> --}}
+    @stack('styles_for_articles')
     <link href="{{ asset('css/create-revista.css') }}" rel="stylesheet" id="bootstrap-css">
 
     <!-- Scripts -->

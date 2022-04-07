@@ -283,7 +283,7 @@
     $(document).ready(function(){
 
     	// Agregando la funcionalidad para que funcione la ventana modal de la ficha
-        $("#fichaRevistaModal").on("show.bs.modal", function(e) {
+        $("#modal_data").on("show.bs.modal", function(e) {
             var id = $(e.relatedTarget).data('id');
             console.log("data-id: ", id);
             $.get( APP_URL + "/verFicha/" + id, function( data ) {
@@ -319,3 +319,6 @@
     });
 </script>
 @endsection
+@push('styles_for_journals')
+<link rel="stylesheet" href="{{ asset('css/journal_view.css') }}">
+@endpush
