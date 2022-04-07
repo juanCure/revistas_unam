@@ -5,6 +5,9 @@
 	</div>
 	<script>
 
+		// Obteniendo la URL DE LA APP
+		var APP_URL = {!! json_encode(url('/')) !!};
+
 		// Array to store all the publish_date selected checkboxes
 		var myownSearchTerm = @json($searchTerm);
 		// console.log(myownSearchTerm);
@@ -46,7 +49,7 @@
 						'X-CSRF-TOKEN': '{{ csrf_token() }}'
 					},
 			        type: "POST",
-			        url: "/avanzada",
+			        url: APP_URL + "/avanzada",
 			        async: true,
 			        data: {
 			        	'selected_publishDates': selected_publish_date,
@@ -82,7 +85,7 @@
 						'X-CSRF-TOKEN': '{{ csrf_token() }}'
 					},
 			        type: "POST",
-			        url: "/avanzada",
+			        url: APP_URL + "/avanzada",
 			        async: true,
 			        data: {
 			        	'selected_publishDates': selected_publish_date,
