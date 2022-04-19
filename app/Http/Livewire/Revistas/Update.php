@@ -21,7 +21,7 @@ class Update extends Component {
 	use WithPagination;
 
 	public $currentStep = 1, $id_revista;
-	public $titulo, $descripcion, $issn, $issne, $anio_inicio, $otros_indices,
+	public $titulo, $descripcion, $issn, $issne, $ojs_ruta, $anio_inicio, $otros_indices,
 	$situacion, $arbitrada, $tipo_revista, $soporte, $id_area_conocimiento,
 	$id_frecuencia, $id_subsistema, $indicador;
 	public $successMessage = '';
@@ -48,11 +48,11 @@ class Update extends Component {
 		$this->descripcion = $revista->descripcion;
 		$this->issn = $revista->issn;
 		$this->issne = $revista->issne;
+		$this->ojs_ruta = $revista->ojs_ruta;
 		$this->anio_inicio = $revista->anio_inicio;
 		$this->otros_indices = $revista->otros_indices;
 		$this->situacion = $revista->situacion;
 		$this->arbitrada = $revista->arbitrada;
-		// dd($this->arbitrada);
 		$this->tipo_revista = $revista->tipo_revista;
 		$this->soporte = $revista->soporte;
 		$this->id_area_conocimiento = $revista->id_area_conocimiento;
@@ -62,9 +62,7 @@ class Update extends Component {
 		$this->frecuencias = Frecuencia::all();
 		$this->subsistemas = Subsistema::all();
 		$this->editoriales = Editorial::all()->sortBy('nombre');
-		// $this->entidades = EntidadEditora::all()->sortBy('nombre');
 		$this->idiomas = Idioma::all()->sortBy('nombre');
-		$this->temas = Tema::all()->sortBy('nombre');
 		$this->indicador = $revista->indicador;
 		$this->indexadores = SistemaIndexador::all()->sortBy('nombre');
 
@@ -150,6 +148,7 @@ class Update extends Component {
 			'descripcion' => ['required'],
 			'issn' => ['nullable', 'regex:/[\S]{4}\-[\S]{4}/u'],
 			'issne' => ['nullable', 'regex:/[\S]{4}\-[\S]{4}/u'],
+			'ojs_ruta' => ['nullable', 'url'],
 			'anio_inicio' => ['required', 'integer'],
 			'arbitrada' => ['required', 'in:Si,No'],
 			'soporte' => ['required', 'in:Digital,Impreso,Ambas'],
@@ -278,7 +277,7 @@ class Update extends Component {
 			'tipo_revista' => $this->tipo_revista,
 			'otros_indices' => $this->otros_indices,
 			//'imagen' => $this->,
-			//'ojs_ruta' => $this->,
+			'ojs_ruta' => $this->ojs_ruta,
 			'id_frecuencia' => $this->id_frecuencia,
 			'id_area_conocimiento' => $this->id_area_conocimiento,
 			'id_subsistema' => $this->id_subsistema,
