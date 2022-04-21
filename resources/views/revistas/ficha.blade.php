@@ -5,9 +5,11 @@
 <section>
     <div class="row metadata_row">
         <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-2 d-flex justify-content-start align-items-center justify-content-sm-start data_label_col"><span class="d-flex align-items-center align-items-xl-center data_span data_label">Situación</span></div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-9 col-xl-10 d-flex justify-content-start align-items-center justify-content-sm-start"><span class="d-flex align-items-center data_value value_ok">{{ $revista->situacion }}<br></span></div>
+        <div class="col-12 col-sm-6 col-md-6 col-lg-9 col-xl-10 d-flex justify-content-start align-items-center justify-content-sm-start">
+            <span class="d-flex align-items-center data_value {{ $revista->situacion == 'Descontinuada' ? 'value_error' : 'value_ok' }}">{{ $revista->situacion }}<br></span>
+        </div>
         <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-2 d-flex justify-content-start align-items-center justify-content-sm-start data_label_col"><span class="d-flex align-items-center align-items-xl-center data_span data_label">Arbitrada</span></div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-9 col-xl-10 d-flex justify-content-start align-items-center justify-content-sm-start"><span class="d-flex align-items-center data_value value_ok">{{ $revista->arbitrada }}<br></span></div>
+        <div class="col-12 col-sm-6 col-md-6 col-lg-9 col-xl-10 d-flex justify-content-start align-items-center justify-content-sm-start"><span class="d-flex align-items-center data_value {{ $revista->arbitrada == 'No' ? 'value_error' : 'value_ok' }}">{{ $revista->arbitrada }}<br></span></div>
         <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-2 d-flex justify-content-start align-items-center justify-content-sm-start data_label_col"><span class="d-flex align-items-center align-items-xl-center data_span data_label">Tipo de revista</span></div>
         <div class="col-12 col-sm-6 col-md-6 col-lg-9 col-xl-10 d-flex justify-content-start align-items-center justify-content-sm-start"><span class="d-flex align-items-center data_value">{{ $revista->tipo_revista }}<br></span></div>
         <div class="col-12 col-lg-3 col-xl-2 d-flex justify-content-start align-items-center justify-content-sm-start data_label_col"><span class="d-flex align-items-center data_span data_label">Área de conocimiento</span></div>

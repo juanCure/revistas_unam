@@ -177,7 +177,6 @@
 			method: 'GET'
 		})
 		.done(function(response) {
-			// console.log(response);
 			$(elemento_resultado).html(response);
 		})
 		.fail(function( jqXHR, textStatus ) {
@@ -203,7 +202,6 @@
 				})
 				.done(function(response) {
 					if (response.data.length === 0) {
-						console.log("El campo data es vacío");
 						modal.find('#modal-body').html("No se encontraron registros!");
 						modal.find("#modal-body").css("min-height", '50px');
 					} else {
@@ -285,11 +283,18 @@
     	// Agregando la funcionalidad para que funcione la ventana modal de la ficha
         $("#modal_data").on("show.bs.modal", function(e) {
             var id = $(e.relatedTarget).data('id');
-            console.log("data-id: ", id);
             $.get( APP_URL + "/verFicha/" + id, function( data ) {
                 $(".modal-body").html(data.body);
-                $("#data_title > a").html(data.title).attr('href', data.url);
-                $(".modal-footer > a").attr('href', data.url);
+                if(data.url != null) {
+                	anchor = "<a target=\"_blank\" href=" + data.url + ">" + data.title + "</a>";
+                	$("#data_title").html(anchor);
+                } else {
+                	no_anchor = "<span>" + data.title + "</span>";
+                	$("#data_title").html(no_anchor);
+                }
+                // $("#data_title > a").html(data.title).attr('href', data.url);
+                // $(".modal-footer > a").attr('href', data.url);
+                
             });
 
         });
@@ -312,7 +317,6 @@
         // Agregando la funcionalidad para disparar la ventana modal que contiene la gráfica con totales según los criterios seleccionados
         $("#myModalChart").on("show.bs.modal", function(e) {
             var selected_data = $('#form_revista').serialize();
-            console.log("Se ha disparado la ventana modal ", selected_data);
             load_modal_chart();
         });
     });
