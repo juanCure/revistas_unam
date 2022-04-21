@@ -77,7 +77,15 @@
 											<div class="data_container"><span class="data_label">Año</span><span class="data_value">{{ (isset($document['publishDate'])) ? $document['publishDate'] : '' }}</span></div>
 										</div>
 										<div class="col-8 col-sm-9 col-md-10">
-											<div class="data_container"><span class="data_label">ISSN</span><span class="data_value">{{ $document['myownissn'] }}</span></div>
+											<div class="data_container"><span class="data_label">ISSN</span>
+												<span class="data_value">
+												@if (isset($document['myownissn']))
+													{{ $document['myownissn'] }}
+												@else
+													N/A
+												@endif
+												</span>
+											</div>
 										</div>
 									</div>
 									<a target="_blank" class="article_link" href="{{ $document['url'] }}">{{ $document['title'] }}</a>

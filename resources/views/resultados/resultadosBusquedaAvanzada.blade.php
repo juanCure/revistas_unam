@@ -7,13 +7,14 @@
 
 		// Obteniendo la URL DE LA APP
 		var APP_URL = {!! json_encode(url('/')) !!};
-
-		// Array to store all the publish_date selected checkboxes
-		var myownSearchTerm = @json($searchTerm);
-		// console.log(myownSearchTerm);
-		var selected_publish_date = [], selected_journals = [];
+		var requested_journal = @json($requested_journal);
 		var selected_publish_date_from_controller = @json($selected_publishDates, JSON_HEX_TAG);
 		var selected_journals_from_controller = @json($selected_journals, JSON_HEX_TAG);
+		var author_name = @json($author_name);
+		var myownSearchTerm = @json($searchTerm);
+
+		// Arrays to store the selected publish dates and the selected journal from checkboxes
+		var selected_publish_date = [], selected_journals = [];
 		if(selected_publish_date_from_controller) {
 			selected_publish_date = selected_publish_date_from_controller;
 		}
@@ -21,7 +22,6 @@
 			selected_journals = selected_journals_from_controller;
 		}
 
-		var requested_journal = @json($requested_journal);
 
 		function doSomething(element){
 			var checkbox_id = element.id;
@@ -55,6 +55,7 @@
 			        	'selected_publishDates': selected_publish_date,
 			        	'selected_journals': selected_journals,
 			        	'requested_journal': requested_journal,
+			        	'author_name': author_name,
 			        },
 			        success: function(data) {
 			        	console.log("It works!");
@@ -91,6 +92,7 @@
 			        	'selected_publishDates': selected_publish_date,
 			        	'selected_journals': selected_journals,
 			        	'requested_journal': requested_journal,
+			        	'author_name': author_name,
 			        },
 			        success: function(data) {
 			        	console.log("It works!");
