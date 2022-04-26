@@ -244,5 +244,16 @@
         }, false);
     </script>
 
+    <script type="text/javascript">
+            // Agregando una vista de confirmación para borrar revistas
+            window.addEventListener('show-delete-modal', event => {
+                $('#confirmationModal').modal('show');
+            });
+
+            // Ocultando la vista modal de confirmación
+            window.addEventListener('hide-delete-modal', event => {
+                $('#confirmationModal').modal('hide');
+            });
+    </script>
 </body>
 </html>

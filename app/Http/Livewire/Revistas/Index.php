@@ -9,6 +9,7 @@ use Livewire\WithPagination;
 class Index extends Component {
 	use WithPagination;
 	public $searchTerm;
+	public $journalBeingRemoved = null;
 
 	// Establecer que estilo utilizar para los enlaces de paginación
 	protected $paginationTheme = 'bootstrap';
@@ -19,5 +20,31 @@ class Index extends Component {
 				$sub_query->where('titulo', 'like', '%' . $this->searchTerm . '%');
 			})->paginate(20),
 		]);
+	}
+
+	public function confirmJournalRemoval($journal_id){
+		
+		$this->journalBeingRemoved = $journal_id;
+		$this->dispatchBrowserEvent('show-delete-modal');
+	}
+
+	public function deleteJournal(){
+		try {
+			$journal = Revista::findOrFail($this->journalBeingRemoved);
+			$journal->editoriales()->detach();
+			$journal->entidades_editoras()->detach();
+			$journal->idiomas()->detach();
+			$journal->temas()->detach();
+			$journal->sistemas_indexadores()->detach();
+			$journal->responsables()->detach();
+			$journal->delete();
+			$this->emit('alert', ['type' => 'success', 'message' => "La revista \"{$journal->titulo}\" fue borrada exitosamente!"]);
+			$this->dispatchBrowserEvent('hide-delete-modal');
+		} catch (QueryException $ex) {
+			$this->emit('alert', ['type' => 'error', 'message' => "No se pudo borrar el elemento seleccionado"]);
+			$this->dispatchBrowserEvent('hide-delete-modal');
+		}
+		
+		
 	}
 }
