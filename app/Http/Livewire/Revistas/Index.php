@@ -28,7 +28,7 @@ class Index extends Component {
 		$this->dispatchBrowserEvent('show-delete-modal');
 	}
 
-	public function deleteJournal(){
+	public function delete(){
 		try {
 			$journal = Revista::findOrFail($this->journalBeingRemoved);
 			$journal->editoriales()->detach();

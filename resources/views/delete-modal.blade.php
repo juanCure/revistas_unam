@@ -12,8 +12,8 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal">
           <i class="fa fa-times mr-1"></i>Cancelar</i>
         </button>
-        <button type="button" wire:click.prevent="deleteJournal" class="btn btn-danger">
-          <i class="fa fa-trash mr-1"></i>Eliminar Revista</i>
+        <button type="button" wire:click.prevent="delete" class="btn btn-danger">
+          <i class="fa fa-trash mr-1"></i>Eliminar {{ $object }}</i>
         </button>
       </div>
     </div>

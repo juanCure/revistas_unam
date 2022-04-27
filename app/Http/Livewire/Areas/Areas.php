@@ -9,6 +9,7 @@ use Livewire\Component;
 class Areas extends Component {
 	public $areas_conocimiento, $nombre, $id_area;
 	public $updateMode = false;
+	public $areaBeingRemoved = null;
 
 	protected $listeners = [
 		'remove' => 'delete',
@@ -73,13 +74,22 @@ class Areas extends Component {
 		$this->resetInputFields();
 	}
 
-	public function delete($id) {
+	public function confirmAreaRemoval($area_id){
+		
+		$this->areaBeingRemoved = $area_id;
+		$this->dispatchBrowserEvent('show-delete-modal');
+	}
+
+	public function delete() {
 		try {
-			AreasConocimiento::find($id)->delete();
+			$area = AreasConocimiento::findOrFail($this->areaBeingRemoved);
+			$area->delete();
 			//session()->flash('success', "Area eliminada exitosamente");
-			$this->emit('alert', ['type' => 'success', 'message' => "Area eliminada exitosamente"]);
+			$this->emit('alert', ['type' => 'success', 'message' => "La área \"{$area->nombre}\" fue borrada exitosamente!"]);
+			$this->dispatchBrowserEvent('hide-delete-modal');
 		} catch (QueryException $ex) {
 			$this->emit('alert', ['type' => 'error', 'message' => "No se pudo borrar el elemento seleccionado"]);
+			$this->dispatchBrowserEvent('hide-delete-modal');
 		}
 
 	}

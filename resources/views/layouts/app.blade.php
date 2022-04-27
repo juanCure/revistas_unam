@@ -190,14 +190,16 @@
         //     }
         // });
 
-        window.livewire.on( 'confirm_remove', id => {
+        window.livewire.on('confirm_remove', id => {
 
-            let cfn = confirm("Seguro que deseas eliminar?");
+            // let cfn = confirm("Seguro que deseas eliminar?");
+            $('#confirmationModal').modal('show');
+            window.livewire.emit('remove', id);
 
-            if( cfn ){
-                console.log("delete");
-                window.livewire.emit('remove', id);
-            }
+            // if( cfn ){
+            //     console.log("delete");
+            //     window.livewire.emit('remove', id);
+            // }
         });
 
         // Listener para el evento después de agregar un nuevo responsable

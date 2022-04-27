@@ -1,13 +1,8 @@
 <div class="container">
     <div class="row">
+        @include('delete-modal', ['object' => 'Área'])
         <div class="col-md-12">
             <h1>Areas Conocimiento</h1>
-            {{-- @if (session()->has('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif --}}
-
             @if($updateMode)
                 @include('livewire.areas.update')
             @else
@@ -30,7 +25,8 @@
                         <td>
                             <button wire:click="edit({{ $area->id }})" class="btn btn-primary btn-sm">Editar</button>
                             {{-- <button wire:click="delete({{ $area->id }})" class="btn btn-danger btn-sm">Delete</button> --}}
-                            <button wire:click="$emit('confirm_remove', {{ $area->id }})" class="btn btn-danger btn-sm">Eliminar</button>
+                            {{-- <button wire:click="$emit('confirm_remove', {{ $area->id }})" class="btn btn-danger btn-sm">Eliminar</button> --}}
+                            <a class="btn btn-danger btn-sm" href="" wire:click.prevent="confirmAreaRemoval({{ $area->id }})">Eliminar</
                         </td>
                     </tr>
                     @endforeach
