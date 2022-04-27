@@ -33,135 +33,6 @@ class SolariumController extends Controller {
 		}
 	}
 
-	/**
-	 *   Funcion principal para buscar en Solr
-	 *   y regresar los registros a la vista
-	 **/
-	// public function search(Request $request) {
-
-	// 	$palabra = $request->input('buscar');
-	// 	$idMod = $request->input('idMod');
-
-	// 	$palabra = trim($palabra);
-	// 	//Solr no permite caracteres especiales, por eso hay que escaparlos
-	// 	$palabra = str_replace(":", "\:", $palabra);
-
-	// 	// Getting the value from request
-	// 	// $pub_date_filter = $request->input('pub_date');
-	// 	$pub_date_filters = $request->input('selected_ids');
-	// 	// $journal_filter = $request->input('journal');
-
-	// 	// Si se busca por Articulo, se hace la petición al SOLR del servidor 132.248.204.81
-	// 	// si la busqueda es por revista, entonces la busqueda se realiza a la base de datos
-	// 	// revistas_unam_normalizada_laravel
-	// 	if (isset($idMod) && $idMod == 0) {
-
-	// 		// dump("Estoy en la busqueda por artículo");
-	// 		// echo "Se debe buscar en solr";
-	// 		//se elige el endpoint del que queremos consumir
-	// 		$this->client->setDefaultEndPoint('biblio');
-	// 		//Se incrementa a 10s el timeout para que no se rechaze la conexion
-	// 		// $this->client->setAdapter('Solarium\Core\Client\Adapter\Curl');
-	// 		// $this->client->getAdapter()->setTimeout(18);
-
-	// 		$query = $this->client->createSelect();
-
-	// 		$perPage = 10;
-	// 		$startPage = $query->getStart();
-	// 		$page = max(0, Paginator::resolveCurrentPage());
-	// 		$offset = ($page * $perPage) - $perPage;
-	// 		$strQuery = "(title:/[A-Z]*" . $palabra . "[A-Z]*/)";
-
-	// 		// get the facetset component
-	// 		$facetSet = $query->getFacetSet();
-
-	// 		// create the facet field instance and set options
-	// 		// $facetSet->createFacetField('revista')->setField('collection')->setMinCount(1);
-
-	// 		// Test adding filterqueries
-	// 		if (isset($pub_date_filters)) {
-	// 			// $query->createFilterQuery('publicacion')->setQuery('publishDate:"' . $pub_date_filter . '"')->addTag('fecha_publicacion');
-	// 			foreach ($pub_date_filters as $pub_date_id) {
-	// 				dump($pub_date_id);
-	// 				$query->createFilterQuery('publicacion' . $pub_date_id)->setQuery('publishDate:"' . $pub_date_id . '"')->addTag('fecha_publicacion');
-	// 			}
-	// 		}
-
-	// 		// create the facet field instance for pub_date and set options
-	// 		$facetSet->createFacetField('pub_date')->setField('publishDate')->setMinCount(1);
-	// 		$facetSet->createFacetField('unfiltered')->setField('publishDate')->setMinCount(1)->getLocalParameters()->addExcludes(['fecha_publicacion']);
-
-	// 		// if (isset($journal_filter)) {
-	// 		// 	$query->createFilterQuery('nombre_revista')->setQuery('collection:"' . $journal_filter . '"');
-	// 		// }
-
-	// 		$query->setQuery($strQuery);
-	// 		$query->setStart($offset)->setRows($perPage);
-	// 		$resultset = $this->client->select($query);
-	// 		$numRevistas = $resultset->getNumFound();
-
-	// 		// $facetRevista = $resultset->getFacetSet()->getFacet('revista');
-	// 		$facetPublishDate = $resultset->getFacetSet()->getFacet('pub_date');
-	// 		$unFilteredPublishDateFacet = $resultset->getFacetSet()->getFacet('unfiltered');
-	// 		// dump('Facet counts for field publishDate');
-	// 		// foreach ($facetPublishDate as $value => $count) {
-	// 		// 	dump($value . '[' . $count . ']');
-	// 		// }
-
-	// 		$numRevistas = $resultset->getNumFound();
-
-	// 		$revistas = $this->procesaResultados($resultset);
-	// 		$mypaginator = $this->paginate($revistas, $numRevistas, $perPage, $page, $palabra);
-
-	// 		//Se regresan a la normalidad los caracteres escapados
-	// 		$palabra = str_replace("\:", ":", $palabra);
-
-	// 		if ($request->ajax()) {
-	// 			return view('resultados.bSolrIndex')->with([
-	// 				'revistas' => $revistas,
-	// 				'numRevistas' => $numRevistas,
-	// 				'palabra' => $palabra,
-	// 				'idMod' => $idMod,
-	// 				'mypaginator' => $mypaginator,
-	// 				// 'facetRevista' => $facetRevista,
-	// 				'facetPublishDate' => $unFilteredPublishDateFacet,
-	// 				'checkbox_id' => $request->checkbox_id
-	// 				,
-	// 			])->render();
-	// 		}
-	// 		return view('resultados.resultadosBusquedaPorArticulos')->with([
-	// 			'revistas' => $revistas,
-	// 			'numRevistas' => $numRevistas,
-	// 			'palabra' => $palabra,
-	// 			'idMod' => $idMod,
-	// 			'mypaginator' => $mypaginator,
-	// 			// 'facetRevista' => $facetRevista,
-	// 			'facetPublishDate' => $facetPublishDate,
-	// 		]);
-	// 		// return view('resultados.resultadosBusquedaPorArticulos', compact('revistas', 'numRevistas', 'palabra', 'idMod', 'mypaginator', 'facetRevista', 'facetPublishDate'));
-
-	// 	} else {
-	// 		// dump("Estoy en la busqueda por revista");
-	// 		// echo "Se debe buscar en la base de datos del proyecto de laravel";
-	// 		$indices = $this->indicesServicio->getIndices();
-
-	// 		$alfabeto = $this->indicesServicio->getAlfabeto();
-
-	// 		return view('resultados.resultadosPorIndices', [
-	// 			'revistas' => Revista::where('titulo', 'like', '%' . $palabra . '%')->paginate(5),
-	// 			'tipos_revistas' => $indices['typos'],
-	// 			'areas_conocimiento' => $indices['areas'],
-	// 			'indexadores' => $indices['indexadores'],
-	// 			'alfabeto' => $alfabeto,
-	// 			'accion' => 'Busqueda básica',
-	// 			'filtro' => $palabra,
-	// 			'breadcrumb' => 'Busqueda básica',
-	// 			'idMod' => $idMod,
-	// 		]);
-	// 	}
-
-	// }
-
 	public function search(Request $request) {
 		$idMod = $request->input('idMod');
 		$searchTerm = $request->input('buscar');
@@ -261,8 +132,6 @@ class SolariumController extends Controller {
 				'path' => $request->path(),
 			]);
 		} else {
-			// dump("Estoy en la busqueda por revista");
-			// echo "Se debe buscar en la base de datos del proyecto de laravel";
 			$indices = $this->indicesServicio->getIndices();
 
 			$alfabeto = $this->indicesServicio->getAlfabeto();
@@ -281,90 +150,20 @@ class SolariumController extends Controller {
 		}
 	}
 
-	public function proccessResultSet($resulset) {
-		$collection_resultset = collect();
-		foreach ($resulset as $document) {
-			// Se itera sobre el documento para acceder a cada campo
-			$item = [];
-			foreach ($document as $field => $value) {
-				if (is_array($value) && $field != "issn") {
-					$value = implode(', ', $value);
-					$item[$field] = $value;
-					continue;
-				} elseif (is_array($value) && $field == "issn") {
-					$item['myownissn'] = $value[0];
-					$item['doi'] = count($value) == 3 ? $value[2] : null;
-					continue;
-				}
-				$item[$field] = $value;
-			}
-			$collection_resultset->push($item);
-		}
-		// dump($collection_resultset);
-		return $collection_resultset;
-	}
-
-	/**
-	 * The attributes that are mass assignable.
-	 *
-	 * @var array
-	 */
-	public function paginate(Request $request, $items, $resultset_total, $perPage, $page) {
-		// $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
-		$items = $items instanceof Collection ? $items : Collection::make($items);
-		$options = [
-			'page' => $page,
-			'path' => Paginator::resolveCurrentPath(),
-			'query' => $request->input(),
-		];
-		return new LengthAwarePaginator($items, $resultset_total, $perPage, $page, $options);
-	}
-	/**
-	 * This function processes the returned facet to add some attributes for the view
-	 * @return $publishDateArray = [
-	['checkbox_id' => 2014, 'count' => 18, 'is_checked' => true],
-	['checkbox_id' => 2016, 'count' => 15, 'is_checked' => true],
-	['checkbox_id' => 2017, 'count' => 12, 'is_checked' => false],
-	];
-	 *
-	 */
-	public function processFacet($faceta, $selected) {
-		$collection_facet = collect();
-		$item = [];
-		foreach ($faceta as $key => $value) {
-			$is_checked = false;
-			if (isset($selected)) {
-				if (in_array($key, $selected)) {
-					$is_checked = true;
-				}
-			}
-			$item = [
-				'checkbox_id' => $key,
-				'count' => $value,
-				'is_checked' => $is_checked,
-			];
-			$collection_facet->push($item);
-		}
-
-		return $collection_facet;
-	}
-
 	public function advancedSearching(Request $request) {
 		// The both below are the filters
 		$selected_publishDates = $request->input('selected_publishDates');
-		// dump("Selected publish dates: ");
-		// dump($selected_publishDates);
 		$selected_journals = $request->input('selected_journals');
-		// dump("Selected journals: ");
-		// dump($selected_journals);
-		// The next 6 fields are the available searching parameters
+		// The next 5 fields are the available searching parameters
 		$requested_journal = $request->input('requested_journal');
-		$publish_date_from = $request->input('publish_date_from');
-		$publish_date_to = $request->input('publish_date_to');
+		$published_date_from = $request->input('publish_date_from');
+		$published_date_to = $request->input('publish_date_to');
 		$author_name = $request->input('author_name');
 		$searchTerm = $request->input('searchTerm');
 
 		$query = $this->client->createSelect();
+		// This line is very important because the default query operator is AND, and it should be OR
+		$query->setQueryDefaultOperator(Query::QUERY_OPERATOR_OR);
 		// get the facetset component
 		$facetSet = $query->getFacetSet();
 
@@ -379,11 +178,11 @@ class SolariumController extends Controller {
 
 		// $fq_journal = "collection:\"Investigaciones Geográficas\"";
 		// $query->createFilterQuery('fq_journal')->setQuery($fq_journal);
-		if (isset($publish_date_from) && $selected_publishDates == null) {
-			if (isset($publish_date_to)) {
-				$fq_dates = "publishDate:[" . $publish_date_from . " TO " . $publish_date_to . "]";
+		if (isset($published_date_from) && $selected_publishDates == null) {
+			if (isset($published_date_to)) {
+				$fq_dates = "publishDate:[" . $published_date_from . " TO " . $published_date_to . "]";
 			} else {
-				$fq_dates = "publishDate:[" . $publish_date_from . " TO * ]";
+				$fq_dates = "publishDate:[" . $published_date_from . " TO * ]";
 			}
 
 			$query->createFilterQuery('fq_dates')->setQuery($fq_dates);
@@ -455,12 +254,81 @@ class SolariumController extends Controller {
 			'selected_publishDates' => $selected_publishDates,
 			'selected_journals' => $selected_journals,
 			'requested_journal' => $requested_journal,
-			'selected_from' => $publish_date_from,
-			'selected_to' => $publish_date_to,
+			'published_date_from' => $published_date_from,
+			'published_date_to' => $published_date_to,
 			'author_name' => $author_name,
 			'searchTerm' => $searchTerm, 
 			'path' => $request->path(),
 		]);
 
 	}
+
+	public function proccessResultSet($resulset) {
+		$collection_resultset = collect();
+		foreach ($resulset as $document) {
+			// Se itera sobre el documento para acceder a cada campo
+			$item = [];
+			foreach ($document as $field => $value) {
+				if (is_array($value) && $field != "issn") {
+					$value = implode(', ', $value);
+					$item[$field] = $value;
+					continue;
+				} elseif (is_array($value) && $field == "issn") {
+					$item['myownissn'] = $value[0];
+					$item['doi'] = count($value) == 3 ? $value[2] : null;
+					continue;
+				}
+				$item[$field] = $value;
+			}
+			$collection_resultset->push($item);
+		}
+		return $collection_resultset;
+	}
+
+	/**
+	 * The attributes that are mass assignable.
+	 *
+	 * @var array
+	 */
+	public function paginate(Request $request, $items, $resultset_total, $perPage, $page) {
+		// $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+		$items = $items instanceof Collection ? $items : Collection::make($items);
+		$options = [
+			'page' => $page,
+			'path' => Paginator::resolveCurrentPath(),
+			'query' => $request->input(),
+		];
+		return new LengthAwarePaginator($items, $resultset_total, $perPage, $page, $options);
+	}
+	/**
+	 * This function processes the returned facet to add some attributes for the view
+	 * @return $publishDateArray = [
+	['checkbox_id' => 2014, 'count' => 18, 'is_checked' => true],
+	['checkbox_id' => 2016, 'count' => 15, 'is_checked' => true],
+	['checkbox_id' => 2017, 'count' => 12, 'is_checked' => false],
+	];
+	 *
+	 */
+	public function processFacet($faceta, $selected) {
+		$collection_facet = collect();
+		$item = [];
+		foreach ($faceta as $key => $value) {
+			$is_checked = false;
+			if (isset($selected)) {
+				if (in_array($key, $selected)) {
+					$is_checked = true;
+				}
+			}
+			$item = [
+				'checkbox_id' => $key,
+				'count' => $value,
+				'is_checked' => $is_checked,
+			];
+			$collection_facet->push($item);
+		}
+
+		return $collection_facet;
+	}
+
+	
 }

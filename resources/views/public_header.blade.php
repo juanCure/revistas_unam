@@ -99,7 +99,7 @@
                                             {{-- <option value="" selected="false" class="place_holder_year" disabled="true">Año</option> --}}
                                             <option value="" selected="" class="place_holder_year">Año</option>
                                             @foreach ($solrService->getPublishingDates() as $date)
-                                                <option value="{{ $date }}" {{ (isset($selected_from) && $date == $selected_from) ? 'selected' : '' }}>{{ $date }}</option>
+                                                <option value="{{ $date }}" {{ (isset($published_date_from) && $date == $published_date_from) ? 'selected' : '' }}>{{ $date }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -108,7 +108,7 @@
                                             {{-- <option value="default" selected="false" class="place_holder_year" disabled="true">Año</option> --}}
                                             <option value="" selected="" class="place_holder_year">Año</option>
                                             @foreach ($solrService->getPublishingDates() as $date)
-                                                <option value="{{ $date }}" {{ (isset($selected_to) && $date == $selected_to) ? 'selected' : '' }}>{{ $date }}</option>
+                                                <option value="{{ $date }}" {{ (isset($published_date_to) && $date == $published_date_to) ? 'selected' : '' }}>{{ $date }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -116,11 +116,11 @@
                             </div>
                             <div class="col-12 col-lg-6 col-xl-5 input_col">
                                 <label style="display: flex;">Autor:</label>
-                                <input name="author_name" class="form-control advanced_select advanced_input" type="text">
+                                <input name="author_name" class="form-control advanced_select advanced_input" type="text" value="{{ isset($author_name) ? $author_name : ''}}">
                             </div>
                             <div class="col-12 col-lg-6 col-xl-5 input_col">
                                 <label style="display: flex;">Título:</label>
-                                <input name="searchTerm" class="form-control advanced_select advanced_input" type="text">
+                                <input name="searchTerm" class="form-control advanced_select advanced_input" type="text" value="{{ isset($searchTerm) ? $searchTerm : ''}}">
                             </div>
                             <div class="col d-flex justify-content-end align-items-center justify-content-xl-end align-items-xl-end input_col">
                                 <button class="btn btn-danger" type="submit" style="height: 40px;background: linear-gradient(#ff584d 0%, #ff892d 56%, rgb(255,171,45) 85%), #FF892D;/*color: rgb(33, 37, 41);*/letter-spacing: 2px;">Buscar</button>

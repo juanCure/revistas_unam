@@ -6,12 +6,14 @@
 	<script>
 
 		// Obteniendo la URL DE LA APP
-		var APP_URL = {!! json_encode(url('/')) !!};
-		var requested_journal = @json($requested_journal);
-		var selected_publish_date_from_controller = @json($selected_publishDates, JSON_HEX_TAG);
-		var selected_journals_from_controller = @json($selected_journals, JSON_HEX_TAG);
-		var author_name = @json($author_name);
-		var myownSearchTerm = @json($searchTerm);
+		var APP_URL = {!! json_encode(url('/')) !!},
+		requested_journal = @json($requested_journal),
+		selected_publish_date_from_controller = @json($selected_publishDates, JSON_HEX_TAG),
+		selected_journals_from_controller = @json($selected_journals, JSON_HEX_TAG),
+		author_name = @json($author_name),
+		myownSearchTerm = @json($searchTerm),
+		published_date_from = @json($published_date_from), published_date_to = @json($published_date_to);
+
 
 		// Arrays to store the selected publish dates and the selected journal from checkboxes
 		var selected_publish_date = [], selected_journals = [];
@@ -56,6 +58,9 @@
 			        	'selected_journals': selected_journals,
 			        	'requested_journal': requested_journal,
 			        	'author_name': author_name,
+			        	'searchTerm': myownSearchTerm,
+			        	'published_date_from': published_date_from,
+			        	'published_date_to': published_date_to,
 			        },
 			        success: function(data) {
 			        	console.log("It works!");
@@ -93,6 +98,9 @@
 			        	'selected_journals': selected_journals,
 			        	'requested_journal': requested_journal,
 			        	'author_name': author_name,
+			        	'searchTerm': myownSearchTerm,
+			        	'published_date_from': published_date_from,
+			        	'published_date_to': published_date_to,
 			        },
 			        success: function(data) {
 			        	console.log("It works!");
