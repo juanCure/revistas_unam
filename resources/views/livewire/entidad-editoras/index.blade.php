@@ -1,5 +1,6 @@
 <div class="container">
     <div class="row">
+        @include('delete-modal', ['object' => 'Entidad Editora'])
         <div class="col-md-12">
             {{-- If your happiness depends on money, you will never be happy with yourself. --}}
             <h1>Entidades Editoras</h1>
@@ -24,7 +25,7 @@
                         <td>{{ $entidad->nombre }}</td>
                         <td>
                             <button wire:click="edit({{ $entidad->id }})" class="btn btn-primary btn-sm">Editar</button>
-                            <button wire:click="$emit('confirm_remove', {{ $entidad->id }})" class="btn btn-danger btn-sm">Eliminar</button>
+                            <a class="btn btn-danger btn-sm" href="" wire:click.prevent="confirmEntidadRemoval({{ $entidad->id }})">Eliminar</a>
                         </td>
                     </tr>
                     @endforeach

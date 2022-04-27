@@ -1,5 +1,6 @@
 <div class="container">
     <div class="row">
+        @include('delete-modal', ['object' => 'frecuencia'])
         <div class="col-md-12">
 
             {{-- Care about people's approval and you will be their prisoner. --}}
@@ -25,7 +26,7 @@
                         <td>{{ $frecuencia->nombre }}</td>
                         <td>
                             <button wire:click="edit({{ $frecuencia->id }})" class="btn btn-primary btn-sm">Editar</button>
-                            <button wire:click="$emit('confirm_remove', {{ $frecuencia->id }})" class="btn btn-danger btn-sm">Eliminar</button>
+                            <a class="btn btn-danger btn-sm" href="" wire:click.prevent="confirmFrecuenciaRemoval({{ $frecuencia->id }})">Eliminar</a>
                         </td>
                     </tr>
                     @endforeach

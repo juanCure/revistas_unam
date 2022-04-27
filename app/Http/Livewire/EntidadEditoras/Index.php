@@ -10,6 +10,7 @@ class Index extends Component {
 
 	public $entidad_editoras, $nombre, $id_entidad;
 	public $updateMode = false;
+	public $entidadBeingRemoved = null;
 
 	protected $listeners = [
 		'remove' => 'delete',
@@ -73,13 +74,21 @@ class Index extends Component {
 		$this->resetInputFields();
 	}
 
-	public function delete($id) {
+	public function confirmEntidadRemoval($entidad_id){
+		
+		$this->entidadBeingRemoved = $entidad_id;
+		$this->dispatchBrowserEvent('show-delete-modal');
+	}
+
+	public function delete() {
 		try {
-			EntidadEditora::find($id)->delete();
-			//session()->flash('success', "Area eliminada exitosamente");
-			$this->emit('alert', ['type' => 'success', 'message' => "Entidad eliminada exitosamente"]);
+			$entidad = EntidadEditora::findOrFail($this->entidadBeingRemoved);
+			$entidad->delete();
+			$this->emit('alert', ['type' => 'success', 'message' => "La entidad editora llamada \" {$entidad->nombre}\" ha sido borrada exitosamente!"]);
+			$this->dispatchBrowserEvent('hide-delete-modal');
 		} catch (QueryException $ex) {
 			$this->emit('alert', ['type' => 'error', 'message' => "No se pudo borrar el elemento seleccionado"]);
+			$this->dispatchBrowserEvent('hide-delete-modal');
 		}
 
 	}

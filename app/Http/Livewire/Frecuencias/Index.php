@@ -9,6 +9,7 @@ use Livewire\Component;
 class Index extends Component {
 	public $frecuencias, $nombre, $id_frecuencia;
 	public $updateMode = false;
+	public $frecuenciaBeingRemoved = null;
 
 	protected $listeners = [
 		'remove' => 'delete',
@@ -73,11 +74,18 @@ class Index extends Component {
 		$this->resetInputFields();
 	}
 
-	public function delete($id) {
+	public function confirmFrecuenciaRemoval($frecuencia_id){
+		
+		$this->frecuenciaBeingRemoved = $frecuencia_id;
+		$this->dispatchBrowserEvent('show-delete-modal');
+	}
+
+	public function delete() {
 		try {
-			Frecuencia::find($id)->delete();
-			//session()->flash('success', "Area eliminada exitosamente");
-			$this->emit('alert', ['type' => 'success', 'message' => "Frecuencia eliminada exitosamente"]);
+			$frecuencia = Frecuencia::findorFail($this->frecuenciaBeingRemoved);
+			$frecuencia->delete();
+			$this->emit('alert', ['type' => 'success', 'message' => "La frecuencia \"{$frecuencia->nombre}\" fue eliminado exitosamente!"]);
+			$this->dispatchBrowserEvent('hide-delete-modal');
 		} catch (QueryException $ex) {
 			$this->emit('alert', ['type' => 'error', 'message' => "No se pudo borrar el elemento seleccionado"]);
 		}

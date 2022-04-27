@@ -1,5 +1,6 @@
 <div class="container">
     <div class="row">
+        @include('delete-modal', ['object' => 'Subsistema'])
         <div class="col-md-12">
             {{-- Care about people's approval and you will be their prisoner. --}}
             <h1>Subsistemas</h1>
@@ -24,7 +25,7 @@
                         <td>{{ $subsistema->nombre }}</td>
                         <td>
                             <button wire:click="edit({{ $subsistema->id }})" class="btn btn-primary btn-sm">Editar</button>
-                            <button wire:click="$emit('confirm_remove', {{ $subsistema->id }})" class="btn btn-danger btn-sm">Eliminar</button>
+                            <a class="btn btn-danger btn-sm" href="" wire:click.prevent="confirmSubsistemaRemoval({{ $subsistema->id }})">Eliminar</a>
                         </td>
                     </tr>
                     @endforeach

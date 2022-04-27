@@ -8,6 +8,7 @@ use Livewire\Component;
 class Index extends Component {
 	public $subsistemas, $nombre, $id_subsistema;
 	public $updateMode = false;
+	public $subsistemaBeingRemoved = null;
 
 	protected $listeners = [
 		'remove' => 'delete',
@@ -71,11 +72,18 @@ class Index extends Component {
 		$this->resetInputFields();
 	}
 
-	public function delete($id) {
+	public function confirmSubsistemaRemoval($subsistema_id){
+		
+		$this->subsistemaBeingRemoved = $subsistema_id;
+		$this->dispatchBrowserEvent('show-delete-modal');
+	}
+
+	public function delete() {
 		try {
-			Subsistema::find($id)->delete();
-			//session()->flash('success', "Area eliminada exitosamente");
-			$this->emit('alert', ['type' => 'success', 'message' => "Subsistema eliminado exitosamente"]);
+			$subsistema = Subsistema::findOrFail($this->subsistemaBeingRemoved);
+			$subsistema->delete();
+			$this->emit('alert', ['type' => 'success', 'message' => "El subsistema \" {$subsistema->nombre}\" ha sido borrado exitosamente!"]);
+			$this->dispatchBrowserEvent('hide-delete-modal');
 		} catch (QueryException $ex) {
 			$this->emit('alert', ['type' => 'error', 'message' => "No se pudo borrar el elemento seleccionado"]);
 		}
