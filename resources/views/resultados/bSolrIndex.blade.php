@@ -89,15 +89,15 @@
 										</div>
 									</div>
 									<a target="_blank" class="article_link" href="{{ $document['url'] }}">{{ $document['title'] }}</a>
-									<p class="article_authors">{{ $document['author_facet'] }}</p>
+									<p class="article_authors">{{ $document['author'] }}</p>
 									<div class="data_container">
 										@if ( isset($document['doi_txt']) && $document['doi_txt'] != null)
 											<span class="data_label">DOI</span><a class="text-break doi_link" target="_blank" href="https://doi.org/{{ $document['doi_txt'] }}">https://doi.org/{{ $document['doi_txt'] }}</a>
 										@endif
 									</div>
-									@if (isset($document['pclave_txt_mv']))
+									@if (isset($document['pclave_txt_mv']) && $document['pclave_txt_mv'] != '')
 										<div class="data_container">
-											<span class="data_label">Palabras Clave:</span>
+											<span class="data_label">Palabras Clave</span>
 											<div class="keywor_caontainer">
 												<p>{{ $document['pclave_txt_mv'] }}</p>
 											</div>
@@ -114,7 +114,7 @@
 											<a class="text-break keyword_link" href="#" target="_blank">covid</a>
 										</div>
 									</div> --}}
-									@if (isset($document['description']))
+									@if (isset($document['description']) && $document['description'] != "")
 										<div class="data_container"><a class="link_description" href="#description_container" data-toggle="collapse"><span class="data_label label_description">Descripción<i class="fa fa-plus-circle"></i></span></a>
 											<div id="description_container" class="card card-body collapse description_container">
 												<div>

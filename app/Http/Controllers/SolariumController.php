@@ -10,6 +10,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Solarium\QueryType\Select\Query\Query;
+use Illuminate\Support\Str;
 
 class SolariumController extends Controller {
 	protected $client, $indicesServicio, $solrService;
@@ -53,7 +54,7 @@ class SolariumController extends Controller {
 
 			$query->setQuery($strQuery);
 
-			$query->setFields(array('collection', 'title', 'author_facet', 'publishDate', 'issn', 'url', 'pclave_txt_mv', 'doi_txt', 'description'));
+			$query->setFields(array('collection', 'title', 'author', 'publishDate', 'issn', 'url', 'pclave_txt_mv', 'doi_txt', 'description'));
 
 			// FilterQueries
 			// Filter all the documents which their publishdate is 2018 and 2016
@@ -269,6 +270,37 @@ class SolariumController extends Controller {
 			// Se itera sobre el documento para acceder a cada campo
 			$item = [];
 			foreach ($document as $field => $value) {
+				if(is_array($value) && $field == "author") {
+					$author_collection = collect();
+					foreach ($value as $author) {
+						$author_in_segments = Str::of($author)->split('/[,]+/'); // '/[,]+/' con este patrón separo por medio de comas 
+						$author_in_order = $author_in_segments[1] . ' ' .$author_in_segments[0];
+						$author_collection->push($author_in_order);
+					}
+					$imploded_authors = $author_collection->implode(';');
+					$item[$field] = $imploded_authors;
+					continue;
+				}
+				if(is_array($value) && $field == "pclave_txt_mv") {
+					$keyword_collection = collect();
+					foreach ($value as $keyword) {
+						if($keyword != ""){
+							if(Str::contains($keyword, ';')) { // La keyword es una cadena con varias palabras clave separadas por ;
+								$keyword_in_segments_by_colon = Str::of($keyword)->split('/[;]+/');
+								$keyword_collection = $keyword_collection->merge($keyword_in_segments_by_colon);
+
+							} elseif (Str::contains($keyword, ',')) { // La keyword es una cadena con varias palabras clave separadas por ,
+								$keyword_in_segments_by_comma = Str::of($keyword)->split('/[,]+/');
+								$keyword_collection = $keyword_collection->merge($keyword_in_segments_by_comma);
+							} else { // La keyword es una sóla palabra clave (Es el caso bonito)
+								$keyword_collection->push($keyword);
+							}
+						}
+					}
+					$imploded_keywords = $keyword_collection->implode('; ');
+					$item[$field] = $imploded_keywords;
+					continue;
+				}
 				if (is_array($value) && $field != "issn") {
 					$value = implode(', ', $value);
 					$item[$field] = $value;
