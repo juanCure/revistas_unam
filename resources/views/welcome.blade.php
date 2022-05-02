@@ -94,7 +94,7 @@
                 </div>
             </div>
         </div>
-        <div class="row no-gutters d-xl-flex justify-content-xl-center card_row issues_row">
+        {{-- <div class="row no-gutters d-xl-flex justify-content-xl-center card_row issues_row">
             <div class="col-10 col-xl-8 offset-1 offset-xl-0">
                 <h6 class="heading_sub">Números recientes</h6>
                 <div class="row" id="issues_row" style="margin-top: 20px;">
@@ -117,7 +117,7 @@
                 </div>
                 <div></div>
             </div>
-        </div>
+        </div> --}}
         <div class="row no-gutters d-xl-flex justify-content-xl-center card_row issues_row">
             <div class="col-10 col-xl-8 offset-1 offset-xl-0">
                 <h6 class="heading_sub">Sitios relacionados</h6>
