@@ -150,7 +150,7 @@ class Update extends Component {
 			'issne' => ['nullable', 'regex:/[\S]{4}\-[\S]{4}/u'],
 			'ojs_ruta' => ['nullable', 'url'],
 			'anio_inicio' => ['required', 'integer'],
-			'arbitrada' => ['required', 'in:Si,No'],
+			'arbitrada' => ['required', 'in:Sí,No'],
 			'soporte' => ['required', 'in:Digital,Impreso,Ambas'],
 			'situacion' => ['required', 'in:Vigente,Descontinuada'],
 			'tipo_revista' => ['required', 'in:Cultural,Divulgación,Investigación,Técnico-Profesional'],
@@ -515,5 +515,14 @@ class Update extends Component {
 	public function quitarTema($index) {
 		unset($this->selected_temas[$index]);
 		$this->selected_temas = array_values($this->selected_temas);
+	}
+
+	/* Función para acceder directamente a una de las páginas que componen la interfaz de edición*/
+
+	public function goToStep($step) {
+		$this->currentStep = $step != 0 ? $step : -1;
+		$this->dispatchBrowserEvent('myownapp:scroll-to', [
+				'query' => '.stepwizard',
+			]);
 	}
 }

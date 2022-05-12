@@ -54,7 +54,7 @@
                 <label>Arbitrada <i class="fa fa-asterisk" aria-hidden="true"></i>:</label>
                 <select class="custom-select" wire:model="arbitrada" id="arbitrada">
                     <option value="" selected="">Selecciona algo...</option>
-                    <option value="Si">Si</option>
+                    <option value="Sí">Sí</option>
                     <option value="No">No</option>
                 </select>
             </div>
