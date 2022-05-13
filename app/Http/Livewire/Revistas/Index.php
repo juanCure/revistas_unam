@@ -18,7 +18,7 @@ class Index extends Component {
 		return view('livewire.revistas.index', [
 			'revistas' => Revista::where(function ($sub_query) {
 				$sub_query->where('titulo', 'like', '%' . $this->searchTerm . '%');
-			})->paginate(20),
+			})->orderBy('titulo', 'asc')->paginate(20),
 		]);
 	}
 
