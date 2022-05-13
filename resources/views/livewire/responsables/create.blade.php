@@ -37,6 +37,12 @@
           </div>
 
           <div class="form-group">
+            <label for="correo_electronico">Segundo correo:</label>
+            <input type="text" name="correo_electronico" class="form-control" wire:model="segundo_correo_electronico">
+            @error('segundo_correo_electronico') <span class="text-danger">{{ $message }}</span>@enderror
+          </div>
+
+          <div class="form-group">
             <label for="telefonos">Telefono:</label>
             <input type="text" name="telefonos" class="form-control" wire:model="telefonos">
             @error('telefonos') <span class="text-danger">{{ $message }}</span>@enderror

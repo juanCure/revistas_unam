@@ -10,13 +10,7 @@ use Livewire\WithPagination;
 
 class Index extends Component {
 	use WithPagination;
-	public $id_responsable;
-	public $searchTerm;
-	public $nombres;
-	public $apellidos;
-	public $correo_electronico;
-	public $telefonos;
-	public $grado;
+	public $id_responsable, $searchTerm, $nombres, $apellidos, $correo_electronico, $segundo_correo_electronico, $telefonos, $grado;
 
 	// Establecer que estilo utilizar para los enlaces de paginación
 	protected $paginationTheme = 'bootstrap';
@@ -46,6 +40,7 @@ class Index extends Component {
 		$this->nombres = '';
 		$this->apellidos = '';
 		$this->correo_electronico = '';
+		$this->segundo_correo_electronico = '';
 		$this->telefonos = '';
 		$this->grado = '';
 	}
@@ -56,6 +51,7 @@ class Index extends Component {
 			'nombres' => 'required',
 			'apellidos' => 'required',
 			'correo_electronico' => 'nullable|email',
+			'segundo_correo_electronico' => 'nullable|email',
 			'telefonos' => 'nullable',
 		]);
 
@@ -72,6 +68,7 @@ class Index extends Component {
 		$this->nombres = $responsable->nombres;
 		$this->apellidos = $responsable->apellidos;
 		$this->correo_electronico = $responsable->correo_electronico;
+		$this->segundo_correo_electronico = $responsable->segundo_correo_electronico;
 		$this->telefonos = $responsable->telefonos;
 		// $this->dispatchBrowserEvent('myownapp:scroll-to', [
 		// 	'query' => '.form-group',
@@ -84,6 +81,7 @@ class Index extends Component {
 			'nombres' => 'required',
 			'apellidos' => 'required',
 			'correo_electronico' => 'nullable|email',
+			'segundo_correo_electronico' => 'nullable|email',
 			'telefonos' => 'nullable',
 		]);
 
@@ -94,6 +92,7 @@ class Index extends Component {
 			'nombres' => $this->nombres,
 			'apellidos' => $this->apellidos,
 			'correo_electronico' => $this->correo_electronico,
+			'segundo_correo_electronico' => $this->segundo_correo_electronico,
 			'telefonos' => $this->telefonos,
 		]);
 

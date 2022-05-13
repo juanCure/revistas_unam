@@ -61,7 +61,7 @@
         <div class="col-12 col-lg-9 col-xl-10 d-flex justify-content-start align-items-center justify-content-sm-start">
             <ul class="data_value_list">
                 @foreach ($revista->responsables as $responsable)
-                    <li><span class="data_value">{{ $responsable->grado}} {{ $responsable->nombres }} {{ $responsable->apellidos }} (<strong>{{ $responsable->pivot->cargo }}</strong>); <strong>Correos:</strong> {{ $responsable->correo_electronico }}; <strong>Telefonos: </strong>{{ $responsable->telefonos }}</span>  </li>
+                    <li><span class="data_value">{{ $responsable->grado}} {{ $responsable->nombres }} {{ $responsable->apellidos }} (<strong>{{ $responsable->pivot->cargo }}</strong>); <strong>Correos:</strong> {{ $responsable->correo_electronico }}{{ ($responsable->segundo_correo_electronico != null) ? "; " . $responsable->segundo_correo_electronico : ''}}; <strong>Telefonos: </strong>{{ $responsable->telefonos }}</span>  </li>
                 @endforeach
             </ul>
         </div>

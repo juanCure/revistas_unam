@@ -19,6 +19,7 @@ class Responsable extends Model {
 		'apellidos',
 		'telefonos',
 		'correo_electronico',
+		'segundo_correo_electronico',
 		'grado',
 	];
 

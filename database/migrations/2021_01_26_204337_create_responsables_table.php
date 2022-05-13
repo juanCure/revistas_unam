@@ -17,6 +17,7 @@ class CreateResponsablesTable extends Migration {
 			$table->string('apellidos', 45);
 			$table->string('telefonos', 45)->nullable();
 			$table->string('correo_electronico')->nullable();
+			$table->string('segundo_correo_electronico')->nullable();
 			$table->string('grado', 10)->nullable();
 			//$table->timestamps();
 			$table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));

@@ -31,7 +31,7 @@ class Update extends Component {
 	$selected_responsables = [], $selected_indices = [];
 
 	// Propiedades para el responsable
-	public $id_responsable, $grado, $nombres, $apellidos, $correo_electronico, $telefonos, $role;
+	public $id_responsable, $grado, $nombres, $apellidos, $correo_electronico, $segundo_correo_electronico, $telefonos, $role;
 
 	// Establecer que estilo utilizar para los enlaces de paginación
 	protected $paginationTheme = 'bootstrap';
@@ -184,35 +184,6 @@ class Update extends Component {
 		});
 	}
 
-	// public function secondStepSubmit() {
-	// 	// Validando los datos asociados a las editoriales
-	// 	$validatedData = $this->validate([
-	// 		'selected_editoriales' => ['required', 'array', 'min:1'],
-	// 		'selected_editoriales.*' => ['required', 'numeric', 'distinct'],
-	// 		'selected_entidades' => ['required', 'array', 'min:1'],
-	// 		'selected_entidades.*' => ['required', 'numeric', 'distinct'],
-	// 	]);
-	// 	$this->dispatchBrowserEvent('myownapp:scroll-to', [
-	// 		// 'query' => '#step-2',
-	// 		'query' => '.stepwizard',
-	// 	]);
-	// 	$this->currentStep = 3;
-	// }
-
-	// public function thirdStepSubmit() {
-	// 	$validatedData = $this->validate([
-	// 		'selected_idiomas' => ['required', 'array', 'min:1'],
-	// 		'selected_idiomas.*' => ['required', 'numeric', 'distinct'],
-	// 		'selected_temas' => ['required', 'array', 'min:1'],
-	// 		'selected_temas.*' => ['required', 'numeric', 'distinct'],
-	// 	]);
-	// 	$this->dispatchBrowserEvent('myownapp:scroll-to', [
-	// 		// 'query' => '#step-2',
-	// 		'query' => '.stepwizard',
-	// 	]);
-	// 	$this->currentStep = 4;
-	// }
-
 	/**
 	 * Función para validar que se haya seleccionado por lo menos una editorial y una entidad editora
 	 *
@@ -335,43 +306,6 @@ class Update extends Component {
 			]);
 		}
 
-		// // Actualizando las editoriales asociadas de la revista
-		// $revista->editoriales()->detach();
-		// foreach ($this->selected_editoriales as $id_editorial) {
-		// 	//dump($id_editorial);
-		// 	$editorial = Editorial::findOrFail($id_editorial);
-		// 	$revista->editoriales()->attach($editorial->id, ['orden' => key($this->selected_editoriales) + 1]);
-		// 	next($this->selected_editoriales);
-		// }
-
-		// // Actualizando las entidades editoras asociadas de la revista
-		// $revista->entidades_editoras()->detach();
-		// foreach ($this->selected_entidades as $id_entidad) {
-		// 	//dump($id_editorial);
-		// 	$entidad = EntidadEditora::findOrFail($id_entidad);
-		// 	$revista->entidades_editoras()->attach($entidad->id, ['orden' => key($this->selected_entidades) + 1]);
-		// 	next($this->selected_entidades);
-		// }
-
-		// // Actualizando los idiomas asociados de la revista
-		// $revista->idiomas()->detach();
-		// foreach ($this->selected_idiomas as $id_idioma) {
-		// 	//dump($id_editorial);
-		// 	$idioma = Idioma::findOrFail($id_idioma);
-		// 	$revista->idiomas()->attach($idioma->id, ['orden' => key($this->selected_idiomas) + 1]);
-		// 	next($this->selected_idiomas);
-		// }
-
-		// // Actualizando los temas asociadas de la revista
-		// $revista->temas()->detach();
-		// foreach ($this->selected_temas as $id_tema) {
-		// 	//dump($id_editorial);
-		// 	$tema = Tema::findOrFail($id_tema);
-		// 	$revista->temas()->attach($tema->id, ['orden' => key($this->selected_temas) + 1]);
-		// 	next($this->selected_temas);
-		// }
-
-		//$this->successMessage = "Revista {$this->titulo} ha sido editada con éxito!";
 		session()->flash('success', "La revista \"{$revista->titulo}\" fue editada con éxito!");
 		return redirect()
 			->route('revistas.index');
@@ -388,6 +322,7 @@ class Update extends Component {
 		$this->nombres = $responsable->nombres;
 		$this->apellidos = $responsable->apellidos;
 		$this->correo_electronico = $responsable->correo_electronico;
+		$this->segundo_correo_electronico = $responsable->segundo_correo_electronico;
 		$this->telefonos = $responsable->telefonos;
 		$this->role = '';
 
@@ -399,6 +334,7 @@ class Update extends Component {
 			'nombres' => 'required',
 			'apellidos' => 'required',
 			'correo_electronico' => 'nullable|email',
+			'segundo_correo_electronico' => 'nullable|email',
 			'telefonos' => 'nullable',
 			'role' => 'required',
 		]);
@@ -409,6 +345,7 @@ class Update extends Component {
 			'nombres' => $this->nombres,
 			'apellidos' => $this->apellidos,
 			'correo_electronico' => $this->correo_electronico,
+			'segundo_correo_electronico' => $this->segundo_correo_electronico,
 			'telefonos' => $this->telefonos,
 		]);
 
@@ -434,6 +371,7 @@ class Update extends Component {
 		$this->nombres = '';
 		$this->apellidos = '';
 		$this->correo_electronico = '';
+		$this->segundo_correo_electronico = '';
 		$this->telefonos = '';
 		$this->role = '';
 	}
