@@ -26,7 +26,7 @@
                             <button wire:click="edit({{ $area->id }})" class="btn btn-primary btn-sm">Editar</button>
                             {{-- <button wire:click="delete({{ $area->id }})" class="btn btn-danger btn-sm">Delete</button> --}}
                             {{-- <button wire:click="$emit('confirm_remove', {{ $area->id }})" class="btn btn-danger btn-sm">Eliminar</button> --}}
-                            <a class="btn btn-danger btn-sm" href="" wire:click.prevent="confirmAreaRemoval({{ $area->id }})">Eliminar</
+                            <a class="btn btn-danger btn-sm" href="" wire:click.prevent="confirmAreaRemoval({{ $area->id }})">Eliminar</a>
                         </td>
                     </tr>
                     @endforeach

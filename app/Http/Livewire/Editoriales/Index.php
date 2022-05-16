@@ -10,6 +10,7 @@ class Index extends Component {
 
 	public $editoriales, $nombre, $id_editorial;
 	public $updateMode = false;
+	public $editorialBeingRemoved = null;
 
 	protected $listeners = [
 		'remove' => 'delete',
@@ -73,13 +74,21 @@ class Index extends Component {
 		$this->resetInputFields();
 	}
 
-	public function delete($id) {
+	public function confirmEditorialRemoval($editorial_id){
+		
+		$this->editorialBeingRemoved = $editorial_id;
+		$this->dispatchBrowserEvent('show-delete-modal');
+	}
+
+	public function delete() {
 		try {
-			Editorial::find($id)->delete();
-			//session()->flash('success', "Area eliminada exitosamente");
-			$this->emit('alert', ['type' => 'success', 'message' => "La editorial fue eliminada exitosamente"]);
+			$editorial = Editorial::findOrFail($this->editorialBeingRemoved);
+			$editorial->delete();
+			$this->emit('alert', ['type' => 'success', 'message' => "La editorial \"{$editorial->nombre}\" fue borrada exitosamente!"]);
+			$this->dispatchBrowserEvent('hide-delete-modal');
 		} catch (QueryException $ex) {
 			$this->emit('alert', ['type' => 'error', 'message' => "No se pudo borrar el elemento seleccionado"]);
+			$this->dispatchBrowserEvent('hide-delete-modal');
 		}
 
 	}
