@@ -38,6 +38,7 @@ class Revista extends Model {
 		'otros_indices',
 		'imagen',
 		'ojs_ruta',
+		'ruta_alterna',
 		'id_frecuencia',
 		'id_area_conocimiento',
 		'id_subsistema',

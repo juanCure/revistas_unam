@@ -38,6 +38,7 @@
         <div class="col-12 col-sm-6 col-md-6 col-lg-9 col-xl-10 d-flex justify-content-start align-items-center justify-content-sm-start"><span class="d-flex justify-content-center align-items-center data_span data_value">{{ $revista->issn != null ? $revista->issn : "En trámite!" }}</span></div>
         <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-2 d-flex justify-content-start align-items-center justify-content-sm-start data_label_col"><span class="d-flex align-items-center align-items-xl-center data_span data_label">ISSN-E</span></div>
         <div class="col-12 col-sm-6 col-md-6 col-lg-9 col-xl-10 d-flex justify-content-start align-items-center justify-content-sm-start"><span class="d-flex align-items-center data_value">{{ $revista->issne != null ? $revista->issne : "En trámite!" }}<br></span></div>
+        
         <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-2 d-flex justify-content-start align-items-center justify-content-sm-start data_label_col"><span class="d-flex align-items-center align-items-xl-center data_span data_label">Tipo de Licencia</span></div>
         <div class="col-12 col-sm-6 col-md-6 col-lg-9 col-xl-10 d-flex justify-content-start align-items-center justify-content-sm-start"><span class="d-flex align-items-center data_value">Licencia Creative Commons Atribución-NoComercial 4.0 Internacional.<br></span></div>
         <div class="col-12 col-lg-3 col-xl-2 d-flex justify-content-start align-items-center justify-content-sm-start data_label_col"><span class="d-flex align-items-center data_span data_label">Editoriales</span></div>
@@ -75,6 +76,9 @@
         <div class="col-12 col-lg-9 col-xl-10 d-flex justify-content-start align-items-center justify-content-sm-start">
             {!! $revista->indicador !!}
         </div>
-
+        <div class="col-12 col-lg-3 col-xl-2 d-flex justify-content-start align-items-center justify-content-sm-start data_label_col"><span class="d-flex align-items-center data_span data_label">Ruta alterna</span></div>
+        <div class="col-12 col-lg-9 col-xl-10 d-flex justify-content-start align-items-center justify-content-sm-start"><a href="{{ $revista->ruta_alterna }}">
+            {{ $revista->ruta_alterna }}</a>
+        </div>
     </div>
 </section>

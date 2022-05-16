@@ -28,9 +28,15 @@
             </div>
 
             <div class="form-group">
-                @error('issne')<div class="alert alert-danger">{{ $message }}</div> @enderror
+                @error('ojs_ruta')<div class="alert alert-danger">{{ $message }}</div> @enderror
                 <label for="issn">Ruta a la revista:</label>
                 <input type="text" wire:model="ojs_ruta" class="form-control" id="ojs_ruta" >
+            </div>
+
+            <div class="form-group">
+                @error('ruta_alterna')<div class="alert alert-danger">{{ $message }}</div> @enderror
+                <label for="issn">Ruta alterna a la revista:</label>
+                <input type="text" wire:model="ruta_alterna" class="form-control" id="ruta_alterna" >
             </div>
 
             <div class="form-group">

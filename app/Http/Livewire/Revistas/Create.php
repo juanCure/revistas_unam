@@ -23,7 +23,7 @@ class Create extends Component {
 	public $currentStep = 1;
 	public $titulo, $descripcion, $issn, $issne, $ojs_ruta, $anio_inicio, $otros_indices,
 	$situacion, $arbitrada, $tipo_revista, $soporte, $id_area_conocimiento,
-	$id_frecuencia, $id_subsistema, $indicador;
+	$id_frecuencia, $id_subsistema, $indicador, $ruta_alterna;
 	public $successMessage = '';
 
 	public $frecuencias, $subsistemas, $editoriales, $areas_conocimiento, $idiomas, $indexadores;
@@ -84,6 +84,7 @@ class Create extends Component {
 				'issn' => ['nullable', 'regex:/[\S]{4}\-[\S]{4}/u'],
 				'issne' => ['nullable', 'regex:/[\S]{4}\-[\S]{4}/u'],
 				'ojs_ruta' => ['nullable', 'url'],
+				'ruta_alterna' => ['nullable', 'url'],
 				'anio_inicio' => ['required', 'integer'],
 				'arbitrada' => ['required', 'in:Si,No'],
 				//'soporte' => ['required', 'in:Ambas,Electrónica,Impresa'],
@@ -185,6 +186,7 @@ class Create extends Component {
 			'anio_inicio' => $this->anio_inicio,
 			// 'otros_indices' => $this->otros_indices,
 			'ojs_ruta' => $this->ojs_ruta,
+			'ruta_alterna' => $this->ruta_alterna,
 			'arbitrada' => $this->arbitrada,
 			'soporte' => $this->soporte,
 			'situacion' => $this->situacion,

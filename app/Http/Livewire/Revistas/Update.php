@@ -23,7 +23,7 @@ class Update extends Component {
 	public $currentStep = 1, $id_revista;
 	public $titulo, $descripcion, $issn, $issne, $ojs_ruta, $anio_inicio, $otros_indices,
 	$situacion, $arbitrada, $tipo_revista, $soporte, $id_area_conocimiento,
-	$id_frecuencia, $id_subsistema, $indicador;
+	$id_frecuencia, $id_subsistema, $indicador, $ruta_alterna;
 	public $successMessage = '';
 
 	public $frecuencias, $subsistemas, $editoriales, $areas_conocimiento, $idiomas, $indexadores;
@@ -49,6 +49,7 @@ class Update extends Component {
 		$this->issn = $revista->issn;
 		$this->issne = $revista->issne;
 		$this->ojs_ruta = $revista->ojs_ruta;
+		$this->ruta_alterna = $revista->ruta_alterna;
 		$this->anio_inicio = $revista->anio_inicio;
 		$this->otros_indices = $revista->otros_indices;
 		$this->situacion = $revista->situacion;
@@ -149,6 +150,7 @@ class Update extends Component {
 			'issn' => ['nullable', 'regex:/[\S]{4}\-[\S]{4}/u'],
 			'issne' => ['nullable', 'regex:/[\S]{4}\-[\S]{4}/u'],
 			'ojs_ruta' => ['nullable', 'url'],
+			'ruta_alterna' => ['nullable', 'url'],
 			'anio_inicio' => ['required', 'integer'],
 			'arbitrada' => ['required', 'in:Sí,No'],
 			'soporte' => ['required', 'in:Digital,Impreso,Ambas'],
@@ -249,6 +251,7 @@ class Update extends Component {
 			'otros_indices' => $this->otros_indices,
 			//'imagen' => $this->,
 			'ojs_ruta' => $this->ojs_ruta,
+			'ruta_alterna' => $this->ruta_alterna,
 			'id_frecuencia' => $this->id_frecuencia,
 			'id_area_conocimiento' => $this->id_area_conocimiento,
 			'id_subsistema' => $this->id_subsistema,
