@@ -8,7 +8,7 @@ use Livewire\Component;
 
 class Index extends Component {
 	public $temas, $nombre, $id_tema;
-	public $updateMode = false;
+	public $updateMode = false, $temaBeingRemoved;
 
 	protected $listeners = [
 		'remove' => 'delete',
@@ -68,12 +68,21 @@ class Index extends Component {
 		$this->resetInputFields();
 	}
 
-	public function delete($id) {
+	public function confirmTemaRemoval($tema_id) {
+		$this->temaBeingRemoved = $tema_id;
+		$this->dispatchBrowserEvent('show-delete-modal');
+	}
+
+	public function delete() {
+
 		try {
-			Tema::find($id)->delete();
-			$this->emit('alert', ['type' => 'success', 'message' => "El tema fue eliminado exitosamente"]);
+			$tema = Tema::findOrFail($this->temaBeingRemoved);
+			$tema->delete();
+			$this->emit('alert', ['type' => 'success', 'message' => "El tema \"{$tema->nombre}\" fue borrado exitosamente!"]);
+			$this->dispatchBrowserEvent('hide-delete-modal');
 		} catch (QueryException $ex) {
 			$this->emit('alert', ['type' => 'error', 'message' => "No se pudo borrar el elemento seleccionado"]);
+			$this->dispatchBrowserEvent('hide-delete-modal');
 		}
 
 	}

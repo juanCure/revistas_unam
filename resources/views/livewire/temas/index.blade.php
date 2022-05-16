@@ -1,5 +1,6 @@
 <div class="container">
     <div class="row">
+        @include('delete-modal', ['object' => 'Tema'])
         <div class="col-md-12">
             {{-- To attain knowledge, add things every day; To attain wisdom, subtract things every day --}}
             <h1>Temas</h1>
@@ -24,7 +25,8 @@
                         <td>{{ $tema->nombre }}</td>
                         <td>
                             <button wire:click="edit({{ $tema->id }})" class="btn btn-primary btn-sm">Editar</button>
-                            <button wire:click="$emit('confirm_remove', {{ $tema->id }})" class="btn btn-danger btn-sm">Eliminar</button>
+                            {{-- <button wire:click="$emit('confirm_remove', {{ $tema->id }})" class="btn btn-danger btn-sm">Eliminar</button> --}}
+                            <a class="btn btn-danger btn-sm" href="" wire:click.prevent="confirmTemaRemoval({{ $tema->id }})">Eliminar</a>
                         </td>
                     </tr>
                     @endforeach

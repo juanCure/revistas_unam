@@ -10,7 +10,7 @@ use Livewire\WithPagination;
 
 class Index extends Component {
 	use WithPagination;
-	public $id_responsable, $searchTerm, $nombres, $apellidos, $correo_electronico, $segundo_correo_electronico, $telefonos, $grado;
+	public $id_responsable, $searchTerm, $nombres, $apellidos, $correo_electronico, $segundo_correo_electronico, $telefonos, $grado, $responsableBeingRemoved;
 
 	// Establecer que estilo utilizar para los enlaces de paginación
 	protected $paginationTheme = 'bootstrap';
@@ -102,14 +102,21 @@ class Index extends Component {
 		$this->emit('responsableActualizado');
 	}
 
-	public function delete($id) {
+	public function confirmResponsableRemoval($responsable_id){
+		$this->responsableBeingRemoved = $responsable_id;
+		$this->dispatchBrowserEvent('show-delete-modal');
+	}
+
+	public function delete() {
+
 		try {
-			Responsable::find($id)->delete();
-			//session()->flash('success', "Area eliminada exitosamente");
-			$this->emit('alert', ['type' => 'success', 'message' => "Responsable eliminado exitosamente!"]);
+			$responsable = Responsable::findOrFail($this->responsableBeingRemoved);
+			$responsable->delete();
+			$this->emit('alert', ['type' => 'success', 'message' => "El usuario responsable \"{$responsable->nombre}\" fue borrado exitosamente!"]);
+			$this->dispatchBrowserEvent('hide-delete-modal');
 		} catch (QueryException $ex) {
 			$this->emit('alert', ['type' => 'error', 'message' => "No se pudo borrar el elemento seleccionado"]);
+			$this->dispatchBrowserEvent('hide-delete-modal');
 		}
-
 	}
 }

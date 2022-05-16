@@ -1,5 +1,6 @@
 <div class="container">
     <div class="row">
+        @include('delete-modal', ['object' => 'Sistema Indexador'])
         <div class="col-md-12">
             {{-- A good traveler has no fixed plans and is not intent upon arriving. --}}
 
@@ -25,7 +26,8 @@
                         <td>{{ $indexador->nombre }}</td>
                         <td>
                             <button wire:click="edit({{ $indexador->id }})" class="btn btn-primary btn-sm">Editar</button>
-                            <button wire:click="$emit('confirm_remove', {{ $indexador->id }})" class="btn btn-danger btn-sm">Eliminar</button>
+                            {{-- <button wire:click="$emit('confirm_remove', {{ $indexador->id }})" class="btn btn-danger btn-sm">Eliminar</button> --}}
+                            <a class="btn btn-danger btn-sm" href="" wire:click.prevent="confirmSistemaIndexadorRemoval({{ $indexador->id }})">Eliminar</a>
                         </td>
                     </tr>
                     @endforeach

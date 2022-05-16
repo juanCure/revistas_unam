@@ -4,11 +4,12 @@ namespace App\Http\Livewire\SistemasIndexadores;
 
 use App\Models\SistemaIndexador;
 use Livewire\Component;
+use Illuminate\Database\QueryException;
 
 class Index extends Component {
 
 	public $indexadores, $nombre, $id_indexador;
-	public $updateMode = false;
+	public $updateMode = false, $sistemaBeingRemoved;
 
 	protected $listeners = [
 		'remove' => 'delete',
@@ -68,12 +69,20 @@ class Index extends Component {
 		$this->resetInputFields();
 	}
 
-	public function delete($id) {
+	public function confirmSistemaIndexadorRemoval($sistema_id){
+		$this->sistemaBeingRemoved = $sistema_id;
+		$this->dispatchBrowserEvent('show-delete-modal');
+	}
+
+	public function delete() {
 		try {
-			SistemaIndexador::find($id)->delete();
-			$this->emit('alert', ['type' => 'success', 'message' => "El sistema indexador fue eliminado exitosamente"]);
+			$sistema = SistemaIndexador::findOrFail($this->sistemaBeingRemoved);
+			$sistema->delete();
+			$this->emit('alert', ['type' => 'success', 'message' => "El sistema \"{$sistema->nombre}\" fue borrado exitosamente!"]);
+			$this->dispatchBrowserEvent('hide-delete-modal');
 		} catch (QueryException $ex) {
 			$this->emit('alert', ['type' => 'error', 'message' => "No se pudo borrar el elemento seleccionado"]);
+			$this->dispatchBrowserEvent('hide-delete-modal');
 		}
 	}
 }

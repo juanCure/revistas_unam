@@ -1,5 +1,6 @@
 <div class="container">
     <div class="row">
+        @include('delete-modal', ['object' => 'Responsable'])
         <div class="col-md-12">
         	<h1>Responsables
                 <!-- Button trigger modal -->
@@ -39,7 +40,8 @@
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editarResponsableModal" wire:click.prevent="edit({{ $responsable->id }})">
                                           Editar
                                         </button>
-                                        <button wire:click="$emit('confirm_remove', {{ $responsable->id }})" class="btn btn-danger btn-sm">Eliminar</button>
+                                        {{-- <button wire:click="$emit('confirm_remove', {{ $responsable->id }})" class="btn btn-danger btn-sm">Eliminar</button> --}}
+                                        <a class="btn btn-danger btn-sm" href="" wire:click.prevent="confirmResponsableRemoval({{ $responsable->id }})">Eliminar</a>
                                     </td>
                             </tr>
                         @endforeach
