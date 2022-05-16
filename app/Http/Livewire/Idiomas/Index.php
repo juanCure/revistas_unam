@@ -9,7 +9,7 @@ use Livewire\Component;
 class Index extends Component {
 
 	public $idiomas, $nombre, $id_idioma;
-	public $updateMode = false;
+	public $updateMode = false, $idiomaBeingRemoved;
 
 	protected $listeners = [
 		'remove' => 'delete',
@@ -69,12 +69,21 @@ class Index extends Component {
 		$this->resetInputFields();
 	}
 
-	public function delete($id) {
+	public function confirmIdiomaRemoval($idioma_id){
+		
+		$this->idiomaBeingRemoved = $idioma_id;
+		$this->dispatchBrowserEvent('show-delete-modal');
+	}
+
+	public function delete() {
 		try {
-			Idioma::find($id)->delete();
-			$this->emit('alert', ['type' => 'success', 'message' => "El idioma fue eliminado exitosamente"]);
+			$idioma = Idioma::findOrFail($this->idiomaBeingRemoved);
+			$idioma->delete();
+			$this->emit('alert', ['type' => 'success', 'message' => "El idioma \"{$idioma->nombre}\" fue borrado exitosamente!"]);
+			$this->dispatchBrowserEvent('hide-delete-modal');
 		} catch (QueryException $ex) {
 			$this->emit('alert', ['type' => 'error', 'message' => "No se pudo borrar el elemento seleccionado"]);
+			$this->dispatchBrowserEvent('hide-delete-modal');
 		}
 
 	}
