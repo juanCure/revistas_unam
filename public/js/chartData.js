@@ -16,7 +16,7 @@ const tipos = {
         }
     },
     tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        pointFormat: '{series.name}: <span>{point.percentage:.1f}%</span>'
     },
     plotOptions: {
         pie: {
@@ -130,7 +130,7 @@ const indexaciones = {
             rotation: -45,
             style: {
                 fontSize: '13px',
-                fontFamily: 'Verdana, sans-serif'
+                fontFamily: 'sans-serif'
             }
         }
     },
@@ -144,10 +144,10 @@ const indexaciones = {
         enabled: false
     },
     tooltip: {
-        pointFormat: 'Population in 2017: <b>{point.y:.1f} millions</b>'
+        pointFormat: 'Population in 2017: <span>{point.y:.1f} millions</span>'
     },
     series: [{
-        name: '',
+        name: '', 
         data: [
                  ['SCOPUS', 24.2],
             ['WoS', 20.8],
@@ -167,7 +167,7 @@ const indexaciones = {
             y: 10, // 10 pixels down from the top
             style: {
                 fontSize: '13px',
-                fontFamily: 'Verdana, sans-serif'
+                fontFamily: 'sans-serif'
             }
         }
     }]
