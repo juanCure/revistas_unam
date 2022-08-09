@@ -67,7 +67,8 @@
 <body>
     <div id="app">
         @include('public_header')
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+            <!-- Se borró la clase "bg-white" del siguiente navbar...  -->
+        <nav class="navbar navbar-expand-md navbar-light shadow-sm">
             <div class="container">
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">

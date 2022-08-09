@@ -21,9 +21,26 @@
   background-position: 50% 50%;
 }
 
+
+.btn-warning {
+    color: #ffffff;
+    background-color: #ed6b0b;
+    border-color: #f48838;
+}
+
+
+
+.btn-warning:hover {
+    color: #ffffff;
+    background-color: #F44336;
+    border-color: #f48838;
+}
+
+
 .jumbotron.jumbotron-main a {
   color: #fff;
 }
+
 
 #open_acces_logo {
   max-width: 70px;

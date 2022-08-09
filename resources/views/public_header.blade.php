@@ -11,7 +11,7 @@
                 <div class="d-flex justify-content-end align-items-start" style="position: relative;/*width: 100%;*/">
                     <nav class="navbar navbar-light navbar-expand-md navigation-clean" id="mainMenu">
                         <div class="container"><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1" id="nav_bar"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-                            <div class="collapse navbar-collapse" id="navcol-1" style="background: rgba(255,255,255,0.77);">
+                            <div class="collapse navbar-collapse" id="navcol-1" style="background: rgba(255,255,255,0.81);">
                                 <ul class="navbar-nav ml-auto">
 
                                     <li class="nav-item"><a href="{{ route('inicio') }}" class="nav-link active">Inicio</a></li>
@@ -123,7 +123,7 @@
                                 <input name="searchTerm" class="form-control advanced_select advanced_input" type="text" value="{{ isset($searchTerm) ? $searchTerm : ''}}">
                             </div>
                             <div class="col d-flex justify-content-end align-items-center justify-content-xl-end align-items-xl-end input_col">
-                                <button class="btn btn-danger" type="submit" style="height: 40px;background: linear-gradient(#ff584d 0%, #ff892d 56%, rgb(255,171,45) 85%), #FF892D;/*color: rgb(33, 37, 41);*/letter-spacing: 2px;">Buscar</button>
+                                <button class="btn btn-warning" type="submit" style="height: 40px; letter-spacing: 2px;">Buscar</button>
                             </div>
                         </div>
                     </div>

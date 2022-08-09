@@ -1,6 +1,6 @@
 
 	
-
+//alert('test'); 
   $(function(){
 $('<i class="typcn typcn-export"></i>').appendTo(
 	'#modal_data a,.table_indicadores a, .article_link'
@@ -21,9 +21,9 @@ $('.card_container text').each(function(){
 if(text != undefined){
 
 text.css({  
-        'font-size': '15px',
-        'font-family': 'Anaheim, sans-serif',
-        //'font-weight': 'lighter',
+        'font-size': '12px',
+        'font-family': 'sans-serif',
+        'font-weight': 'lighter',
         'line-height': '20px'
     });
 
@@ -32,7 +32,7 @@ $('text tspan').each(function(){
 
 if($(this).attr('dy') == 14)
 $(this).attr('dy', 20) 
-console.log($(this).html())
+//console.log($(this).html()) 
 
 })
 
@@ -103,4 +103,30 @@ function generateArrayOfYears() {
   return years
 }
 
+
+
+
+
+setTimeout(function(){}, 2000)
+
+  $('tspan').each(function(){
+    $(this).css({
+      'font-weight': 'normal',
+      'font-size': '12px',
+    
+    })
+
+let str = $(this).text();
+let whitespace = "%"
+
+if(str.indexOf(whitespace) != -1){
+  console.log(whitespace + " found");
+}
+
+
 })
+
+
+
+}) // doc ready
+
