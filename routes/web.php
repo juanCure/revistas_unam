@@ -57,7 +57,8 @@ Route::get('/', [MainController::class, 'index'])->name('inicio');
 
 //Route::delete('revistas/{revista}', [RevistaController::class, 'destroy'])->name('revistas.destroy');
 
-Auth::routes(['register' => false]);
+Auth::routes();
+// Auth::routes(['register' => false]); Deshabilitando la ruta de registro
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

@@ -51,6 +51,8 @@
 
     <script type="text/javascript" src="{{ asset('js/sheetjs.min.js') }}"></script>
 
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
 
     @livewireStyles
 
