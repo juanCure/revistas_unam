@@ -43,8 +43,11 @@ class SolrService {
 	public function cleanInputSearchTerm($searchTerm) {
 		$searchTerm = trim($searchTerm);
 		$searchTerm = str_replace(":", "\:", $searchTerm);
-		$strQuery = "title:" . $searchTerm;
-		// dump($strQuery);
+		//$strQuery = "title:" . $searchTerm;
+		$strQuery = "(title:/[A-Z]*" . $searchTerm . "[A-Z]*/)";
+		if($searchTerm == "") {
+			$strQuery = "*:*";
+		}
 		return $strQuery;
 	}
 
