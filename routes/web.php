@@ -146,7 +146,9 @@ Route::get('verFicha/{id_revista}', [BusquedaPorIndiceController::class, 'viewMo
 Route::get('indicador/{id_revista}', [BusquedaPorIndiceController::class, 'getIndicador'])->name('indicador.revista');
 // Ruta para obtener las revistas de todos los tipos
 //
-Route::get('allRevistas', [BusquedaPorIndiceController::class, 'getTodosTiposRevistas'])->name('revistas.all');
+Route::get('todosTipos', [BusquedaPorIndiceController::class, 'getTodosTiposRevistas'])->name('revistas.todos.tipos');
+
+Route::get('todosTitulos', [BusquedaPorIndiceController::class, 'getTodosTitulos'])->name('revistas.todos.titulos');
 
 // Ruta para obtener las revistas descontinuadas
 Route::get('oldRevistas', [BusquedaPorIndiceController::class, 'getRevistasDescontinuadas'])->name('revistas.old');

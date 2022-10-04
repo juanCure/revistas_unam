@@ -38,7 +38,8 @@ class BusquedaPorIndiceController extends Controller {
 
 		$soporte = $request->soporte;
 
-		$revistas = Revista::when($tipo, function ($query, $tipo) {
+		$revistas = Revista::where("situacion", "Vigente")
+		->when($tipo, function ($query, $tipo) {
 			return $query->where('tipo_revista', $tipo);
 		})->when($letra, function ($query, $letra) {
 			return $query->where('titulo', 'like', "{$letra}%");
@@ -86,7 +87,8 @@ class BusquedaPorIndiceController extends Controller {
 
 		$soporte = $request->soporte;
 
-		$revistas = Revista::when($area_id, function ($query, $area_id) {
+		$revistas = Revista::where("situacion", "Vigente")
+		->when($area_id, function ($query, $area_id) {
 			return $query->where('id_area_conocimiento', $area_id);
 		})->when($letra, function ($query, $letra) {
 			return $query->where('titulo', 'like', "{$letra}%");
@@ -132,6 +134,7 @@ class BusquedaPorIndiceController extends Controller {
 
 		$revistas = SistemaIndexador::find($indice_id)
 			->revistas()
+			->where("situacion", "Vigente")
 			->when($letra, function ($query, $letra) {
 				return $query->where('titulo', 'like', "{$letra}%");
 			})->when($arbitrada, function ($query, $arbitrada) {
@@ -177,6 +180,7 @@ class BusquedaPorIndiceController extends Controller {
 
 		$revistas = EntidadEditora::find($entidad_id)
 			->revistas()
+			->where("situacion", "Vigente")
 			->when($letra, function ($query, $letra) {
 				return $query->where('titulo', 'like', "{$letra}%");
 			})->when($arbitrada, function ($query, $arbitrada) {
@@ -222,7 +226,8 @@ class BusquedaPorIndiceController extends Controller {
 
 		$soporte = $request->soporte;
 
-		$revistas = Revista::when($subsistema_id, function ($query, $subsistema_id) {
+		$revistas = Revista::where("situacion", "Vigente")
+		->when($subsistema_id, function ($query, $subsistema_id) {
 			return $query->where('id_subsistema', $subsistema_id);
 		})->when($letra, function ($query, $letra) {
 			return $query->where('titulo', 'like', "{$letra}%");
@@ -269,6 +274,41 @@ class BusquedaPorIndiceController extends Controller {
 
 		$arbitrada = $request->arbitrada;
 
+		$soporte = $request->soporte;
+
+		$revistas = Revista::where("situacion", "Vigente")
+		->when($letra, function ($query, $letra) {
+			$query->where('titulo', 'like', "{$letra}%");
+		})->when($arbitrada, function ($query, $arbitrada) {
+			return $query->where('arbitrada', $arbitrada);
+		})->when($soporte, function ($query, $soporte) {
+			return $query->where('soporte', $soporte);
+		})->sortable()->paginate($per_page)->withQueryString();
+
+		if (!$request->ajax()) {
+			return view('resultados.resultadosPorIndices', [
+				'revistas' => $revistas,
+				'tipos_revistas' => $indices['typos'],
+				'areas_conocimiento' => $indices['areas'],
+				'indexadores' => $indices['indexadores'],
+				'alfabeto' => $alfabeto,
+				'accion' => 'allRevistas',
+				'filtro' => '',
+				'breadcrumb' => "Todos los tipos",
+			]);
+		}
+
+		return view('resultados.index')->with([
+			'revistas' => $revistas,
+		])->render();
+	}
+
+	public function getTodosTitulos(Request $request) {
+		$indices = $this->indicesServicio->getIndices();
+		$alfabeto = $this->indicesServicio->getAlfabeto();
+		$letra = $request->abc;
+		$per_page = $request->per_page ?? 20;
+		$arbitrada = $request->arbitrada;
 		$soporte = $request->soporte;
 
 		$revistas = Revista::when($letra, function ($query, $letra) {

@@ -12,7 +12,7 @@
                             <i class="fa fa-chevron-right"></i>{{ $revista->tipo_revista }}
                         </a></li>
                     @endforeach
-                    <li class="list-group-item"><a href="{{ route('revistas.all')}}"><i class="fa fa-chevron-right"></i>Todos los tipos</a></li>
+                    <li class="list-group-item"><a href="{{ route('revistas.todos.tipos')}}"><i class="fa fa-chevron-right"></i>Todos los tipos</a></li>
                 </ul>
             </div>
         </div>
@@ -56,7 +56,7 @@
                         <a href="{{ route('revistas.old') }}"><i class="fa fa-chevron-right"></i>Revistas Descontinuadas</a>
                     </li>
                     <li class="list-group-item">
-                        <a href="{{ route('revistas.all') }}"><i class="fa fa-chevron-right"></i>Todos los títulos</a>
+                        <a href="{{ route('revistas.todos.titulos') }}"><i class="fa fa-chevron-right"></i>Todos los títulos</a>
                     </li>
                 </ul>
             </div>
