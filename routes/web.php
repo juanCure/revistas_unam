@@ -180,11 +180,13 @@ Route::view('estructuras', 'static.estructuras')->name('static.estructuras');
 Route::view('contacto', 'static.contacto')->name('static.contacto');
 Route::view('profesionalizacion', 'static.profesionalizacion')->name('static.profesionalizacion');
 Route::view('plataforma', 'static.plataforma')->name('static.plataforma');
-Route::view('disenio', 'static.diseño')->name('static.disenio');
+Route::view('disenio', 'static.disenio')->name('static.disenio');
 Route::view('derechos', 'static.derechos')->name('static.derechos');
 Route::view('material', 'static.material')->name('static.material');
 Route::view('acceso', 'static.acceso_abierto')->name('static.acceso');
 Route::view('enlaces', 'static.enlaces')->name('static.enlaces');
+Route::view('issn', 'static.issn')->name('static.issn');
+Route::view('lineamientos', 'static.lineamientos')->name('static.lineamientos');
 
 // Ruta para exportar el resultado de la busqueda por revistas en formato excel
 Route::post('revistas_export', [RevistaController::class, 'export'])->name('revistas.export');

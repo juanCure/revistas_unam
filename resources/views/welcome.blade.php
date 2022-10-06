@@ -123,9 +123,9 @@
                 <h6 class="heading_sub">Sitios relacionados</h6>
                 <div class="d-flex d-lg-flex d-xl-flex justify-content-center justify-content-lg-center justify-content-xl-center">
                     <div class="row d-flex justify-content-center" id="related_sites_row">
-                        <div class="col d-xl-flex justify-content-xl-center align-items-xl-center"><a href="https://www.publicaciones.unam.mx/" target="_blank"><img class="img-fluid" src="{{ asset('img/sites/publicaciones_fomento_editorial.svg')}}"></a></div>
-                        <div class="col d-flex d-xl-flex justify-content-center justify-content-xl-center align-items-xl-center"><a href="http://www.librosoa.unam.mx/" target="_blank"><img class="img-fluid" src="{{ asset('img/sites/libros_unam_open_access.svg')}}"></a></div>
-                        <div class="col d-flex d-xl-flex justify-content-end justify-content-xl-center align-items-xl-center"><a href="http://www.libros.unam.mx/" target="_blank"><img class="img-fluid" src="{{ asset('img/sites/libros_unam.svg')}}"></a></div>
+                        <div class="col d-xl-flex justify-content-xl-center align-items-xl-center"><a href="https://www.publicaciones.unam.mx/" target="_blank"><img class="img-fluid" src="{{ asset('img/sites/fomento_editorial.png')}}"></a></div>
+                        <div class="col d-flex d-xl-flex justify-content-center justify-content-xl-center align-items-xl-center"><a href="http://www.librosoa.unam.mx/" target="_blank"><img class="img-fluid" src="{{ asset('img/sites/librosOA.png')}}"></a></div>
+                        <div class="col d-flex d-xl-flex justify-content-end justify-content-xl-center align-items-xl-center"><a href="http://www.libros.unam.mx/" target="_blank"><img class="img-fluid" src="{{ asset('img/sites/libunam12.png')}}"></a></div>
                     </div>
                 </div>
             </div>

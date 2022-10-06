@@ -1,7 +1,9 @@
 <!-- This is the public header template -->
 <div class="jumbotron jumbotron-fluid jumbotron-main">
     <div class="text-dark d-flex justify-content-end" style="height: 34px;/*border-radius: 4px;*/background: linear-gradient(0deg, black 51%, rgb(55,55,55)), #1d2023;">
-        <div class="d-lg-flex align-items-lg-center" id="share_container" style="/*height: 100%;*/min-width: 100px;"><a class="d-inline-block d-lg-flex align-items-lg-center share" href=""><i class="fa fa-facebook-square"></i></a><a class="d-inline-block d-lg-flex align-items-lg-center share" href=""><i class="fa fa-twitter"></i></a><a class="d-inline-block d-lg-flex align-items-lg-center share" id="send_mail" href=""><i class="fas fa-envelope"></i></a></div>
+        <div class="d-lg-flex align-items-lg-center" id="share_container" style="/*height: 100%;*/min-width: 100px;"><a class="d-inline-block d-lg-flex align-items-lg-center share" href="https://www.facebook.com/revistasunam" target="_blank"><i class="fa fa-facebook-square"></i></a><a class="d-inline-block d-lg-flex align-items-lg-center share" href=" https://twitter.com/revistasunam" target="_blank"><i class="fa fa-twitter"></i></a><a class="d-inline-block d-lg-flex align-items-lg-center share" id="send_mail" href="revistas@unam.mx"><i class="fas fa-envelope"></i></a></div>
+        {{-- 
+        <div class="d-lg-flex align-items-lg-center" id="share_container" style="/*height: 100%;*/min-width: 100px;"><a class="d-inline-block d-lg-flex align-items-lg-center share" href=""><i class="fa fa-facebook-square"></i></a><a class="d-inline-block d-lg-flex align-items-lg-center share" href=""><i class="fa fa-twitter"></i></a><a class="d-inline-block d-lg-flex align-items-lg-center share" id="send_mail" href=""><i class="fas fa-envelope"></i></a></div> --}}
     </div>
     <div id="jumbotron_background" class="a"></div>
     <div class="container center-vertically-holder" style="margin-top:-20px;">
@@ -15,19 +17,20 @@
                                 <ul class="navbar-nav ml-auto">
 
                                     <li class="nav-item"><a href="{{ route('inicio') }}" class="nav-link active">Inicio</a></li>
-                                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#">Sobre Revistas</a>
-                                        <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('static.information') }}">Información General</a><a class="dropdown-item" href="{{ route('static.normas') }}">Normas Operativas</a><a class="dropdown-item" href="{{ route('static.estructuras') }}">Estructuras Organizacionales</a></div>
+                                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#">Revistas UNAM</a>
+                                        <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('static.information') }}">Información General</a><a class="dropdown-item" href="{{ route('static.normas') }}">Normas Operativas</a><a class="dropdown-item" href="{{ route('static.estructuras') }}">Organización</a></div>
                                     </li>
-                                    <li class="nav-item"><a class="nav-link" href="{{ route('static.contacto')}}">Lineamientos universitarios</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{{ route('static.lineamientos') }}">Lineamientos</a></li>
                                     <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#">Servicios</a>
                                         <div class="dropdown-menu">
-                                            <a href="{{ route('login') }}" class="dropdown-item">Iniciar Sesión</a>
-                                            <a class="dropdown-item" href="{{ route('static.profesionalizacion') }}">Profesionalización de Editores</a><a class="dropdown-item" href="{{ route('static.asesorias') }}">Asesorías y Consulta</a><a class="dropdown-item" href="#">Programa de Cursos y Talleres</a><a class="dropdown-item" href="{{ route('static.plataforma') }}">Plataforma de Gestión Editorial</a><a class="dropdown-item" href="{{ route('static.disenio') }}">Diseño Gráfico Web&nbsp;</a><a class="dropdown-item" href="{{ route('static.derechos') }}">Derechos de Autor</a></div>
+                                            {{-- <a href="{{ route('login') }}" class="dropdown-item">Iniciar Sesión</a> --}}
+                                            <a class="dropdown-item" href="{{ route('static.profesionalizacion') }}">Profesionalización editorial</a><a class="dropdown-item" href="{{ route('static.asesorias') }}">Asesorías y consultorías</a><a class="dropdown-item" href="{{ route('static.plataforma') }}">Plataformas de gestión editorial</a><a class="dropdown-item" href="{{ route('static.disenio') }}">Digitalización y diseño web</a><a class="dropdown-item" href="{{ route('static.issn') }}">ISBN, ISSN y DOI</a></div>
                                     </li>
-                                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#">Temas de interés</a>
+                                    <li class="nav-item"><a class="nav-link" href="https://www.publicaciones.unam.mx/servicios/es/talleres-2022-2" target="_blank">Talleres 2022-2</a></li>
+                                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#">Recursos</a>
                                         <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('static.material') }}">Material de apoyo</a><a class="dropdown-item" href="{{ route('static.enlaces') }}">Enlaces</a><a class="dropdown-item" href="{{ route('static.acceso') }}">Open Access</a></div>
                                     </li>
-                                    <li class="nav-item"><a class="nav-link" href="ingreso.html">Contacto</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{{ route('static.contacto')}}">Contacto</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -129,7 +132,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-sm-10 col-md-10 col-xl-10 offset-sm-1 offset-md-1 offset-xl-2 d-md-flex justify-content-md-start">
-                    <h6 class="text-center" id="subheading-2" style="padding-left: 5px;padding-top: 5px;">Catálogo actualizado de 145 revistas, más de 37 000 artículos completos&nbsp;</h6>
+                    <h6 class="text-center" id="subheading-2" style="padding-left: 5px;padding-top: 5px;">Catálogo actualizado de 149 revistas, más de 37 000 artículos completos&nbsp;</h6>
                 </div>
             </div>
         </form>

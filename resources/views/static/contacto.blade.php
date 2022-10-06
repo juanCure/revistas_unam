@@ -31,18 +31,6 @@
                     <div class="col-lg-6 d-flex justify-content-center align-items-center">
                         <div><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4848.964400941306!2d-99.18482278457181!3d19.307380149674593!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85ce00717db78f37%3A0xea901786b668e0aa!2sAv+Del+Im%C3%A1n+5%2C+Cd.+Universitaria%2C+04530+Ciudad+de+M%C3%A9xico%2C+D.F.!5e1!3m2!1ses-419!2smx!4v1444558833321" width="400" height="300" frameborder="0" style="border:0" allowfullscreen=""></iframe></div>
                     </div>
-                    <div class="col">
-                        <section class="contact-clean">
-                            <form method="post">
-                                <div class="form-group"><input class="form-control" type="text" name="name" placeholder="Nombre(s)*"></div>
-                                <div class="form-group"><input class="form-control" type="text" name="lastName" placeholder="Apellido(s)*"></div>
-                                <div class="form-group"><input class="form-control is-invalid" type="email" name="email" placeholder="Conrreo electrónico*"><small class="form-text text-danger">Por favor ingrese una dirección de correo electrónco válida</small></div>
-                                <div class="form-group"><input class="form-control" type="text" name="subject" placeholder="Asunto*"></div>
-                                <div class="form-group"><textarea class="form-control" name="message" placeholder="Mensaje*" rows="14"></textarea></div>
-                                <div class="form-group d-flex justify-content-end"><button class="btn btn-link" type="submit" style="color: var(--link);border: solid 2px;">ENVIAR</button></div>
-                            </form>
-                        </section>
-                    </div>
                 </div>
             </div>	
         </div>
