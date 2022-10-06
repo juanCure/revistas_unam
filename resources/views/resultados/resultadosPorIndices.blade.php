@@ -13,7 +13,7 @@
 	            <div class="row">
 	                <div class="col-12" id="data_filters">
 	                    <ol class="breadcrumb">
-	                        <li class="breadcrumb-item"><a href="{{ route('inicio') }}"><span>Inicio > </span></a></li>
+	                        <li class="breadcrumb-item"><a href="{{ route('inicio') }}"><span>Inicio</span></a></li>
 	                        <li class="breadcrumb-item"><a href="#"><span>{{ $breadcrumb }}</span></a></li>
 	                        <li class="breadcrumb-item"><a href="#"><span>Resultados</span></a></li>
 	                    </ol>

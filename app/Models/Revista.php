@@ -124,4 +124,14 @@ class Revista extends Model {
 	public function scopeArbitrada($query) {
 		return $query->where('arbitrada', 'Si');
 	}
+
+	/**
+	 * Scope a query to only include Revistas arbitradas.
+	 *
+	 * @param  \Illuminate\Database\Eloquent\Builder  $query
+	 * @return \Illuminate\Database\Eloquent\Builder
+	 */
+	public function scopeVigente($query) {
+		return $query->where("situacion", "Vigente");
+	}
 }

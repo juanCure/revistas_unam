@@ -7,6 +7,7 @@ use App\Models\Revista;
 use App\Models\SistemaIndexador;
 use App\Services\SolrService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Builder;
 
 class MainController extends Controller {
 
@@ -31,14 +32,18 @@ class MainController extends Controller {
 		$indexadores = DB::table('sistemas_indexadores')->select('id', 'nombre')->orderBy('nombre')->get();
 		//dd($areas);
 		//dd($typos);
-		// Obteniendo los tipos de revistas y la cantidad asociada
-		$typos_count = Revista::select('tipo_revista', DB::raw("COUNT(tipo_revista) as count"))
+		// Obteniendo los tipos de revistas y la cantidad de revistas asociadas
+		$typos_count = Revista::vigente()->select('tipo_revista', DB::raw("COUNT(tipo_revista) as count"))
 			->groupBy('tipo_revista')
 			->get();
-		// Obteniendo las distintas áreas de conocimiento y la cantidad asociada
-		$areas_count = AreasConocimiento::select(['id', 'nombre'])->withCount('revistas')->orderBy('id')->get();
-
-		$indexaciones_count = SistemaIndexador::select(['id', 'nombre'])->withCount('revistas')->orderBy('id')->get();
+		// Obteniendo las distintas áreas de conocimiento y la cantidad de revistas asociadas
+		$areas_count = AreasConocimiento::select(['id', 'nombre'])->withCount(['revistas' => function (Builder $query){
+				$query->where('situacion', '=', 'Vigente');
+		}])->having('revistas_count', '>', 0)->orderBy('id')->get();
+		
+		$indexaciones_count = SistemaIndexador::select(['id', 'nombre'])->withCount(['revistas' => function (Builder $query){
+				$query->where('situacion', '=', 'Vigente');
+		}])->having('revistas_count', '>', 0)->orderBy('id')->get();
 
 		// Calling the getHarvestedJournals from SolrService
 		// $harvestedJournals = $this->solrService->getHarvestedJournals($this->client);

@@ -38,7 +38,7 @@ class BusquedaPorIndiceController extends Controller {
 
 		$soporte = $request->soporte;
 
-		$revistas = Revista::where("situacion", "Vigente")
+		$revistas = Revista::vigente()
 		->when($tipo, function ($query, $tipo) {
 			return $query->where('tipo_revista', $tipo);
 		})->when($letra, function ($query, $letra) {
@@ -87,7 +87,7 @@ class BusquedaPorIndiceController extends Controller {
 
 		$soporte = $request->soporte;
 
-		$revistas = Revista::where("situacion", "Vigente")
+		$revistas = Revista::vigente()
 		->when($area_id, function ($query, $area_id) {
 			return $query->where('id_area_conocimiento', $area_id);
 		})->when($letra, function ($query, $letra) {
@@ -134,7 +134,7 @@ class BusquedaPorIndiceController extends Controller {
 
 		$revistas = SistemaIndexador::find($indice_id)
 			->revistas()
-			->where("situacion", "Vigente")
+			->vigente()
 			->when($letra, function ($query, $letra) {
 				return $query->where('titulo', 'like', "{$letra}%");
 			})->when($arbitrada, function ($query, $arbitrada) {
@@ -180,7 +180,7 @@ class BusquedaPorIndiceController extends Controller {
 
 		$revistas = EntidadEditora::find($entidad_id)
 			->revistas()
-			->where("situacion", "Vigente")
+			->vigente()
 			->when($letra, function ($query, $letra) {
 				return $query->where('titulo', 'like', "{$letra}%");
 			})->when($arbitrada, function ($query, $arbitrada) {
@@ -226,7 +226,7 @@ class BusquedaPorIndiceController extends Controller {
 
 		$soporte = $request->soporte;
 
-		$revistas = Revista::where("situacion", "Vigente")
+		$revistas = Revista::vigente()
 		->when($subsistema_id, function ($query, $subsistema_id) {
 			return $query->where('id_subsistema', $subsistema_id);
 		})->when($letra, function ($query, $letra) {
@@ -276,7 +276,7 @@ class BusquedaPorIndiceController extends Controller {
 
 		$soporte = $request->soporte;
 
-		$revistas = Revista::where("situacion", "Vigente")
+		$revistas = Revista::vigente()
 		->when($letra, function ($query, $letra) {
 			$query->where('titulo', 'like', "{$letra}%");
 		})->when($arbitrada, function ($query, $arbitrada) {
@@ -311,7 +311,7 @@ class BusquedaPorIndiceController extends Controller {
 		$arbitrada = $request->arbitrada;
 		$soporte = $request->soporte;
 
-		$revistas = Revista::when($letra, function ($query, $letra) {
+		$revistas = Revista::vigente()->when($letra, function ($query, $letra) {
 			$query->where('titulo', 'like', "{$letra}%");
 		})->when($arbitrada, function ($query, $arbitrada) {
 			return $query->where('arbitrada', $arbitrada);
@@ -500,7 +500,7 @@ class BusquedaPorIndiceController extends Controller {
 	public function agruparRevistasPorTipo($tipo, $area_id, $indice_id, $entidad_id, $subsistema_id, $old_revistas) {
 
 		if (isset($tipo) || isset($area_id) || $subsistema_id) {
-			$totales = Revista::select(\DB::raw("tipo_revista as name, COUNT(*) as y"))
+			$totales = Revista::vigente()->select(\DB::raw("tipo_revista as name, COUNT(*) as y"))
 				->when($tipo, function ($query, $tipo) {
 					return $query->where('tipo_revista', $tipo);
 				})
@@ -717,7 +717,7 @@ class BusquedaPorIndiceController extends Controller {
 		$totales;
 		if (isset($tipo) || isset($area_id) || $subsistema_id) {
 
-			$totales = Revista::select(DB::raw("subsistemas.nombre as name, COUNT(*) as y"))
+			$totales = Revista::vigente()->select(DB::raw("subsistemas.nombre as name, COUNT(*) as y"))
 				->join('subsistemas', 'subsistemas.id', '=', 'revistas.id_subsistema')
 				->when($tipo, function ($query, $tipo) {
 					return $query->where('revistas.tipo_revista', $tipo);
@@ -733,7 +733,7 @@ class BusquedaPorIndiceController extends Controller {
 				->get();
 		} elseif (isset($entidad_id)) {
 
-			$totales = Revista::select(DB::raw("subsistemas.nombre as name, COUNT(*) as y"))
+			$totales = Revista::vigente()->select(DB::raw("subsistemas.nombre as name, COUNT(*) as y"))
 				->join('subsistemas', 'subsistemas.id', '=', 'revistas.id_subsistema')
 				->join('entidad_editoras_revistas', 'entidad_editoras_revistas.id_revista', '=', 'revistas.id_revista')
 				->join('entidad_editoras', 'entidad_editoras.id', '=', 'entidad_editoras_revistas.id_entidad_editora')
@@ -744,7 +744,7 @@ class BusquedaPorIndiceController extends Controller {
 
 		} elseif (isset($indice_id)) {
 
-			$totales = Revista::select(DB::raw("subsistemas.nombre as name, COUNT(*) as y"))
+			$totales = Revista::vigente()->select(DB::raw("subsistemas.nombre as name, COUNT(*) as y"))
 				->join('subsistemas', 'subsistemas.id', '=', 'revistas.id_subsistema')
 				->join('indezadores_revistas', 'indezadores_revistas.id_revista', '=', 'revistas.id_revista')
 				->join('sistemas_indexadores', 'sistemas_indexadores.id', '=', 'indezadores_revistas.id_sistema')
@@ -763,7 +763,7 @@ class BusquedaPorIndiceController extends Controller {
 				->get();
 
 		} else {
-			$totales = Revista::select(DB::raw("subsistemas.nombre as name, COUNT(*) as y"))
+			$totales = Revista::vigente()->select(DB::raw("subsistemas.nombre as name, COUNT(*) as y"))
 				->join('subsistemas', 'subsistemas.id', '=', 'revistas.id_subsistema')
 				->groupBy(DB::raw('subsistemas.nombre'))
 				->orderBy('subsistemas.nombre', 'asc')
