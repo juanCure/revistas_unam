@@ -187,6 +187,8 @@ Route::view('acceso', 'static.acceso_abierto')->name('static.acceso');
 Route::view('enlaces', 'static.enlaces')->name('static.enlaces');
 Route::view('issn', 'static.issn')->name('static.issn');
 Route::view('lineamientos', 'static.lineamientos')->name('static.lineamientos');
+Route::view('creditos', 'static.creditos')->name('static.creditos');
+Route::view('directorio', 'static.directorio')->name('static.directorio');
 
 // Ruta para exportar el resultado de la busqueda por revistas en formato excel
 Route::post('revistas_export', [RevistaController::class, 'export'])->name('revistas.export');

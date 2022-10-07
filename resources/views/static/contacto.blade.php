@@ -18,7 +18,7 @@
                             <h4 id="heading_static_page-2">Dirección General de Publicaciones y Fomento Editorial</h4>
                             <ul style="list-style: none;">
                                 <li class="d-xl-flex align-items-xl-center"><i class="fa fa-home"></i><span>Av. del IMAN No. 5 Ciudad Universitaria, CP. 04510 México, D.F.</span></li>
-                                <li class="d-xl-flex align-items-xl-start"><i class="fa fa-phone"></i><span>(55) 5622-6189<br>(01-800) 50-10-400</span></li>
+                                <li class="d-xl-flex align-items-xl-start"><i class="fa fa-phone"></i><span>(55) 5622 6666 Ext. 82555</span></li>
                                 <li class="d-xl-flex align-items-xl-center"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 20 20" fill="none">
 
                                         <path d="M2.00333 5.88355L9.99995 9.88186L17.9967 5.8835C17.9363 4.83315 17.0655 4 16 4H4C2.93452 4 2.06363 4.83318 2.00333 5.88355Z" fill="currentColor"></path>
