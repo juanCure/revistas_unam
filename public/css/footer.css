@@ -48,7 +48,7 @@
 .footer-dark ul a {
   color: inherit;
   text-decoration: none;
-  opacity: 0.6;
+  opacity: 1;
 }
 
 .footer-dark ul a:hover {
@@ -100,6 +100,10 @@
   }
 }
 
+.footer-dark {
+  color: rgba(255,255,255,0.65);
+}
+
 .footer-dark .item.social > a {
   font-size: 20px;
   width: 36px;
@@ -121,7 +125,7 @@
 .footer-dark .copyright {
   text-align: center;
   padding-top: 20px;
-  opacity: 0.3;
+  opacity: 1;
   font-size: 13px;
   /*position: absolute;*/
   /*margin-bottom: 0;*/

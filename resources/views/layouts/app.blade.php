@@ -122,95 +122,55 @@
         @yield('content')
 
         <!-- This is the footer template -->
-        {{-- <div class="footer-dark">
-            <footer id="footer">
-                <div class="container">
-                    <div class="row" style="margin-top: 20px;margin-bottom: 40px;">
-                        <div class="col-12 d-flex d-xl-flex justify-content-center justify-content-xl-center" style="border-bottom: solid #666666 1px;margin-bottom: 20px;"><img id="logo_unam-1" src="{{ asset('img/culturaUNAM_02.png') }}" style="max-width: 301px;margin-bottom: 39px;"></div>
-                        <div class="col-12" style="margin-bottom: 20px;"></div>
-                        <div class="col-md-6 item text" style="margin-bottom:0px;">
-                            <h3>Dirección</h3>
-                            <p>Av. del IMAN No. 5 Ciudad Universitaria,CP. 04510 Ciudad de México</p>
-                        </div>
-                        <div class="col-sm-6 col-md-3 item">
-                            <h3>Conócenos</h3>
-                            <ul>
-                                <li><a href="#">Información general</a></li>
-                                <li><a href="#">Normas operativas</a></li>
-                                <li><a href="#">Estructuras organizacionales</a></li>
-                                <li><a href="#">Aviso de privacidad</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-sm-6 col-md-3 item">
-                            <h3>Temas de interés</h3>
-                            <ul>
-                                <li><a href="#">Enlaces</a></li>
-                                <li><a href="#">Open access</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col item social" style="margin-top:15px;"><a href="#"><i class="fa fa-facebook-square"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="far fa-envelope"></i></a></div>
-                    <div style="text-align:center;margin-top:-40px;">
-                        <h2 class="divider-style"></h2>
-                    </div>
-                    <div class="row no-gutters">
-                        <div class="col-12 d-xl-flex justify-content-xl-end align-items-xl-center">
-                            <div class="d-xl-flex align-items-xl-center">
-                                <p class="text-center copyright">Hecho en México por la Dirección General de Publicaciones y Fomento Editorial, UNAM todos los derechos reservados 2021.&nbsp;Esta página puede ser reproducida con fines no lucrativos, siempre y cuando se cite la fuente completa y su dirección electrónica, y no se mutile. De otra forma requiere permiso previo por escrito de la institución.</p>
-                            </div>
-                        </div>
-                        <div class="col-12 d-flex d-md-flex d-xl-flex justify-content-sm-center justify-content-md-center justify-content-xl-center align-items-xl-center">
-                            <ul class="list-inline">
-                                <li class="list-inline-item"><a href="#">Contacto</a></li>
-                                <li class="list-inline-item"><a href="#">Créditos</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </footer>
-        </div> --}}
+        
         <div class="footer-dark">
-            <footer id="footer">
-                <div class="container">
-                    <div class="row" style="margin-top: 20px;margin-bottom: 40px;">
-                        <div class="col-sm-6 col-md-3 col-xl-3 d-xl-flex justify-content-xl-center align-items-xl-center item"><img id="logo_unam-3" src="{{ asset('img/culturaUNAM_02.png') }}" style="max-width: 201px;margin-bottom: 39px;"></div>
-                        <div class="col-sm-6 col-md-3 col-xl-3 d-xl-flex justify-content-xl-center align-items-xl-center item"><img id="logo_unam-2" src="{{ asset('img/escudo_fomento.png') }}" style="max-width: 201px;margin-bottom: 39px;"></div>
-                        <div class="col-xl-3 item text" style="margin-bottom:0px;">
-                            <h3>Dirección</h3>
-                            <p>Av. del IMAN No. 5 Ciudad Universitaria, C. P. 04510, Ciudad de México</p>
-                            <p><span style="font-weight: bold;color: white;"><strong>Teléfono:&nbsp;</strong></span>55 5622 6666 Ext. 82555</p>
-                            <p><span style="font-weight: bold;color: white;"><strong>Correo:&nbsp;</strong></span>revistas@unam.mx</p>
-                            <div class="item social"><a href="https://www.facebook.com/revistasunam" target="_blank"><i class="fa fa-facebook-square"></i></a><a href="https://twitter.com/revistasunam" target="_blank"><i class="icon ion-social-twitter"></i></a><a href="mailto:revistas@unam.mx"><i class="far fa-envelope"></i></a></div>
-                        </div>
-                        <div class="col-sm-6 col-md-3 col-xl-3 item">
-                            <h3>Conócenos</h3>
-                            <ul>
-                                <li><a href="{{ route('static.information')}}">Información general</a></li>
-                                <li><a href="{{ route('static.normas')}}">Normas operativas</a></li>
-                                <li><a href="{{ route('static.estructuras')}}">Organización</a></li>
-                                <li><a href="{{ route('static.lineamientos')}}">Lineamientos</a></li>
-                                <li><a target="_blank" href="https://www.publicaciones.unam.mx/servicios/es/aviso-de-privacidad-simplificado">Aviso de privacidad</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div style="text-align:center;margin-top:-40px;">
-                        <h2 class="divider-style"></h2>
-                    </div>
-                    <div class="row no-gutters">
-                        <div class="col-12 d-xl-flex justify-content-xl-end align-items-xl-center">
-                            <div class="d-xl-flex align-items-xl-center">
-                                <p class="text-center copyright">Hecho en México, Universidad Nacional Autónoma de México (UNAM), todos los derechos reservados 2022. Se autoriza la reproducción total o parcial de los textos aquí publicados siempre y cuando se cite la fuente completa y la dirección electrónica de la publicación. <br> <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Licencia Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Portal Revistas UNAM</span> por <a xmlns:cc="http://creativecommons.org/ns#" href="www.revistas.unam.mx" property="cc:attributionName" rel="cc:attributionURL">Universidad Nacional Autónoma de México</a> se distribuye bajo una <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Licencia Creative Commons Atribución-NoComercial-SinDerivadas 4.0 Internacional</a>.<br />Basada en una obra en <a xmlns:dct="http://purl.org/dc/terms/" href="www.revistas.unam.mx" rel="dct:source">www.revistas.unam.mx</a>.</p>
-                            </div>
-                        </div>
-                        <div class="col-12 d-flex d-md-flex d-xl-flex justify-content-sm-center justify-content-md-center justify-content-xl-center align-items-xl-center">
-                            <ul class="list-inline" id="contacto_list">
-                                <li class="list-inline-item"><a href="{{ route('static.directorio')}}">Directorio</a></li>
-                                <li class="list-inline-item"><a href="{{ route('static.creditos')}}">Créditos</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+          <footer id="footer">
+              <div class="container">
+                  <div class="row" style="margin-top: 20px;margin-bottom: 40px;">
+                      <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 d-lg-flex d-xl-flex justify-content-lg-center justify-content-xl-center align-items-xl-center item"><img class="img-fluid" id="logo_unam-2" src="{{ asset('img/escudo_fomento.png') }}" style="/*max-width: 201px;*/margin-bottom: 39px;"></div>
+                      <div class="col-sm-6 col-md-4 col-lg-4 col-xl-4 text-sm-left d-lg-flex d-xl-flex justify-content-xl-center item text" style="margin-bottom:0px;">
+                          <div>
+                              <h3>Dirección</h3>
+                              <p>Av. del IMAN No. 5 Ciudad Universitaria, C. P. 04510, Ciudad de México</p>
+                              <p><span style="font-weight: bold;color: white;"><strong>Teléfono:&nbsp;</strong></span>55 5622 6666 Ext. 82555</p>
+                              <div class="item social"><a href="https://www.facebook.com/revistasunam" target="_blank"><i class="fa fa-facebook-square"></i></a><a href="https://twitter.com/revistasunam" target="_blank"><i class="icon ion-social-twitter"></i></a><a href="revistas@unam.mx"><i class="far fa-envelope"></i></a></div>
+                          </div>
+                      </div>
+                      <div class="col-sm-6 col-md-4 col-lg-4 col-xl-4 text-sm-left d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-sm-center justify-content-md-center justify-content-lg-center justify-content-xl-center item">
+                          <div>
+                              <h3>Conócenos</h3>
+                              <ul>
+                                  <li><a href="{{ route('static.information')}}">Información general</a></li>
+                                  <li><a href="{{ route('static.normas')}}">Normas operativas</a></li>
+                                  <li><a href="{{ route('static.estructuras')}}">Organización</a></li>
+                                  <li><a href="{{ route('static.lineamientos')}}">Lineamientos</a></li>
+                                  <li><a href="https://www.publicaciones.unam.mx/servicios/es/aviso-de-privacidad-simplificado" target="_blank">Aviso de privacidad</a></li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+                  <div style="text-align:center;margin-top:-40px;">
+                      <h2 class="divider-style"></h2>
+                  </div>
+                  <div class="row no-gutters">
+                      <div class="col-12 d-xl-flex justify-content-xl-end align-items-xl-center">
+                          <div class="d-xl-flex align-items-xl-center">
+                              <p class="text-center copyright">Hecho en México, Universidad Nacional Autónoma de México (UNAM). Se autoriza la reproducción total o parcial de los textos aquí publicados siempre y cuando se cite la fuente completa y la dirección electrónica de la publicación.<br></p>
+                          </div>
+                      </div>
+                      <div class="col-12 d-xl-flex justify-content-xl-center align-items-xl-center">
+                          <div><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="license"><img src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"></a></div>
+                      </div>
+                      <div class="col-12 d-xl-flex justify-content-xl-end align-items-xl-center"><p class="text-center copyright"><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Portal Revistas UNAM</span> por <a xmlns:cc="http://creativecommons.org/ns#" href="https://revistas.unam.mx" property="cc:attributionName" rel="cc:attributionURL">Universidad Nacional Autónoma de México</a> se distribuye bajo una <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Licencia Creative Commons Atribución-NoComercial-SinDerivadas 4.0 Internacional</a>.<br>Basada en una obra en <a xmlns:dct="http://purl.org/dc/terms/" href="https://revistas.unam.mx" rel="dct:source">www.revistas.unam.mx</a>.</p></div>
+                      <div class="col-12 d-flex d-md-flex d-xl-flex justify-content-sm-center justify-content-md-center justify-content-xl-center align-items-xl-center">
+                          <ul class="list-inline" id="contacto_list">
+                              <li class="list-inline-item"><a href="{{ route('static.directorio')}}">Directorio</a></li>
+                              <li class="list-inline-item"><a href="{{ route('static.creditos')}}">Créditos</a></li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+          </footer>
         </div>
     </div>
     @livewireScripts

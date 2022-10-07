@@ -13,12 +13,11 @@
                 <div class="d-flex justify-content-end align-items-start" style="position: relative;/*width: 100%;*/">
                     <nav class="navbar navbar-light navbar-expand-md navigation-clean" id="mainMenu">
                         <div class="container"><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1" id="nav_bar"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-                            <div class="collapse navbar-collapse" id="navcol-1" style="background: rgba(255,255,255,0.81);">
+                            <div class="collapse navbar-collapse" id="navcol-1" style="background: rgba(255,255,255,0.77);">
                                 <ul class="navbar-nav ml-auto">
-
                                     <li class="nav-item"><a href="{{ route('inicio') }}" class="nav-link active">Inicio</a></li>
                                     <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#">Revistas UNAM</a>
-                                        <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('static.information') }}">Información General</a><a class="dropdown-item" href="{{ route('static.normas') }}">Normas Operativas</a><a class="dropdown-item" href="{{ route('static.estructuras') }}">Organización</a></div>
+                                        <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('static.information') }}">Información general</a><a class="dropdown-item" href="{{ route('static.normas') }}">Normas operativas</a><a class="dropdown-item" href="{{ route('static.estructuras') }}">Organización</a></div>
                                     </li>
                                     <li class="nav-item"><a class="nav-link" href="{{ route('static.lineamientos') }}">Lineamientos</a></li>
                                     <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#">Servicios</a>
@@ -132,7 +131,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-sm-10 col-md-10 col-xl-10 offset-sm-1 offset-md-1 offset-xl-2 d-md-flex justify-content-md-start">
-                    <h6 class="text-center" id="subheading-2" style="padding-left: 5px;padding-top: 5px;">Catálogo actualizado de 149 revistas, más de 37 000 artículos completos&nbsp;</h6>
+                    <h6 class="text-center" id="subheading-2" style="padding-left: 5px;padding-top: 5px;">Portal con 149 revistas y acceso a más de 40,000 artículos a texto completo.</h6>
                 </div>
             </div>
         </form>

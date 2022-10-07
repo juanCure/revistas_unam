@@ -2,7 +2,7 @@
 @section('content')
 
    <!-- Here starts the content of the index view -->
-    <div class="container" id="carousel-container">
+    {{-- <div class="container" id="carousel-container">
         <div class="carousel slide" data-ride="carousel" id="carousel-1">
             <div class="carousel-inner">
                 <div class="carousel-item active"><img class="w-100 d-block" src="{{ asset('img/carousel/1.jpg')}}" alt="Slide Image"></div>
@@ -11,7 +11,7 @@
             <div><a class="carousel-control-prev" href="#carousel-1" role="button" data-slide="prev"><span class="carousel-control-prev-icon"></span><span class="sr-only">Previous</span></a><a class="carousel-control-next" href="#carousel-1" role="button" data-slide="next"><span class="carousel-control-next-icon"></span><span class="sr-only">Next</span></a></div>
         </div>
         <section></section>
-    </div>
+    </div> --}}
     <div class="container-fluid card_container" style="/*background: #f5f5f5;*/">
         <div class="row no-gutters d-xl-flex justify-content-xl-center card_row">
             <div class="col-10 col-xl-8 offset-1 offset-xl-0">
@@ -118,6 +118,7 @@
                 <div></div>
             </div>
         </div> --}}
+
         <div class="row no-gutters d-xl-flex justify-content-xl-center card_row issues_row">
             <div class="col-10 col-xl-8 offset-1 offset-xl-0">
                 <h6 class="heading_sub">Sitios relacionados</h6>
@@ -132,12 +133,6 @@
         </div>
     </div> <!-- Here ends the container for the index view -->
 
-
-    {{-- Bibliotecas javascript y código para renderizar una gráfica Highcharts --}}
-    {{-- <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script src="https://code.highcharts.com/highcharts-3d.js"></script>
-    <script src="https://code.highcharts.com/modules/cylinder.js"></script> --}}
     <script type="text/javascript">
         $(document).ready(function() {
 

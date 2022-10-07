@@ -12,8 +12,8 @@ html, body {
 
 .page-link:hover, a:hover {
   color: #9d1013 !important;
-  background:#9e9e9e1a;
-  text-decoration:none;
+  background: #9e9e9e1a;
+  text-decoration: none;
 }
 
 .custom-control-input:checked ~ .custom-control-label::before {
@@ -37,8 +37,8 @@ html, body {
 
 #mainMenu .nav-link {
   color: var(--dark);
-  font-size:.9em;
-  font-weight:600
+  font-size: .9em;
+  font-weight: 600;
 }
 
 #share_container {
@@ -215,16 +215,15 @@ html, body {
 
 /* ****** */
 
-.card-body .row{
-  margin-top: 10px
-;/* margin-bottom: 10px; */}
+.card-body .row {
+  margin-top: 10px;
+  /*margin-bottom: 10px;*/
+}
 
-
-
-.card-body .row>div{
+.card-body .row > div {
   margin-bottom: 10px;
- 
-;/* margin-bottom: 10px; */}
+  /*margin-bottom: 10px;*/
+}
 
 .card_container {
   padding: 0;
@@ -257,8 +256,7 @@ html, body {
 
 .chart_col {
   border: solid silver 1px;
-  /*el siguiente valor se comentÃƒÂ³ para que no se descuadre la grÃƒÂ¡fica al abrir el menÃƒÂº de la esquina. revisar si no hay conflicto*/
-  /* max-width: 95%; */
+  /*max-width: 95%;*/
 }
 
 .card_row:last-child .list-group {
@@ -268,7 +266,7 @@ html, body {
 
 .highcharts_list {
   border: solid silver 1px;
-  border-radius:unset;
+  border-radius: unset;
 }
 
 .highcharts-container {
@@ -339,19 +337,12 @@ html, body {
   }
 }
 
-
 @media (min-width: 768px) {
-
   .chart_col {
-   /* border: solid rgb(168, 16, 16) 1px;
-     max-width: 95%; */
+    /*border: solid rgb(168, 16, 16) 1px;*/
+    /*max-width: 95%;*/
   }
-
-
 }
-
-
-
 
 #issues_row, #related_sites_row {
   margin-top: 40px;
@@ -360,11 +351,10 @@ html, body {
 #related_sites_row {
   width: 90%;
 }
-#related_sites_row a{
-  display:contents;
+
+#related_sites_row a {
+  display: contents;
 }
-
-
 
 @media (min-width: 992px) {
   #related_sites_row {
@@ -409,6 +399,6 @@ html, body {
 
 p {
   font-weight: lighter;
-  font-family: Anaheim, sans-serif;
+  font-family: sans-serif;
 }
 

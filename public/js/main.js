@@ -33,8 +33,13 @@ $('text tspan').each(function(){
 if($(this).attr('dy') == 14)
 $(this).attr('dy', 20) 
 //console.log($(this).html()) 
-
 })
+// Esta línea agrega en negritas el campo title de las gráficas Highcharts
+  $('.highcharts-title').css({
+    'font-weight': '800'
+    });
+
+ 
 
 }
 
