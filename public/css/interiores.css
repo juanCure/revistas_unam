@@ -122,7 +122,6 @@ li:before {
 
 .page_row ul li, .page_row ol li {
   font-weight: lighter;
-  font-family: Anaheim, sans-serif;
 }
 
 /* ***** STATIC PAGES ******************************* */
@@ -165,6 +164,13 @@ li:before {
   color: var(--dark);
 }
 
+/* **** liuneamientos ****** */
+
+ol.lineamientos_list li, ol.lineamientos_list p {
+  margin: 0;
+  margin-bottom: 10px;
+}
+
 /* **** ENLACES ****** */
 
 #enlaces_row a {
@@ -203,6 +209,6 @@ li:before {
 
 .creditos_nombre {
   font-weight: lighter;
-  font-family: Anaheim, sans-serif;
+  font-family: sans-serif;
 }
 
