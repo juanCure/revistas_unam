@@ -278,8 +278,10 @@
             $.get( APP_URL + "/verFicha/" + id, function( data ) {
                 $(".modal-body").html(data.body);
                 if(data.url != null) {
-                	anchor = "<a target=\"_blank\" href=" + data.url + ">" + data.title + "</a>";
+                	anchor = "<a target=\"_blank\" href=" + data.url + ">" + data.title + " <i class=\"typcn typcn-export\"></i></a>";
                 	$("#data_title").html(anchor);
+                	anchor = "<a class=\"btn btn-secondary\" target=\"_blank\" href=" + data.url + ">" + "Ir a la revista" + " <i class=\"typcn typcn-export\"></i></a>";
+                	$("#goToJournal").html(anchor);
                 } else {
                 	no_anchor = "<span>" + data.title + "</span>";
                 	$("#data_title").html(no_anchor);
