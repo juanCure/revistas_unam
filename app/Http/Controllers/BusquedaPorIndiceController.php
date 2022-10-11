@@ -534,7 +534,7 @@ class BusquedaPorIndiceController extends Controller {
 				->groupBy(DB::raw("tipo_revista"))
 				->get();
 		} else {
-			$totales = Revista::select(DB::raw("tipo_revista as name, COUNT(*) as y"))
+			$totales = Revista::vigente()->select(DB::raw("tipo_revista as name, COUNT(*) as y"))
 				->groupBy(DB::raw("tipo_revista"))
 				->get();
 		}
@@ -587,7 +587,7 @@ class BusquedaPorIndiceController extends Controller {
 				->groupBy(DB::raw('areas_conocimiento.nombre'))
 				->get();
 		} else {
-			$totales = Revista::select(DB::raw("areas_conocimiento.nombre as name, COUNT(*) as y"))
+			$totales = Revista::vigente()->select(DB::raw("areas_conocimiento.nombre as name, COUNT(*) as y"))
 				->join('areas_conocimiento', 'areas_conocimiento.id', '=', 'revistas.id_area_conocimiento')
 				->groupBy(DB::raw('areas_conocimiento.nombre'))
 				->get();

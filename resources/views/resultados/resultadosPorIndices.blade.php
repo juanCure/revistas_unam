@@ -129,7 +129,7 @@
                                             <path d="M1 11a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3zm5-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V2z"></path>
                                         </svg></label></a>
 
-                                        <select name="grafica" class="border rounded-pill form-control" id="select_registro-2" style="width:100;">
+                                        <select name="grafica" class="border rounded-pill form-control" id="grafica" style="width:100;">
 											<option value="" selected="selected">Seleccione...</option>
 											<option value="1">Áreas del conocimiento</option>
 											<option value="2">Entidades académicas</option>
@@ -147,15 +147,7 @@
 							</div> <!-- Ending for <div class="form-row .row-cols-5"> -->
 	    				</form>
 	                </div>
-	                @if(count($revistas ?? '') == 0)
-						<div class="alert alert-warning">
-							No se encontraron resultados
-						</div>
-					@else
-						<div id="revistas_resultado">
-	                		@include("resultados.index")
-	                	</div>
-	                @endif
+	                @include("resultados.index")
 	            </div>
 	        </div>
 
@@ -243,11 +235,11 @@
 									groupPadding: null,
 									borderWidth: null,
 									dataLabels: {
-										enabled: null,
+										enabled: true,
 										color: null,
 										style: {
-											fontSize: null,
-											"font-weight": "bold"
+											fontSize: '14px',
+											"fontWeight": "bold"
 										},
 										"formatter": function() {
 											return this.series.name + this.y + "";
