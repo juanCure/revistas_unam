@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="{{ asset('fonts/fontawesome5-overrides.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
     <link rel="stylesheet" href="{{ asset('css/jumbotron.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/Contact-Form-Clean.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     <link rel="stylesheet" href="{{ asset('css/interiores.css') }}">
     <link rel="stylesheet" href="{{ asset('css/journal_view.css') }}">
@@ -135,7 +136,7 @@
                               <h3>Dirección</h3>
                               <p>Av. del IMAN No. 5 Ciudad Universitaria, C. P. 04510, Ciudad de México</p>
                               <p><span style="font-weight: bold;color: white;"><strong>Teléfono:&nbsp;</strong></span>55 5622 6666 Ext. 82555</p>
-                              <div class="item social"><a href="https://www.facebook.com/revistasunam" target="_blank"><i class="fa fa-facebook-square"></i></a><a href="https://twitter.com/revistasunam" target="_blank"><i class="icon ion-social-twitter"></i></a><a href="revistas@unam.mx"><i class="far fa-envelope"></i></a></div>
+                              <div class="item social"><a href="https://www.facebook.com/revistasunam" target="_blank"><i class="fa fa-facebook-square"></i></a><a href="https://twitter.com/revistasunam" target="_blank"><i class="icon ion-social-twitter"></i></a><a href="mailto:revistas@unam.mx"><i class="far fa-envelope"></i></a></div>
                           </div>
                       </div>
                       <div class="col-sm-6 col-md-4 col-lg-4 col-xl-4 text-sm-left d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-sm-center justify-content-md-center justify-content-lg-center align-items-lg-center justify-content-xl-center item">

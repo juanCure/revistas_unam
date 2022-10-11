@@ -39,7 +39,7 @@
         <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-2 d-flex justify-content-start align-items-center justify-content-sm-start data_label_col"><span class="d-flex align-items-center align-items-xl-center data_span data_label">ISSN-E</span></div>
         <div class="col-12 col-sm-6 col-md-6 col-lg-9 col-xl-10 d-flex justify-content-start align-items-center justify-content-sm-start"><span class="d-flex align-items-center data_value">{{ $revista->issne != null ? $revista->issne : "En trámite!" }}<br></span></div>
         
-        <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-2 d-flex justify-content-start align-items-center justify-content-sm-start data_label_col"><span class="d-flex align-items-center align-items-xl-center data_span data_label">Tipo de Licencia</span></div>
+        <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-2 d-flex justify-content-start align-items-center justify-content-sm-start data_label_col"><span class="d-flex align-items-center align-items-xl-center data_span data_label">Tipo de licencia</span></div>
         <div class="col-12 col-sm-6 col-md-6 col-lg-9 col-xl-10 d-flex justify-content-start align-items-center justify-content-sm-start"><span class="d-flex align-items-center data_value">Licencia Creative Commons Atribución-NoComercial 4.0 Internacional.<br></span></div>
         <div class="col-12 col-lg-3 col-xl-2 d-flex justify-content-start align-items-center justify-content-sm-start data_label_col"><span class="d-flex align-items-center data_span data_label">Editoriales</span></div>
         <div class="col-12 col-lg-9 col-xl-10 d-flex justify-content-start align-items-center justify-content-sm-start">
@@ -48,7 +48,7 @@
                     <li><span class="data_value">{{ $editorial->nombre }}</span></li>
                 @endforeach
             </ul></div>
-        <div class="col-12 col-lg-3 col-xl-2 d-flex justify-content-start align-items-center justify-content-sm-start data_label_col"><span class="d-flex align-items-center data_span data_label">Entidades Editoras</span></div>
+        <div class="col-12 col-lg-3 col-xl-2 d-flex justify-content-start align-items-center justify-content-sm-start data_label_col"><span class="d-flex align-items-center data_span data_label">Entidades editoras</span></div>
         <div class="col-12 col-lg-9 col-xl-10 d-flex justify-content-start align-items-center justify-content-sm-start">
             <ul class="data_value_list">
                 @foreach ($revista->entidades_editoras as $entidad)
@@ -66,7 +66,7 @@
                 @endforeach
             </ul>
         </div>
-        <div class="col-12 col-lg-3 col-xl-2 d-flex justify-content-start align-items-center justify-content-sm-start data_label_col"><span class="d-flex align-items-center data_span data_label">Principales Índices</span></div>
+        <div class="col-12 col-lg-3 col-xl-2 d-flex justify-content-start align-items-center justify-content-sm-start data_label_col"><span class="d-flex align-items-center data_span data_label">Principales índices</span></div>
         <div class="col-12 col-lg-9 col-xl-10 d-flex justify-content-start align-items-center justify-content-sm-start"><span class="d-flex align-items-center data_value">@foreach ($revista->sistemas_indexadores as $indice)
                         {{ $indice->nombre }}@if(!$loop->last),@else.@endif
                     @endforeach<br></span></div>

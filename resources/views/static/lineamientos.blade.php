@@ -5,14 +5,12 @@
     		@include('public_sidebar')
             <div class="col-lg-9 order-1 order-lg-2 data_col" id="subsistemas_col" style="background: #ffffff;border-top-right-radius: 10px;">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('inicio')}}"><span>Inicio</span></a></li>
-                    <li class="breadcrumb-item"><a href="#"><span>Lineamientos<br></span></a></li>
+                    <li class="breadcrumb-item"><a href="#"><span>Inicio</span></a></li>
+                    <li class="breadcrumb-item"><a href="#"><span>LINEAMIENTOS<br></span></a></li>
                 </ol>
                 <div class="row page_row" id="article_results_container_row">
                     <div class="col-12 article_col">
                         <h2 id="heading_static_page">DIRECTRICES GENERALES PARA LA EDICIÓN Y PUBLICACIÓN&nbsp;<br>DE REVISTAS ACADÉMICAS DIGITALES EN LA UNAM<br></h2>
-                        <h4 id="heading_static_page-1">Consejo de Publicaciones Académicas y Arbitradas de la UNAM<br></h4>
-                        <h6 id="heading_static_page-2" style="margin-left: 17px;">Ciudad Universitaria, CDMX<br>01 de octubre de 2020<br></h6>
                         <p>Las presentes Directrices Generales para la Edición y Publicación de Revistas Académicas en la UNAM tienen como objetivo señalar los criterios que toda revista académica digital editada y publicada en soporte digital bajo el sello de la Universidad Nacional Autónoma de México debe cumplir.&nbsp;<br></p>
                         <p>Las presentes Directrices Generales para la Edición y Publicación de Revistas Académicas Digitales en la UNAM se emiten en apego a las Disposiciones Generales para la Actividad Editorial y de Distribución de la Universidad Nacional Autónoma de México emanadas del Consejo Editorial de la UNAM (Gaceta UNAM del 3 de septiembre de 2018), máximo órgano colegiado en materia editorial, así como a lo dispuesto en el Acuerdo por el que se Modifican la Estructura y Funciones del Consejo de Publicaciones Académicas y Arbitradas y se Adicionan Funciones a la Red de Directores y Editores de Revistas Académicas y Arbitradas en la UNAM (Gaceta UNAM del 1 de agosto de 2016).<br></p>
                         <p>En razón de lo anterior, el Consejo de Publicaciones Académicas y Arbitradas de la UNAM acordó emitir las siguientes Directrices Generales para la Edición y Publicación de Revistas Académicas Digitales en la UNAM:<br></p>
@@ -406,10 +404,9 @@
                             </li>
                             <li>APOYO Y ASESORÍA TÉCNICA<br>Para el adecuado cumplimiento de las Directrices Generales, los equipos editoriales podrán solicitar asesoría técnica tanto a la Subdirección de Revistas Académicas y Publicaciones Digitales de la DGPFE como a la DGAJ.</li>
                         </ol>
-                        <p style="text-align: right;"><span style="font-weight:bold"><strong>Consejo de Publicaciones Académicas y Arbitradas de la UNAM</strong><br></span>Ciudad Universitaria, CDMX<br>Enero de 2021<br><br></p>
                     </div>
                 </div>
-            </div>	
+            </div>
         </div>
     </div>
 @endsection

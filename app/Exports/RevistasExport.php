@@ -58,7 +58,7 @@ class RevistasExport implements FromQuery, WithMapping, WithHeadings {
 			$revista->subsistema->nombre,
 			$revista->sistemas_indexadores->implode("nombre", " | "),
 			$revista->arbitrada,
-			$revista->soporte,
+			($revista->soporte == "Ambas") ? "Digital e impreso" : $revista->soporte,
 		];
 	}
 }
