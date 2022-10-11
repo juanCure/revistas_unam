@@ -14,7 +14,7 @@
                         <section>
                             <h3>Dirección General de Publicaciones y Fomento Editorial<br></h3>
                             <ul>
-                                <li><span class="creditos_nombre creditos">Socorro Venegas Pérez<br></span><span class="creditos_cargo creditos">Directora General de Publicaciones y Fomento Editorial<br><br></span></li>
+                                <li><span class="creditos_nombre creditos">Mtra. Socorro Venegas Pérez<br></span><span class="creditos_cargo creditos">Directora General de Publicaciones y Fomento Editorial<br><br></span></li>
                                 <li><span class="creditos_nombre creditos">Act. Guillermo Chávez Sánchez<br></span><span class="creditos_cargo creditos">Subdirector de Revistas Académicas y Publicaciones Digitales<br><br></span></li>
                                 <li><span class="creditos_nombre creditos">Juan Manuel Rodríguez Martínez<br></span><span class="creditos_nombre creditos">Ing. Jorge Pérez García<br></span><span class="creditos_cargo creditos">Desarrollo, infraestructura y soporte técnico<br><br></span></li>
                                 <li><span class="creditos_nombre creditos">Nataly Vaca Tapia<br></span><span class="creditos_nombre creditos">Jaquelin Segura Bautista<br></span><span class="creditos_nombre creditos">Liseth Coello González<br></span><span class="creditos_cargo creditos">Soporte técnico de OJS<br><br></span></li>

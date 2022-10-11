@@ -26,7 +26,7 @@
                         <section>
                             <h3>Dirección General de Publicaciones y Fomento Editorial<br></h3>
                             <ul>
-                                <li><span class="creditos_nombre creditos">Socorro Venegas Pérez<br></span><span class="creditos_cargo creditos">Directora General de Publicaciones y Fomento Editorial<br></span></li>
+                                <li><span class="creditos_nombre creditos">Mtra. Socorro Venegas Pérez<br></span><span class="creditos_cargo creditos">Directora General de Publicaciones y Fomento Editorial<br></span></li>
                                 <li><span class="creditos_nombre creditos">Act. Guillermo Chávez Sánchez<br></span><span class="creditos_cargo creditos">Subdirector de Revistas Académicas y Publicaciones Digitales<br></span></li>
                             </ul>
                         </section>
