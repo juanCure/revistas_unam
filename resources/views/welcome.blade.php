@@ -286,7 +286,7 @@
                         cursor: 'pointer',
                         // depth: 75,
                         dataLabels: {
-                            enabled: true,
+                            enabled: false,
                             // format: '{point.name}'
                             formatter: function() {
                                 // return '<b>'+ this.point.name +'</b>: '+ this.point.y;
@@ -312,7 +312,8 @@
                 },
                 series: [{
                     type: 'cylinder',
-                    name: 'Revistas'
+                    name: 'Revistas',
+                    showInLegend: false, // parametro para oculta el nombre de la serie
                 }]
             }
 

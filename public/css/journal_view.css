@@ -136,6 +136,20 @@
   transform: scale(1.3);
 }
 
+/* RESULTS TABLE 7 OCT */
+
+#results-table tbody tr td:first-child a, #results-table tbody tr td:nth-child(4) a {
+  display: inline-block;
+  text-align: left;
+  width: 100%;
+}
+
+#results-table tbody tr td:nth-child(4) ul {
+  list-style-type: none;
+}
+
+/* FIN RESULTS TABLE */
+
 #results_report_col {
   min-height: 50px;
 }
@@ -261,7 +275,7 @@
 .data_value {
   color: var(--gray);
   margin-left: 10px;
-  font-family: Anaheim, sans-serif;
+  font-family: sans-serif;
 }
 
 .data_value.value_ok {
@@ -280,8 +294,12 @@
   border-radius: 5px;
 }
 
+.data_label_col span {
+  font-weight: bold;
+}
+
 .data_label:after {
-  content: ':' !important;
+  /*content: ':' !important;*/
 }
 
 @media (min-width: 992px) {

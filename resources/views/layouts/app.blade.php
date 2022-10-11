@@ -64,7 +64,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">
 
 </head>
-<body>
+<body class="index_page">
     <div id="app">
         @include('public_header')
             <!-- Se borró la clase "bg-white" del siguiente navbar...  -->
@@ -127,7 +127,9 @@
           <footer id="footer">
               <div class="container">
                   <div class="row" style="margin-top: 20px;margin-bottom: 40px;">
-                      <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 d-lg-flex d-xl-flex justify-content-lg-center justify-content-xl-center align-items-xl-center item"><img class="img-fluid" id="logo_unam-2" src="{{ asset('img/escudo_fomento.png') }}" style="/*max-width: 201px;*/margin-bottom: 39px;"></div>
+                      <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 d-lg-flex d-xl-flex justify-content-lg-center align-items-lg-center justify-content-xl-center align-items-xl-center item">
+                        <div><img class="img-fluid" id="logo_unam-2" src="{{ asset('img/escudo_fomento.png') }}" style="/*max-width: 201px;*/margin-bottom: 39px;"></div>
+                   </div>
                       <div class="col-sm-6 col-md-4 col-lg-4 col-xl-4 text-sm-left d-lg-flex d-xl-flex justify-content-xl-center item text" style="margin-bottom:0px;">
                           <div>
                               <h3>Dirección</h3>
@@ -136,7 +138,7 @@
                               <div class="item social"><a href="https://www.facebook.com/revistasunam" target="_blank"><i class="fa fa-facebook-square"></i></a><a href="https://twitter.com/revistasunam" target="_blank"><i class="icon ion-social-twitter"></i></a><a href="revistas@unam.mx"><i class="far fa-envelope"></i></a></div>
                           </div>
                       </div>
-                      <div class="col-sm-6 col-md-4 col-lg-4 col-xl-4 text-sm-left d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-sm-center justify-content-md-center justify-content-lg-center justify-content-xl-center item">
+                      <div class="col-sm-6 col-md-4 col-lg-4 col-xl-4 text-sm-left d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-sm-center justify-content-md-center justify-content-lg-center align-items-lg-center justify-content-xl-center item">
                           <div>
                               <h3>Conócenos</h3>
                               <ul>
@@ -158,7 +160,7 @@
                               <p class="text-center copyright">Hecho en México, Universidad Nacional Autónoma de México (UNAM). Se autoriza la reproducción total o parcial de los textos aquí publicados siempre y cuando se cite la fuente completa y la dirección electrónica de la publicación.<br></p>
                           </div>
                       </div>
-                      <div class="col-12 d-xl-flex justify-content-xl-center align-items-xl-center">
+                      <div class="col-12 d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex justify-content-center justify-content-sm-center justify-content-md-center justify-content-lg-center align-items-lg-center justify-content-xl-center align-items-xl-center">
                           <div><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="license"><img src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"></a></div>
                       </div>
                       <div class="col-12 d-xl-flex justify-content-xl-end align-items-xl-center"><p class="text-center copyright"><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Portal Revistas UNAM</span> por <a xmlns:cc="http://creativecommons.org/ns#" href="https://revistas.unam.mx" property="cc:attributionName" rel="cc:attributionURL">Universidad Nacional Autónoma de México</a> se distribuye bajo una <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Licencia Creative Commons Atribución-NoComercial-SinDerivadas 4.0 Internacional</a>.<br>Basada en una obra en <a xmlns:dct="http://purl.org/dc/terms/" href="https://revistas.unam.mx" rel="dct:source">www.revistas.unam.mx</a>.</p></div>
