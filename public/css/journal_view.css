@@ -63,7 +63,7 @@
 #alphabet_section > div .alfabeto:last-child .letter {
   transform: none !important;
   background-color: transparent !important;
-  color: var(--link);
+  /*color: var(--link);*/
 }
 
 #alphabet_section {

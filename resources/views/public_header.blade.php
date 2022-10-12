@@ -125,7 +125,7 @@
                                 <label style="display: flex;">Título:</label>
                                 <input name="searchTerm" class="form-control advanced_select advanced_input" type="text" value="{{ isset($searchTerm) ? $searchTerm : ''}}">
                             </div>
-                            <div class="col d-flex justify-content-end align-items-center justify-content-xl-end align-items-xl-end input_col"><button class="btn btn-danger" type="button" style="color: #ffffff;     background-color: #f48838;     border-color: #f48838; height:35px; width:100%; margin-bottom:3px;">Buscar</button></div>
+                            <div class="col d-flex justify-content-end align-items-center justify-content-xl-end align-items-xl-end input_col"><button class="btn btn-danger" type="submit" style="color: #ffffff;     background-color: #f48838;     border-color: #f48838; height:35px; width:100%; margin-bottom:3px;">Buscar</button></div>
                             </div>
                         </div>
                     </div>
