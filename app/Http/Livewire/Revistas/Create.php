@@ -86,7 +86,7 @@ class Create extends Component {
 				'ojs_ruta' => ['nullable', 'url'],
 				'ruta_alterna' => ['nullable', 'url'],
 				'anio_inicio' => ['required', 'integer'],
-				'arbitrada' => ['required', 'in:Si,No'],
+				'arbitrada' => ['required', 'in:Sí,No'],
 				//'soporte' => ['required', 'in:Ambas,Electrónica,Impresa'],
 				'soporte' => ['required', 'in:Digital,Impreso,Ambas'],
 				'situacion' => ['required', 'in:Vigente,Descontinuada'],
