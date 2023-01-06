@@ -443,3 +443,12 @@ p {
   font-family: sans-serif;
 }
 
+#navbarDropdown {
+  background: white;
+  border: solid #f48838 3px;
+  font-weight:bold;
+}
+
+.login_form_container{
+  margin:40px auto;
+}
