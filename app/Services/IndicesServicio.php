@@ -39,6 +39,10 @@ class IndicesServicio {
 		// return DB::table('entidad_editoras')->select('id', 'nombre')->orderBy('nombre')->get();
 	}
 
+	public function getTotalRevistas() {
+		return Revista::vigente()->get()->count();
+	}
+
 	public function getRevistas(Request $request) {
 
 		$tipo = $request->tipo;

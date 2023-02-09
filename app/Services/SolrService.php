@@ -16,7 +16,7 @@ class SolrService {
 		$facetSet->createFacetField('journals')->setField('collection');
 		$resultSet = $this->client->select($query);
 		$journals = $resultSet->getFacetSet()->getFacet('journals');
-		$journalArray = [];
+		$journalsArray = [];
 		foreach ($journals as $key => $value) {
 			$journalsArray[] = $key;
 		}
@@ -49,6 +49,17 @@ class SolrService {
 			$strQuery = "*:*";
 		}
 		return $strQuery;
+	}
+
+	public function getNumDocsFound() {
+		// get a select query instance
+		$query = $this->client->createQuery($this->client::QUERY_SELECT);
+
+		// this executes the query and returns the result
+		$resultset = $this->client->execute($query);
+
+		// display the total number of documents found by Solr
+		return $resultset->getNumFound();
 	}
 
 }

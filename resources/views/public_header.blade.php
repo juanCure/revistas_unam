@@ -1,4 +1,6 @@
 <!-- This is the public header template -->
+@inject('indiceServicio', 'App\Services\IndicesServicio')
+@inject('solrService', 'App\Services\SolrService')
 <div class="jumbotron jumbotron-fluid jumbotron-main">
     <div class="text-dark d-flex justify-content-end" style="height: 34px;/*border-radius: 4px;*/background: linear-gradient(0deg, black 51%, rgb(55,55,55)), #1d2023;">
         <div class="d-lg-flex align-items-lg-center" id="share_container" style="/*height: 100%;*/min-width: 100px;"><a class="d-inline-block d-lg-flex align-items-lg-center share" href="https://www.facebook.com/revistasunam" target="_blank"><i class="fa fa-facebook-square"></i></a><a class="d-inline-block d-lg-flex align-items-lg-center share" href=" https://twitter.com/revistasunam" target="_blank"><i class="fa fa-twitter"></i></a><a class="d-inline-block d-lg-flex align-items-lg-center share" id="send_mail" href="mailto:revistas@unam.mx"><i class="fas fa-envelope"></i></a></div>
@@ -65,7 +67,8 @@
                                 </div>
                             </div>
                             <div class="col-12 col-sm-10 col-md-12 offset-sm-1 offset-md-0">
-                                <div style="padding-top: 5px;"><span style="/*margin-top: 200px;*/">Portal con 149 revistas y acceso a más de 40,000 artículos a texto completo.<br></span></div>
+                                <div style="padding-top: 5px;"><span style="/*margin-top: 200px;*/">
+                                    Portal con {{ $indiceServicio->getTotalRevistas() }} revistas y acceso a más de {{ $solrService->getNumDocsFound() }} artículos a texto completo.<br></span></div>
                             </div>
                         </div>
                     </form>
@@ -83,7 +86,7 @@
                                 <div class="form-row" style="width: 100%;">
                                     <div class="col-12 d-flex justify-content-start advanced_span_col"><span class="advanced_span_col" style="display: initial;">En la(s)&nbsp; revista(s):</span></div>
                                     <div class="col-12">
-                                        @inject('solrService', 'App\Services\SolrService')
+                                        
                                         <select name="requested_journal" class="form-control advanced_select" id="journal_select">
                                             <option value="" selected="">Selecciona una revista</option>
                                             {{-- @foreach ($harvestedJournals as $journal => $value) --}}
