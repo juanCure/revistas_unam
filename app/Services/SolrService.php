@@ -43,10 +43,22 @@ class SolrService {
 	public function cleanInputSearchTerm($searchTerm) {
 		$searchTerm = trim($searchTerm);
 		$searchTerm = str_replace(":", "\:", $searchTerm);
-		//$strQuery = "title:" . $searchTerm;
-		$strQuery = "(title:/[A-Z]*" . $searchTerm . "[A-Z]*/)";
-		if($searchTerm == "") {
+		$strQuery = "(title:\"$searchTerm\")";
+		// The empty searching
+		if ($searchTerm == "") {
 			$strQuery = "*:*";
+		} elseif (strpos($searchTerm, ' ')) {
+			// The user wrote a phrase instead of only a word
+			$strQuery = '(title_full:"' . $searchTerm . '" OR description:"' . $searchTerm . '"';
+			$strQuery .= ' OR pclave_txt_mv:"' . $searchTerm . '" OR author:"' . $searchTerm . '"';
+			$strQuery .= ' OR publisher:"' . $searchTerm . '" OR issn:"' . $searchTerm . '"';
+			$strQuery .= ' OR institution:"' . $searchTerm . '" OR collection:"' . $searchTerm . '")';
+		} else {
+			// The user wrote only a word
+			$strQuery = '(title_full:' . $searchTerm . ' OR description:' . $searchTerm;
+			$strQuery .= ' OR pclave_txt_mv:' . $searchTerm . ' OR author:' . $searchTerm;
+			$strQuery .= ' OR publisher:' . $searchTerm . ' OR issn:' . $searchTerm;
+			$strQuery .= ' OR institution:' . $searchTerm . ' OR collection:' . $searchTerm . ')';
 		}
 		return $strQuery;
 	}
