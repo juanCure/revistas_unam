@@ -65,6 +65,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">
 
 </head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JGW4HMTGR8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){
+       dataLayer.push(arguments);
+  }
+  gtag('js', new Date());
+
+  gtag('config', 'G-JGW4HMTGR8');
+</script>
+
 <body class="index_page">
     <div id="app">
         @include('public_header')
@@ -123,7 +135,7 @@
         @yield('content')
 
         <!-- This is the footer template -->
-        
+
         <div class="footer-dark">
           <footer id="footer">
               <div class="container">
