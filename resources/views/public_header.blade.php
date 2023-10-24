@@ -25,7 +25,7 @@
                                             {{-- <a href="{{ route('login') }}" class="dropdown-item">Iniciar Sesión</a> --}}
                                             <a class="dropdown-item" href="{{ route('static.profesionalizacion') }}">Profesionalización editorial</a><a class="dropdown-item" href="{{ route('static.asesorias') }}">Asesorías y consultorías</a><a class="dropdown-item" href="{{ route('static.plataforma') }}">Plataformas de gestión editorial</a><a class="dropdown-item" href="{{ route('static.disenio') }}">Digitalización y diseño web</a><a class="dropdown-item" href="{{ route('static.issn') }}">ISBN, ISSN y DOI</a></div>
                                     </li>
-                                    <li class="nav-item"><a class="nav-link" href="https://www.publicaciones.unam.mx/servicios/es/talleres-2023-1" target="_blank">Talleres 2023-1</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="https://www.publicaciones.unam.mx/servicios/es/talleres-2023-2" target="_blank">Talleres 2023-2</a></li>
                                     <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#">Recursos</a>
                                         <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('static.material') }}">Material de apoyo</a><a class="dropdown-item" href="{{ route('static.enlaces') }}">Enlaces</a><a class="dropdown-item" href="{{ route('static.acceso') }}">Open Access</a></div>
                                     </li>
@@ -68,7 +68,7 @@
                             </div>
                             <div class="col-12 col-sm-10 col-md-12 offset-sm-1 offset-md-0">
                                 <div style="padding-top: 5px;"><span style="/*margin-top: 200px;*/">
-                                    Portal con {{ $indiceServicio->getTotalRevistas() }} revistas y acceso a más de {{ number_format($solrService->getNumDocsFound()) }} artículos a texto completo.<br></span></div>
+                                    Portal con {{ $indiceServicio->getTotalRevistas() }} revistas y acceso a más de {{ $solrService->getNumDocsFound() }} artículos a texto completo.<br></span></div>
                             </div>
                         </div>
                     </form>
@@ -86,7 +86,7 @@
                                 <div class="form-row" style="width: 100%;">
                                     <div class="col-12 d-flex justify-content-start advanced_span_col"><span class="advanced_span_col" style="display: initial;">En la(s)&nbsp; revista(s):</span></div>
                                     <div class="col-12">
-                                        
+
                                         <select name="requested_journal" class="form-control advanced_select" id="journal_select">
                                             <option value="" selected="">Selecciona una revista</option>
                                             {{-- @foreach ($harvestedJournals as $journal => $value) --}}
@@ -134,6 +134,6 @@
                     </div>
                 </div>
             </div>
-        </form>        
+        </form>
     </div>
 </div>
