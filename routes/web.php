@@ -192,3 +192,7 @@ Route::view('directorio', 'static.directorio')->name('static.directorio');
 
 // Ruta para exportar el resultado de la busqueda por revistas en formato excel
 Route::post('revistas_export', [RevistaController::class, 'export'])->name('revistas.export');
+// Agregando sitemap al sitio
+Route::get("sitemap.xml", function () {
+	return \Illuminate\Support\Facades\Redirect::to('sitemap.xml');
+});
