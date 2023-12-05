@@ -14,12 +14,12 @@
                         <section>
                             <h3>Universidad Nacional Autónoma de México</h3>
                             <ul>
-                                <li><span class="creditos_nombre creditos">Dr. Enrique Luis Graue Wiechers<br></span><span class="creditos_cargo creditos">Rector</span></li>
-                                <li><span class="creditos_nombre creditos">Dr. Leonardo Lomelí Vanegas<br></span><span class="creditos_cargo creditos">Secretario General</span></li>
-                                <li><span class="creditos_nombre creditos">Dr. Luis Álvarez Icaza Longoria<br></span><span class="creditos_cargo creditos">Secretario Administrativo<br></span></li>
-                                <li><span class="creditos_nombre creditos">Dra. Patricia Dolores Dávila Aranda<br></span><span class="creditos_cargo creditos">Secretaria de Desarrollo Institucional</span></li>
+                                <li><span class="creditos_nombre creditos">Dr. Leonardo Lomelí Vanegas<br></span><span class="creditos_cargo creditos">Rector</span></li>
+                                <li><span class="creditos_nombre creditos">Dra. Patricia Dolores Dávila Aranda<br></span><span class="creditos_cargo creditos">Secretaria General</span></li>
+                                <li><span class="creditos_nombre creditos">Mtro. Tomás Humberto Rubio Pérez<br></span><span class="creditos_cargo creditos">Secretario Administrativo<br></span></li>
+                                <li><span class="creditos_nombre creditos">Dra. Diana Tamara Martínez Ruíz<br></span><span class="creditos_cargo creditos">Secretaria de Desarrollo Institucional</span></li>
                                 <li><span class="creditos_nombre creditos">Lic. Raúl Arcenio Aguilar Tamayo<br></span><span class="creditos_cargo creditos">Secretario de Prevención, Atención y Seguridad Universitaria</span></li>
-                                <li><span class="creditos_nombre creditos">Dr. Alfredo Sánchez Castañeda<br></span><span class="creditos_cargo creditos">Abogado General</span></li>
+                                <li><span class="creditos_nombre creditos">Mtro. Hugo Alejandro Concha Cantú<br></span><span class="creditos_cargo creditos">Abogado General</span></li>
                                 <li><span class="creditos_nombre creditos">Dra. Rosa Beltrán Álvarez<br></span><span class="creditos_cargo creditos">Coordinadora de Difusión Cultural</span></li>
                             </ul>
                         </section>
