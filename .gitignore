@@ -11,3 +11,9 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+public/fonts/vendor/
+public/vendor/
+config/livewire.php
+public/js
+public/css
+public/pdf/
