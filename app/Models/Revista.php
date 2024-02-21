@@ -122,7 +122,7 @@ class Revista extends Model {
 	 * @return \Illuminate\Database\Eloquent\Builder
 	 */
 	public function scopeArbitrada($query) {
-		return $query->where('arbitrada', 'Si');
+		return $query->where('arbitrada', 'Si')->orderBy('titulo', 'asc');
 	}
 
 	/**
@@ -132,6 +132,6 @@ class Revista extends Model {
 	 * @return \Illuminate\Database\Eloquent\Builder
 	 */
 	public function scopeVigente($query) {
-		return $query->where("situacion", "Vigente");
+		return $query->where("situacion", "Vigente")->orderBy('titulo', 'asc');
 	}
 }

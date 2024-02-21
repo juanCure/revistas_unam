@@ -23,20 +23,13 @@ class BusquedaPorIndiceController extends Controller {
 	//
 	public function getRevistasPorTipo(Request $request) {
 		$indices = $this->indicesServicio->getIndices();
-
 		$alfabeto = $this->indicesServicio->getAlfabeto();
-
 		$tipo = $request->tipo;
-
 		$letra = $request->abc;
-		// dump($letra);
-
 		$per_page = $request->per_page ?? 20;
-		// dump($per_page);
-
 		$arbitrada = $request->arbitrada;
-
 		$soporte = $request->soporte;
+		$sort = $request->sort;
 
 		$revistas = Revista::vigente()
 		->when($tipo, function ($query, $tipo) {
@@ -47,10 +40,9 @@ class BusquedaPorIndiceController extends Controller {
 			return $query->where('arbitrada', $arbitrada);
 		})->when($soporte, function ($query, $soporte) {
 			return $query->where('soporte', $soporte);
-		})
-			->sortable()
-			->paginate($per_page)
-			->withQueryString();
+		})->when($sort, function ($query, $sort){
+			return $query->reorder()->sortable();
+		})->paginate($per_page)->withQueryString();
 
 		if (!$request->ajax()) {
 			// dump("It's not ajax request");
@@ -78,14 +70,11 @@ class BusquedaPorIndiceController extends Controller {
 		$indices = $this->indicesServicio->getIndices();
 		$alfabeto = $this->indicesServicio->getAlfabeto();
 		$area_id = $request->area_id;
-
 		$letra = $request->abc;
-
 		$per_page = $request->per_page ?? 20;
-
 		$arbitrada = $request->arbitrada;
-
 		$soporte = $request->soporte;
+		$sort = $request->sort;
 
 		$revistas = Revista::vigente()
 		->when($area_id, function ($query, $area_id) {
@@ -96,7 +85,9 @@ class BusquedaPorIndiceController extends Controller {
 			return $query->where('arbitrada', $arbitrada);
 		})->when($soporte, function ($query, $soporte) {
 			return $query->where('soporte', $soporte);
-		})->sortable()->paginate($per_page)->withQueryString();
+		})->when($sort, function ($query, $sort){
+			return $query->reorder()->sortable();
+		})->paginate($per_page)->withQueryString();
 
 		if (!$request->ajax()) {
 			// dump("It's not ajax request");
@@ -123,14 +114,11 @@ class BusquedaPorIndiceController extends Controller {
 		$indices = $this->indicesServicio->getIndices();
 		$alfabeto = $this->indicesServicio->getAlfabeto();
 		$indice_id = $request->indice_id;
-
 		$letra = $request->abc;
-
 		$per_page = $request->per_page ?? 20;
-
 		$arbitrada = $request->arbitrada;
-
 		$soporte = $request->soporte;
+		$sort = $request->sort;
 
 		$revistas = SistemaIndexador::find($indice_id)
 			->revistas()
@@ -141,10 +129,9 @@ class BusquedaPorIndiceController extends Controller {
 			return $query->where('arbitrada', $arbitrada);
 		})->when($soporte, function ($query, $soporte) {
 			return $query->where('soporte', $soporte);
-		})
-			->sortable()
-			->paginate($per_page)
-			->withQueryString();
+		})->when($sort, function ($query, $sort){
+			return $query->reorder()->sortable();
+		})->paginate($per_page)->withQueryString();
 
 		if (!$request->ajax()) {
 			return view('resultados.resultadosPorIndices', [
@@ -169,28 +156,22 @@ class BusquedaPorIndiceController extends Controller {
 		$indices = $this->indicesServicio->getIndices();
 		$alfabeto = $this->indicesServicio->getAlfabeto();
 		$entidad_id = $request->entidad_id;
-
 		$letra = $request->abc;
-
 		$per_page = $request->per_page ?? 20;
-
 		$arbitrada = $request->arbitrada;
-
 		$soporte = $request->soporte;
+		$sort = $request->sort;
 
-		$revistas = EntidadEditora::find($entidad_id)
-			->revistas()
-			->vigente()
-			->when($letra, function ($query, $letra) {
+		$revistas = EntidadEditora::find($entidad_id)->revistas()->vigente()
+		->when($letra, function ($query, $letra) {
 				return $query->where('titulo', 'like', "{$letra}%");
-			})->when($arbitrada, function ($query, $arbitrada) {
+		})->when($arbitrada, function ($query, $arbitrada) {
 			return $query->where('arbitrada', $arbitrada);
 		})->when($soporte, function ($query, $soporte) {
 			return $query->where('soporte', $soporte);
-		})
-			->sortable()
-			->paginate(20)
-			->withQueryString();
+		})->when($sort, function ($query, $sort){
+			return $query->reorder()->sortable();
+		})->paginate(20)->withQueryString();
 
 		if (!$request->ajax()) {
 			return view('resultados.resultadosPorIndices', [
@@ -217,14 +198,11 @@ class BusquedaPorIndiceController extends Controller {
 		$indices = $this->indicesServicio->getIndices();
 		$alfabeto = $this->indicesServicio->getAlfabeto();
 		$subsistema_id = $request->subsistema_id;
-
 		$letra = $request->abc;
-
 		$per_page = $request->per_page ?? 20;
-
 		$arbitrada = $request->arbitrada;
-
 		$soporte = $request->soporte;
+		$sort = $request->sort;
 
 		$revistas = Revista::vigente()
 		->when($subsistema_id, function ($query, $subsistema_id) {
@@ -235,7 +213,9 @@ class BusquedaPorIndiceController extends Controller {
 			return $query->where('arbitrada', $arbitrada);
 		})->when($soporte, function ($query, $soporte) {
 			return $query->where('soporte', $soporte);
-		})->sortable()->paginate($per_page)->withQueryString();
+		})->when($sort, function ($query, $sort){
+			return $query->reorder()->sortable();
+		})->paginate($per_page)->withQueryString();
 
 		if (!$request->ajax()) {
 			return view('resultados.resultadosPorIndices', [
@@ -269,12 +249,10 @@ class BusquedaPorIndiceController extends Controller {
 		$indices = $this->indicesServicio->getIndices();
 		$alfabeto = $this->indicesServicio->getAlfabeto();
 		$letra = $request->abc;
-
 		$per_page = $request->per_page ?? 20;
-
 		$arbitrada = $request->arbitrada;
-
 		$soporte = $request->soporte;
+		$sort = $request->sort;
 
 		$revistas = Revista::vigente()
 		->when($letra, function ($query, $letra) {
@@ -283,7 +261,9 @@ class BusquedaPorIndiceController extends Controller {
 			return $query->where('arbitrada', $arbitrada);
 		})->when($soporte, function ($query, $soporte) {
 			return $query->where('soporte', $soporte);
-		})->sortable()->paginate($per_page)->withQueryString();
+		})->when($sort, function ($query, $sort){
+			return $query->reorder()->sortable();
+		})->paginate($per_page)->withQueryString();
 
 		if (!$request->ajax()) {
 			return view('resultados.resultadosPorIndices', [
@@ -310,6 +290,7 @@ class BusquedaPorIndiceController extends Controller {
 		$per_page = $request->per_page ?? 20;
 		$arbitrada = $request->arbitrada;
 		$soporte = $request->soporte;
+		$sort = $request->sort;
 
 		$revistas = Revista::vigente()->when($letra, function ($query, $letra) {
 			$query->where('titulo', 'like', "{$letra}%");
@@ -317,7 +298,9 @@ class BusquedaPorIndiceController extends Controller {
 			return $query->where('arbitrada', $arbitrada);
 		})->when($soporte, function ($query, $soporte) {
 			return $query->where('soporte', $soporte);
-		})->sortable()->paginate($per_page)->withQueryString();
+		})->when($sort, function ($query, $sort){
+			return $query->reorder()->sortable();
+		})->paginate($per_page)->withQueryString();
 
 		if (!$request->ajax()) {
 			return view('resultados.resultadosPorIndices', [
@@ -340,23 +323,22 @@ class BusquedaPorIndiceController extends Controller {
 	public function getRevistasDescontinuadas(Request $request) {
 		$indices = $this->indicesServicio->getIndices();
 		$alfabeto = $this->indicesServicio->getAlfabeto();
-
 		$letra = $request->abc;
-
 		$per_page = $request->per_page ?? 20;
-
 		$arbitrada = $request->arbitrada;
-
 		$soporte = $request->soporte;
+		$sort = $request->sort;
 
-		$revistas = Revista::where('situacion', 'Descontinuada')
-			->when($letra, function ($query, $letra) {
-				$query->where('titulo', 'like', "{$letra}%");
-			})->when($arbitrada, function ($query, $arbitrada) {
+		$revistas = Revista::where('situacion', 'Descontinuada')->orderBy('titulo', 'asc')
+		->when($letra, function ($query, $letra) {
+			return $query->where('titulo', 'like', "{$letra}%");
+		})->when($arbitrada, function ($query, $arbitrada) {
 			return $query->where('arbitrada', $arbitrada);
 		})->when($soporte, function ($query, $soporte) {
 			return $query->where('soporte', $soporte);
-		})->sortable()->paginate($per_page)->withQueryString();
+		})->when($sort, function ($query, $sort){
+			return $query->reorder()->sortable();
+		})->paginate($per_page)->withQueryString();
 
 		if (!$request->ajax()) {
 			return view('resultados.resultadosPorIndices', [
