@@ -8,6 +8,7 @@ use App\Models\Editorial;
 use App\Models\Revista;
 use App\Services\IndicesServicio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class RevistaController extends Controller {
 
@@ -139,7 +140,7 @@ class RevistaController extends Controller {
 	public function export(Request $request) {
 		// Aquí debó llamar a la clase exportadora de revistas
 		// return Excel::download(new RevistasExport, 'revistas.xlsx');
-
+		//Log::info('Hi THERE! the name of the called route is: ' . $request->route()->getName());
 		return (new RevistasExport($request, $this->indicesServicio))->download('revistas.xlsx');
 	}
 }

@@ -33,7 +33,7 @@ class MainController extends Controller {
 		//dd($areas);
 		//dd($typos);
 		// Obteniendo los tipos de revistas y la cantidad de revistas asociadas
-		$typos_count = Revista::vigente()->select('tipo_revista', DB::raw("COUNT(tipo_revista) as count"))
+		$typos_count = Revista::situacion('Vigente')->select('tipo_revista', DB::raw("COUNT(tipo_revista) as count"))
 			->groupBy('tipo_revista')
 			->get();
 		// Obteniendo las distintas áreas de conocimiento y la cantidad de revistas asociadas

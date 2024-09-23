@@ -57,13 +57,13 @@ class Revista extends Model {
 		return $this->belongsTo(AreasConocimiento::class, 'id_area_conocimiento');
 	}
 	// Definiendo la relación 1 a M entre las tablas
-	// revistas -> areas_conocimiento
+	// revistas -> frecuencias
 	//
 	public function frecuencia() {
 		return $this->belongsTo(Frecuencia::class, 'id_frecuencia');
 	}
 	// Definiendo la relación 1 a M entre las tablas
-	// revistas -> areas_conocimiento
+	// revistas -> subsistemas
 	//
 	public function subsistema() {
 		return $this->belongsTo(Subsistema::class, 'id_subsistema');
@@ -126,12 +126,13 @@ class Revista extends Model {
 	}
 
 	/**
-	 * Scope a query to only include Revistas arbitradas.
+	 * Scope a query to distinguish between "Vigentes" and "Descontinuadas".
 	 *
 	 * @param  \Illuminate\Database\Eloquent\Builder  $query
 	 * @return \Illuminate\Database\Eloquent\Builder
 	 */
-	public function scopeVigente($query) {
-		return $query->where("situacion", "Vigente")->orderBy('titulo', 'asc');
+	public function scopeSituacion($query, $status) {
+		return $query->where("situacion", $status)->orderBy('titulo', 'asc');
 	}
+
 }
