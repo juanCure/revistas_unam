@@ -24,15 +24,22 @@ class RevistasExport implements FromQuery, WithMapping, WithHeadings {
 	public function headings(): array{
 		return [
 			'Título',
+			'Situación',
+			'Arbitrada',
 			'Tipo de publicación',
 			'Área del conocimiento',
 			'Año de Inicio',
 			'Frecuencia',
-			'Entidades Academicas',
-			'Subsistema',
-			'Indexaciones',
-			'Arbitrada',
 			'Soporte',
+			'Idiomas',
+			'ISSN',
+			'ISSN Electrónico',
+			'Editoriales',
+			'Entidades Editoras',
+			'Subsistema',
+			'Principales Índices',
+			'Ruta',
+			'Ruta Alterna',
 		];
 	}
 	/**
@@ -54,15 +61,22 @@ class RevistasExport implements FromQuery, WithMapping, WithHeadings {
 	{
 		return [
 			$revista->titulo,
+			$revista->situacion,
+			$revista->arbitrada,
 			$revista->tipo_revista,
 			$revista->area_conocimiento->nombre,
 			$revista->anio_inicio,
 			$revista->frecuencia->nombre,
+			($revista->soporte == "Ambas") ? "Digital e impreso" : $revista->soporte,
+			$revista->idiomas->implode("nombre", " | "),
+			(is_null($revista->issn)) ? "En trámite" : $revista->issn,
+			(is_null($revista->issne)) ? "En trámite" : $revista->issne,
+			$revista->editoriales->implode("nombre", " | "),
 			$revista->entidades_editoras->implode("nombre", " | "),
 			$revista->subsistema->nombre,
 			$revista->sistemas_indexadores->implode("nombre", " | "),
-			$revista->arbitrada,
-			($revista->soporte == "Ambas") ? "Digital e impreso" : $revista->soporte,
+			$revista->ojs_ruta,
+			$revista->ruta_alterna,
 		];
 	}
 }
