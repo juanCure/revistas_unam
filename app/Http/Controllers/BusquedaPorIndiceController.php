@@ -482,7 +482,7 @@ class BusquedaPorIndiceController extends Controller {
 	public function agruparRevistasPorTipo($tipo, $area_id, $indice_id, $entidad_id, $subsistema_id, $old_revistas) {
 
 		if (isset($tipo) || isset($area_id) || $subsistema_id) {
-			$totales = Revista::situacion('Vigente')->select(\DB::raw("tipo_revista as name, COUNT(*) as y"))
+			$totales = Revista::where('situacion', 'Vigente')->select(\DB::raw("tipo_revista as name, COUNT(*) as y"))
 				->when($tipo, function ($query, $tipo) {
 					return $query->where('tipo_revista', $tipo);
 				})
@@ -495,7 +495,7 @@ class BusquedaPorIndiceController extends Controller {
 				->groupBy(\DB::raw("tipo_revista"))
 				->get();
 		} elseif (isset($entidad_id)) {
-			$totales = DB::table('revistas')
+			$totales = DB::table('revistas')->where('situacion', 'Vigente')
 				->join('entidad_editoras_revistas', 'entidad_editoras_revistas.id_revista', '=', 'revistas.id_revista')
 				->join('entidad_editoras', 'entidad_editoras.id', '=', 'entidad_editoras_revistas.id_entidad_editora')
 				->where('entidad_editoras.id', $entidad_id)
@@ -503,7 +503,7 @@ class BusquedaPorIndiceController extends Controller {
 				->groupBy(DB::raw('revistas.tipo_revista'))
 				->get();
 		} elseif (isset($indice_id)) {
-			$totales = DB::table('revistas')
+			$totales = DB::table('revistas')->where('situacion', 'Vigente')
 				->join('indezadores_revistas', 'indezadores_revistas.id_revista', '=', 'revistas.id_revista')
 				->join('sistemas_indexadores', 'sistemas_indexadores.id', '=', 'indezadores_revistas.id_sistema')
 				->where('sistemas_indexadores.id', $indice_id)
@@ -511,12 +511,12 @@ class BusquedaPorIndiceController extends Controller {
 				->groupBy(DB::raw('revistas.tipo_revista'))
 				->get();
 		} elseif (isset($old_revistas)) {
-			$totales = Revista::select(DB::raw("tipo_revista as name, COUNT(*) as y"))
-				->where('situacion', "Descontinuada")
+			$totales = Revista::where('situacion', "Descontinuada")
+				->select(DB::raw("tipo_revista as name, COUNT(*) as y"))
 				->groupBy(DB::raw("tipo_revista"))
 				->get();
 		} else {
-			$totales = Revista::situacion('Vigente')->select(DB::raw("tipo_revista as name, COUNT(*) as y"))
+			$totales = Revista::where('situacion', 'Vigente')->select(DB::raw("tipo_revista as name, COUNT(*) as y"))
 				->groupBy(DB::raw("tipo_revista"))
 				->get();
 		}
@@ -528,7 +528,7 @@ class BusquedaPorIndiceController extends Controller {
 
 		if (isset($tipo) || isset($area_id) || $subsistema_id) {
 
-			$totales = DB::table('revistas')
+			$totales = DB::table('revistas')->where('situacion', 'Vigente')
 				->join('areas_conocimiento', 'areas_conocimiento.id', '=', 'revistas.id_area_conocimiento')
 				->when($tipo, function ($query, $tipo) {
 					return $query->where('revistas.tipo_revista', $tipo);
@@ -543,7 +543,7 @@ class BusquedaPorIndiceController extends Controller {
 				->groupBy('areas_conocimiento.nombre')
 				->get();
 		} elseif (isset($entidad_id)) {
-			$totales = DB::table('revistas')
+			$totales = DB::table('revistas')->where('situacion', 'Vigente')
 				->join('areas_conocimiento', 'areas_conocimiento.id', '=', 'revistas.id_area_conocimiento')
 				->join('entidad_editoras_revistas', 'entidad_editoras_revistas.id_revista', '=', 'revistas.id_revista')
 				->join('entidad_editoras', 'entidad_editoras.id', '=', 'entidad_editoras_revistas.id_entidad_editora')
@@ -552,7 +552,7 @@ class BusquedaPorIndiceController extends Controller {
 				->groupBy(DB::raw('areas_conocimiento.nombre'))
 				->get();
 		} elseif (isset($indice_id)) {
-			$totales = DB::table('revistas')
+			$totales = DB::table('revistas')->where('situacion', 'Vigente')
 				->join('areas_conocimiento', 'areas_conocimiento.id', '=', 'revistas.id_area_conocimiento')
 				->join('indezadores_revistas', 'indezadores_revistas.id_revista', '=', 'revistas.id_revista')
 				->join('sistemas_indexadores', 'sistemas_indexadores.id', '=', 'indezadores_revistas.id_sistema')
@@ -562,14 +562,14 @@ class BusquedaPorIndiceController extends Controller {
 				->get();
 
 		} elseif (isset($old_revistas)) {
-			$totales = DB::table('revistas')
+			$totales = DB::table('revistas')->where('situacion', 'Descontinuada')
 				->join('areas_conocimiento', 'areas_conocimiento.id', '=', 'revistas.id_area_conocimiento')
 				->where('revistas.situacion', 'Descontinuada')
 				->select('areas_conocimiento.nombre as name', DB::raw('count(*) as y'))
 				->groupBy(DB::raw('areas_conocimiento.nombre'))
 				->get();
 		} else {
-			$totales = Revista::situacion('Vigente')->select(DB::raw("areas_conocimiento.nombre as name, COUNT(*) as y"))
+			$totales = Revista::where('situacion', 'Vigente')->select(DB::raw("areas_conocimiento.nombre as name, COUNT(*) as y"))
 				->join('areas_conocimiento', 'areas_conocimiento.id', '=', 'revistas.id_area_conocimiento')
 				->groupBy(DB::raw('areas_conocimiento.nombre'))
 				->get();
@@ -582,7 +582,7 @@ class BusquedaPorIndiceController extends Controller {
 		$totales;
 		if (isset($tipo) || isset($area_id) || $subsistema_id) {
 
-			$totales = DB::table('revistas')
+			$totales = DB::table('revistas')->where('situacion', 'Vigente')
 				->join('entidad_editoras_revistas', 'entidad_editoras_revistas.id_revista', '=', 'revistas.id_revista')
 				->join('entidad_editoras', 'entidad_editoras.id', '=', 'entidad_editoras_revistas.id_entidad_editora')
 				->when($tipo, function ($query, $tipo) {
@@ -598,7 +598,7 @@ class BusquedaPorIndiceController extends Controller {
 				->groupBy('entidad_editoras.nombre')
 				->get();
 		} elseif (isset($entidad_id)) {
-			$totales = DB::table('revistas')
+			$totales = DB::table('revistas')->where('situacion', 'Vigente')
 				->join('entidad_editoras_revistas', 'entidad_editoras_revistas.id_revista', '=', 'revistas.id_revista')
 				->join('entidad_editoras', 'entidad_editoras.id', '=', 'entidad_editoras_revistas.id_entidad_editora')
 				->where('entidad_editoras.id', $entidad_id)
@@ -606,7 +606,7 @@ class BusquedaPorIndiceController extends Controller {
 				->groupBy(DB::raw('entidad_editoras.nombre'))
 				->get();
 		} elseif (isset($indice_id)) {
-			$totales = DB::table('revistas')
+			$totales = DB::table('revistas')->where('situacion', 'Vigente')
 				->join('entidad_editoras_revistas', 'entidad_editoras_revistas.id_revista', '=', 'revistas.id_revista')
 				->join('entidad_editoras', 'entidad_editoras.id', '=', 'entidad_editoras_revistas.id_entidad_editora')
 				->join('indezadores_revistas', 'indezadores_revistas.id_revista', '=', 'revistas.id_revista')
@@ -618,7 +618,7 @@ class BusquedaPorIndiceController extends Controller {
 				->get();
 
 		} elseif (isset($old_revistas)) {
-			$totales = DB::table('revistas')
+			$totales = DB::table('revistas')->where('situacion', 'Descontinuada')
 				->join('entidad_editoras_revistas', 'entidad_editoras_revistas.id_revista', '=', 'revistas.id_revista')
 				->join('entidad_editoras', 'entidad_editoras.id', '=', 'entidad_editoras_revistas.id_entidad_editora')
 				->where('revistas.situacion', 'Descontinuada')
@@ -626,7 +626,7 @@ class BusquedaPorIndiceController extends Controller {
 				->groupBy(DB::raw('entidad_editoras.nombre'))
 				->get();
 		} else {
-			$totales = Revista::select(DB::raw("entidad_editoras.nombre as name, COUNT(*) as y"))
+			$totales = Revista::where('situacion', 'Vigente')->select(DB::raw("entidad_editoras.nombre as name, COUNT(*) as y"))
 				->join('entidad_editoras_revistas', 'entidad_editoras_revistas.id_revista', '=', 'revistas.id_revista')
 				->join('entidad_editoras', 'entidad_editoras.id', '=', 'entidad_editoras_revistas.id_entidad_editora')
 				->groupBy(DB::raw('entidad_editoras.nombre'))
@@ -640,7 +640,7 @@ class BusquedaPorIndiceController extends Controller {
 		$totales;
 		if (isset($tipo) || isset($area_id) || $subsistema_id) {
 
-			$totales = DB::table('revistas')
+			$totales = DB::table('revistas')->where('situacion', 'Vigente')
 				->join('indezadores_revistas', 'indezadores_revistas.id_revista', '=', 'revistas.id_revista')
 				->join('sistemas_indexadores', 'sistemas_indexadores.id', '=', 'indezadores_revistas.id_sistema')
 				->when($tipo, function ($query, $tipo) {
@@ -656,7 +656,7 @@ class BusquedaPorIndiceController extends Controller {
 				->groupBy('sistemas_indexadores.nombre')
 				->get();
 		} elseif (isset($entidad_id)) {
-			$totales = DB::table('revistas')
+			$totales = DB::table('revistas')->where('situacion', 'Vigente')
 				->join('indezadores_revistas', 'indezadores_revistas.id_revista', '=', 'revistas.id_revista')
 				->join('sistemas_indexadores', 'sistemas_indexadores.id', '=', 'indezadores_revistas.id_sistema')
 				->join('entidad_editoras_revistas', 'entidad_editoras_revistas.id_revista', '=', 'revistas.id_revista')
@@ -666,7 +666,7 @@ class BusquedaPorIndiceController extends Controller {
 				->groupBy('sistemas_indexadores.nombre')
 				->get();
 		} elseif (isset($indice_id)) {
-			$totales = DB::table('revistas')
+			$totales = DB::table('revistas')->where('situacion', 'Vigente')
 				->join('indezadores_revistas', 'indezadores_revistas.id_revista', '=', 'revistas.id_revista')
 				->join('sistemas_indexadores', 'sistemas_indexadores.id', '=', 'indezadores_revistas.id_sistema')
 				->where('sistemas_indexadores.id', $indice_id)
@@ -676,16 +676,15 @@ class BusquedaPorIndiceController extends Controller {
 				->get();
 
 		} elseif (isset($old_revistas)) {
-			$totales = DB::table('revistas')
+			$totales = DB::table('revistas')->where('situacion', 'Descontinuada')
 				->join('indezadores_revistas', 'indezadores_revistas.id_revista', '=', 'revistas.id_revista')
 				->join('sistemas_indexadores', 'sistemas_indexadores.id', '=', 'indezadores_revistas.id_sistema')
-				->where('revistas.situacion', 'Descontinuada')
 				->select('sistemas_indexadores.nombre as name', DB::raw('count(*) as y'))
 				->groupBy('sistemas_indexadores.nombre')
 				->orderBy('sistemas_indexadores.nombre', 'asc')
 				->get();
 		} else {
-			$totales = Revista::select(DB::raw("sistemas_indexadores.nombre as name, COUNT(*) as y"))
+			$totales = Revista::where('situacion', 'Vigente')->select(DB::raw("sistemas_indexadores.nombre as name, COUNT(*) as y"))
 				->join('indezadores_revistas', 'indezadores_revistas.id_revista', '=', 'revistas.id_revista')
 				->join('sistemas_indexadores', 'sistemas_indexadores.id', '=', 'indezadores_revistas.id_sistema')
 				->groupBy(DB::raw('sistemas_indexadores.nombre'))
@@ -699,7 +698,7 @@ class BusquedaPorIndiceController extends Controller {
 		$totales;
 		if (isset($tipo) || isset($area_id) || $subsistema_id) {
 
-			$totales = Revista::situacion('Vigente')->select(DB::raw("subsistemas.nombre as name, COUNT(*) as y"))
+			$totales = Revista::where('situacion', 'Vigente')->select(DB::raw("subsistemas.nombre as name, COUNT(*) as y"))
 				->join('subsistemas', 'subsistemas.id', '=', 'revistas.id_subsistema')
 				->when($tipo, function ($query, $tipo) {
 					return $query->where('revistas.tipo_revista', $tipo);
@@ -715,7 +714,7 @@ class BusquedaPorIndiceController extends Controller {
 				->get();
 		} elseif (isset($entidad_id)) {
 
-			$totales = Revista::situacion('Vigente')->select(DB::raw("subsistemas.nombre as name, COUNT(*) as y"))
+			$totales = Revista::where('situacion', 'Vigente')->select(DB::raw("subsistemas.nombre as name, COUNT(*) as y"))
 				->join('subsistemas', 'subsistemas.id', '=', 'revistas.id_subsistema')
 				->join('entidad_editoras_revistas', 'entidad_editoras_revistas.id_revista', '=', 'revistas.id_revista')
 				->join('entidad_editoras', 'entidad_editoras.id', '=', 'entidad_editoras_revistas.id_entidad_editora')
@@ -726,7 +725,7 @@ class BusquedaPorIndiceController extends Controller {
 
 		} elseif (isset($indice_id)) {
 
-			$totales = Revista::situacion('Vigente')->select(DB::raw("subsistemas.nombre as name, COUNT(*) as y"))
+			$totales = Revista::where('situacion', 'Vigente')->select(DB::raw("subsistemas.nombre as name, COUNT(*) as y"))
 				->join('subsistemas', 'subsistemas.id', '=', 'revistas.id_subsistema')
 				->join('indezadores_revistas', 'indezadores_revistas.id_revista', '=', 'revistas.id_revista')
 				->join('sistemas_indexadores', 'sistemas_indexadores.id', '=', 'indezadores_revistas.id_sistema')
@@ -737,7 +736,7 @@ class BusquedaPorIndiceController extends Controller {
 
 		} elseif (isset($old_revistas)) {
 
-			$totales = Revista::select(DB::raw("subsistemas.nombre as name, COUNT(*) as y"))
+			$totales = Revista::where('situacion', 'Descontinuada')->select(DB::raw("subsistemas.nombre as name, COUNT(*) as y"))
 				->join('subsistemas', 'subsistemas.id', '=', 'revistas.id_subsistema')
 				->where('revistas.situacion', 'Descontinuada')
 				->groupBy(DB::raw('subsistemas.nombre'))
@@ -745,7 +744,7 @@ class BusquedaPorIndiceController extends Controller {
 				->get();
 
 		} else {
-			$totales = Revista::situacion('Vigente')->select(DB::raw("subsistemas.nombre as name, COUNT(*) as y"))
+			$totales = Revista::where('situacion', 'Vigente')->select(DB::raw("subsistemas.nombre as name, COUNT(*) as y"))
 				->join('subsistemas', 'subsistemas.id', '=', 'revistas.id_subsistema')
 				->groupBy(DB::raw('subsistemas.nombre'))
 				->orderBy('subsistemas.nombre', 'asc')
