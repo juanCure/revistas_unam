@@ -15,6 +15,8 @@ class TrustHosts extends Middleware
     {
         return [
             $this->allSubdomainsOfApplicationUrl(),
+	    'https://www.revistas.unam.mx',
+	    'https://revistas.unam.mx',
         ];
     }
 }

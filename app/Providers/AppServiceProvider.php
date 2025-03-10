@@ -25,8 +25,11 @@ class AppServiceProvider extends ServiceProvider {
 		Paginator::useBootstrap();
 		// Lo siguiente fue agregado para forzar que todas las rutas, enlaces a assets y enlaces de paginación
 		// sean solicitados vía HTTPS
-		if (env('APP_ENV') === 'production') {
+		/*if (env('APP_ENV') === 'production') {
 			$this->app['request']->server->set('HTTPS', true);
+		}*/
+		if($this->app->environment('production')) {
+ 		   \URL::forceScheme('https');
 		}
 	}
 }
