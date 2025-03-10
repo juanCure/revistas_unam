@@ -25,7 +25,7 @@
                                             {{-- <a href="{{ route('login') }}" class="dropdown-item">Iniciar Sesión</a> --}}
                                             <a class="dropdown-item" href="{{ route('static.profesionalizacion') }}">Profesionalización editorial</a><a class="dropdown-item" href="{{ route('static.asesorias') }}">Asesorías y consultorías</a><a class="dropdown-item" href="{{ route('static.plataforma') }}">Plataformas de gestión editorial</a><a class="dropdown-item" href="{{ route('static.disenio') }}">Digitalización y diseño web</a><a class="dropdown-item" href="{{ route('static.issn') }}">ISBN, ISSN y DOI</a></div>
                                     </li>
-                                    <li class="nav-item"><a class="nav-link" href="https://www.publicaciones.unam.mx/servicios/es/talleres-2024-1" target="_blank">Talleres 2024-1</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="https://www.publicaciones.unam.mx/servicios/es/talleres-2025-1" target="_blank">Talleres 2025-1</a></li>
                                     <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#">Recursos</a>
                                         <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('static.material') }}">Material de apoyo</a><a class="dropdown-item" href="{{ route('static.enlaces') }}">Enlaces</a><a class="dropdown-item" href="{{ route('static.acceso') }}">Open Access</a></div>
                                     </li>
