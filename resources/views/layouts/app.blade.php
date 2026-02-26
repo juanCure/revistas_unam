@@ -141,7 +141,7 @@
               <div class="container">
                   <div class="row" style="margin-top: 20px;margin-bottom: 40px;">
                       <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 d-lg-flex d-xl-flex justify-content-lg-center align-items-lg-center justify-content-xl-center align-items-xl-center item">
-                        <div><img class="img-fluid" id="logo_unam-2" src="{{ asset('img/escudo_fomento_Aniv70.png') }}" style="/*max-width: 201px;*/margin-bottom: 39px;"></div>
+                        <div><img class="img-fluid" id="logo_unam-2" src="{{ asset('img/escudo_fomento.png') }}" style="/*max-width: 201px;*/margin-bottom: 39px;"></div>
                    </div>
                       <div class="col-sm-6 col-md-4 col-lg-4 col-xl-4 text-sm-left d-lg-flex d-xl-flex justify-content-xl-center item text" style="margin-bottom:0px;">
                           <div>
