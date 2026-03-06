@@ -14,8 +14,6 @@ yarn-error.log
 public/fonts/vendor/
 public/vendor/
 config/livewire.php
-public/js
-public/css
 public/pdf/
 /public/node_modules
 public/mix-manifest.json
