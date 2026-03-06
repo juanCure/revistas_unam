@@ -35,6 +35,7 @@
     {{-- Utilizo un stack para agregar el archivo create-revista.css solo en la vista que es requerido --}}
     @stack('styles_for_articles')
     <link href="{{ asset('css/create-revista.css') }}" rel="stylesheet" id="bootstrap-css">
+    <link href="{{ asset('css/style-results-table.css') }}" rel="stylesheet" id="style-results-table">
 
     <!-- Scripts -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>

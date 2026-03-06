@@ -75,6 +75,44 @@
 						@endforeach
 					</tbody>
 				</table>
+                <!-- NUEVA TABLA PARA TAMAÑOS PEQUEÑOS -->
+                <table id="table-responsive-two" class="table table-striped table-hover">
+                    <tbody>
+                        @foreach ($revistas as $revista)
+                        <tr>
+                            <td>
+                                <div class="found-item">
+                                    <span class="tit-tableOneColumn">Título:</span>
+                                    <a target="_blank" href="{{ $revista->ojs_ruta }}"> {{ $revista->titulo }} <i class="typcn typcn-export"></i></a><br>
+                                    <span class="tit-tableOneColumn">Tipo de Revista:</span>
+                                    <a href="{{ route('revistas.tipo', ['tipo' => $revista->tipo_revista])}}">
+									{{ $revista->tipo_revista }}<br>
+                                    <span class="tit-tableOneColumn">Área del conocimiento:</span>
+                                    <a href="{{ route('revistas.area', ['area_id' => $revista->area_conocimiento->id])}}"> {{ $revista->area_conocimiento->nombre }} </a><br>
+                                    <span class="tit-tableOneColumn">Entidades acádemicas:</span>
+										@foreach ($revista->entidades_editoras as $entidad)
+											<a href="{{ route('revistas.entidad', ['entidad_id' => $entidad->id])}}"> {{ $entidad->nombre }} </a>
+										@endforeach
+                                    <br>
+                                    <span class="tit-tableOneColumn">Indexación:</span>
+                                        @foreach ($revista->sistemas_indexadores as $indexador)
+                                            <a href="{{ route('revistas.indexaciones', ['indice_id' => $indexador->id])}}">
+                                                <img src="{{ asset($indexador->imagen )}}">
+                                            </a>
+                                        @endforeach
+                                    <br>
+                                    <span class="tit-tableOneColumn">Ficha:</span>
+                                    <button type="button" class="btn" data-toggle="modal" data-target="#modal_data" data-id="{{ $revista->id_revista }}"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-card-heading" style="font-size: 2em;">
+		                                <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"></path>
+		                                <path d="M3 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0-5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5v-1z"></path>
+		                            </svg></button>
+                                    <br>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
 			</div>
 		</div>
 
