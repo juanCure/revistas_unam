@@ -43,13 +43,13 @@
     <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.3.1/js/swiper.jquery.min.js"></script>
 
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/highcharts-3d.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script src="https://code.highcharts.com/modules/export-data.js"></script>
-    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script src="{{ asset('js/highcharts/highcharts.js') }}"></script>
+    <script src="{{ asset('js/highcharts/highcharts-3d.js') }}"></script>
+    <script src="{{ asset('js/highcharts/modules/exporting.js') }}"></script>
+    <script src="{{ asset('js/highcharts/modules/export-data.js') }}"></script>
+    <script src="{{ asset('js/highcharts/modules/accessibility.js') }}"></script>
     <script src="{{ asset('js/chartThemes/sand-signika.js') }}"></script>
-    <script src="https://code.highcharts.com/modules/cylinder.js"></script>
+    <script src="{{ asset('js/highcharts/modules/cylinder.js') }}"></script>
 
     <script type="text/javascript" src="{{ asset('js/sheetjs.min.js') }}"></script>
 

@@ -24,3 +24,10 @@ mix.copyDirectory('node_modules/tinymce/themes', 'public/node_modules/tinymce/th
 mix.copy('node_modules/tinymce/jquery.tinymce.min.js', 'public/node_modules/tinymce/jquery.tinymce.min.js');
 // mix.copy('node_modules/tinymce/tinymce.js', 'public/node_modules/tinymce/tinymce.js');
 mix.copy('node_modules/tinymce/tinymce.min.js', 'public/node_modules/tinymce/tinymce.min.js');
+// Copiar los archivos de Highcharts necesarios desde node_modules a public/js/highcharts/
+mix.copy('node_modules/highcharts/highcharts.js', 'public/js/highcharts/highcharts.js')
+mix.copy('node_modules/highcharts/highcharts-3d.js', 'public/js/highcharts/highcharts-3d.js')
+mix.copy('node_modules/highcharts/modules/exporting.js', 'public/js/highcharts/modules/exporting.js')
+mix.copy('node_modules/highcharts/modules/export-data.js', 'public/js/highcharts/modules/export-data.js')
+mix.copy('node_modules/highcharts/modules/accessibility.js', 'public/js/highcharts/modules/accessibility.js')
+mix.copy('node_modules/highcharts/modules/cylinder.js', 'public/js/highcharts/modules/cylinder.js');
