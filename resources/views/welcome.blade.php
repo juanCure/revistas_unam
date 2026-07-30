@@ -251,7 +251,7 @@
                             events: {
                                 click: function(event){
                                     // console.log(this.index + 1, " -> ", this.name);
-                                    location.href = BASE_URL + "/revistasPorArea?area_id=" + (this.index + 1);
+                                    location.href = BASE_URL + "/revistasPorArea?area_id=" + this.id;
                                 }
                             }
                         }
@@ -264,7 +264,11 @@
             }
             myarray = [];
             $.each(areas_count, function(index, val) {
-                myarray[index] = [val.nombre, val.revistas_count];
+                myarray.push({
+                    name: val.nombre,
+                    y: val.revistas_count,
+                    id: val.id
+                });
             });
             options_areas.series[0].data = myarray;
             chart_areas = new Highcharts.Chart(options_areas);
@@ -315,8 +319,8 @@
                         point: {
                             events: {
                                 click: function(event){
-                                    // console.log(this.index + 1, " -> ", this.name);
-                                    location.href = BASE_URL + "/revistasPorIndexaciones?indice_id=" + (this.index + 1);
+                                    console.log(this.index + 1, " -> ", this.name);
+                                    location.href = BASE_URL + "/revistasPorIndexaciones?indice_id=" + this.id;
                                 }
                             }
                         }
@@ -355,7 +359,11 @@
 
             myarray = [];
             $.each(indexaciones_count, function(index, val) {
-                myarray[index] = [val.nombre, val.revistas_count];
+                myarray.push({
+                    name: val.nombre,
+                    y: val.revistas_count,
+                    id: val.id
+                });
             });
             indexaciones_options.series[0].data = myarray;
             indexaciones_chart = new Highcharts.Chart(indexaciones_options);
