@@ -144,6 +144,7 @@
             // Definiendo el objeto options para la gráfica tipos_revistas
             var options_typos = {
                 chart: {
+                    backgroundColor: '#ffffff',
                     type: 'pie',
                     options3d: {
                         enabled: true,
@@ -155,7 +156,11 @@
                     plotShadow: false
                 },
                 title: {
-                    text: 'Tipos de revistas'
+                    text: 'Tipos de revistas',
+                    style: {
+                        fontWeight: 'bold', // Fuerza las negritas en el título
+                        color: '#333333'    // Opcional: puedes definir el color del texto si lo deseas
+                    }
                 },
                  tooltip: {
                     pointFormat: '{series.name}: <b>{point.y}</b>',
@@ -202,6 +207,7 @@
 
             var options_areas = {
                 chart: {
+                    backgroundColor: '#ffffff',
                     type: 'pie',
                     options3d: {
                         enabled: true,
@@ -214,7 +220,11 @@
                     plotShadow: false
                 },
                 title: {
-                    text: 'Áreas de conocimiento'
+                    text: 'Áreas de conocimiento',
+                    style: {
+                        fontWeight: 'bold', // Fuerza las negritas en el título
+                        color: '#333333'    // Opcional: puedes definir el color del texto si lo deseas
+                    }
                 },
                  tooltip: {
                     pointFormat: '{series.name}: <b>{point.y}</b>',
@@ -263,8 +273,9 @@
             //
             var indexaciones_options = {
                 chart: {
+                    backgroundColor: '#ffffff',
                     renderTo: 'pie_indexaciones_chart',
-                    // type: 'column',
+                    //type: 'column',
                     options3d: {
                         enabled: true,
                         alpha: 15,
@@ -274,7 +285,11 @@
                     }
                 },
                 title: {
-                    text: 'Indexaciones'
+                    text: 'Indexaciones',
+                    style: {
+                        fontWeight: 'bold', // Fuerza las negritas en el título
+                        color: '#333333'    // Opcional: puedes definir el color del texto si lo deseas
+                    }
                 },
                 tooltip: {
                     // pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -309,6 +324,27 @@
                 },
                 xAxis: {
                     type: 'category',
+                    labels: {
+                        style: {
+                            color: '#222222',    // Un negro contrastante pero elegante
+                            fontWeight: 'normal' // Evita que se vea en negritas
+                        }
+                    },
+                    gridLineColor: '#f0f0f0', // Un gris mucho más claro y tenue para el fondo
+                    gridLineWidth: 1          // Asegura que mantenga el grosor de una línea sutil
+                },
+                yAxis: {
+                    title: {
+                        text: 'Totales'
+                    },
+                    labels: {
+                        style: {
+                            color: '#222222',    // Un negro contrastante pero elegante
+                            fontWeight: 'normal' // Evita que se vea en negritas
+                        }
+                    },
+                    gridLineColor: '#f0f0f0', // Un gris mucho más claro y tenue para el fondo
+                    gridLineWidth: 1          // Asegura que mantenga el grosor de una línea sutil
                 },
                 series: [{
                     type: 'cylinder',
