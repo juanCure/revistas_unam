@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Log;
+use Throwable;
+
 class SolrService {
 
 	protected $client;
@@ -11,33 +14,53 @@ class SolrService {
 	}
 
 	public function getHarvestedJournals() {
-		$query = $this->client->createSelect();
-		$facetSet = $query->getFacetSet();
-		$facetSet->createFacetField('journals')->setField('collection');
-		$resultSet = $this->client->select($query);
-		$journals = $resultSet->getFacetSet()->getFacet('journals');
-		$journalsArray = [];
-		foreach ($journals as $key => $value) {
-			$journalsArray[] = $key;
+		try {
+			$query = $this->client->createSelect();
+			$facetSet = $query->getFacetSet();
+			$facetSet->createFacetField('journals')->setField('collection');
+			$resultSet = $this->client->select($query);
+			$journals = $resultSet->getFacetSet()->getFacet('journals');
+			$journalsArray = [];
+			foreach ($journals as $key => $value) {
+				$journalsArray[] = $key;
+			}
+			$journals_collection = collect($journalsArray);
+			return $journals_collection->sort()->values();
+		} catch(\Solarium\Exception $e) {
+			Log::error('Error en Solr [getHarvestedJournals]: ' . $e->getMessage());
+			// Retornar colección vacía para que la vista no falle al iterar
+            return collect();
+		} catch (Throwable $e) {
+			// Atrapa fallos críticos de red, Timeouts de cURL, errores de DNS o conexión caída
+			Log::error('Fallo de conexión o Timeout con Solr en [getHarvestedJournals]: ' . $e->getMessage());
+			return collect(); 
 		}
-		$journals_collection = collect($journalsArray);
-		return $journals_collection->sort()->values()->all();
 	}
 
 	public function getPublishingDates() {
-		$query = $this->client->createSelect();
-		$facetSet = $query->getFacetSet();
-		$facetSet->createFacetField('publishingDates')->setField('publishDate');
-		$query->addSort('publishDate', $query::SORT_DESC);
-		$resultSet = $this->client->select($query);
-		$publishingDates = $resultSet->getFacetSet()->getFacet('publishingDates');
-		$publishingDates_array = [];
-		foreach ($publishingDates as $key => $value) {
-			$publishingDates_array[] = $key;
-		}
-		$dates_collection = collect($publishingDates_array);
+		try {
+			$query = $this->client->createSelect();
+			$facetSet = $query->getFacetSet();
+			$facetSet->createFacetField('publishingDates')->setField('publishDate');
+			$query->addSort('publishDate', $query::SORT_DESC);
+			$resultSet = $this->client->select($query);
+			$publishingDates = $resultSet->getFacetSet()->getFacet('publishingDates');
+			$publishingDates_array = [];
+			foreach ($publishingDates as $key => $value) {
+				$publishingDates_array[] = $key;
+			}
+			$dates_collection = collect($publishingDates_array);
 
-		return $dates_collection->sortDesc()->values()->all();
+			return $dates_collection->sortDesc()->values();
+		} catch(\Solarium\Exception $e) {
+			Log::error('Error en Solr [getPublishingDates]: ' . $e->getMessage());
+			// Retornar colección vacía para que la vista no falle al iterar
+            return collect();
+		} catch (Throwable $e) {
+			// Atrapa fallos críticos de red, Timeouts de cURL, errores de DNS o conexión caída
+			Log::error('Fallo de conexión o Timeout con Solr en [getPublishingDates]: ' . $e->getMessage());
+			return collect(); 
+		}
 	}
 
 	public function cleanInputSearchTerm($searchTerm) {
@@ -64,14 +87,23 @@ class SolrService {
 	}
 
 	public function getNumDocsFound() {
-		// get a select query instance
-		$query = $this->client->createQuery($this->client::QUERY_SELECT);
-
-		// this executes the query and returns the result
-		$resultset = $this->client->execute($query);
-
-		// display the total number of documents found by Solr
-		return $resultset->getNumFound();
+		try {
+			// get a select query instance
+			$query = $this->client->createQuery($this->client::QUERY_SELECT);
+			// this executes the query and returns the result
+			$resultset = $this->client->execute($query);
+			// display the total number of documents found by Solr
+			return $resultset->getNumFound();
+		} catch (\Solarium\Exception $e) {
+			Log::error('Error en Solr [getNumDocsFound]: ' . $e->getMessage());
+            
+            // Retornar 0 para evitar fallos numéricos en la interfaz
+            return 0;
+		} catch (Throwable $e) {
+			// Atrapa fallos críticos de red, Timeouts de cURL, errores de DNS o conexión caída
+			Log::error('Fallo de conexión o Timeout con Solr en [getNumDocsFound]: ' . $e->getMessage());
+			return 0; 
+		}
 	}
 
 }

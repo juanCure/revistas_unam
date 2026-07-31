@@ -11,6 +11,8 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Solarium\QueryType\Select\Query\Query;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class SolariumController extends Controller {
 	protected $client, $indicesServicio, $solrService;
@@ -35,50 +37,162 @@ class SolariumController extends Controller {
 	}
 
 	public function search(Request $request) {
-		$idMod = $request->input('idMod');
-		$searchTerm = $request->input('buscar');
-		$selected_publishDates = $request->input('selected_publishDates');
-		$selected_journals = $request->input('selected_journals');
-		$strQuery = $this->solrService->cleanInputSearchTerm($searchTerm);
+		try{
+			$idMod = $request->input('idMod');
+			$searchTerm = $request->input('buscar');
+			$selected_publishDates = $request->input('selected_publishDates');
+			$selected_journals = $request->input('selected_journals');
+			$strQuery = $this->solrService->cleanInputSearchTerm($searchTerm);
 
-		// This search is for article
-		if (isset($idMod) && $idMod == 0) {
+			// This search is for article
+			if (isset($idMod) && $idMod == 0) {
+				$query = $this->client->createSelect();
+				// This line is very important because the default query operator is AND, and it should be OR
+				$query->setQueryDefaultOperator(Query::QUERY_OPERATOR_OR);
+				// get the facetset component
+				$facetSet = $query->getFacetSet();
+
+				$query->setQuery($strQuery);
+
+				$query->setFields(array('collection', 'title', 'author', 'publishDate', 'issn', 'url', 'pclave_txt_mv', 'doi_txt', 'description'));
+
+				// FilterQueries
+				// Filter all the documents which their publishdate is 2018 and 2016
+				// $query->createFilterQuery('publishdate')->setQuery('publishDate:(2018 or 2016)');
+				//Filter all the documents from Mundo Nano journal
+				// $query->createFilterQuery('journals')->setQuery('collection:"Mundo nano"');
+
+				// If the selected_publishDates is set then iterate to add them to the filterQuery
+				if (isset($selected_publishDates)) {
+					$collection_publishDates = collect($selected_publishDates);
+					$strFilterQuery = "publishDate:({$collection_publishDates->implode(' or ')})";
+					$query->createFilterQuery('publishdate')->setQuery($strFilterQuery)->addTag('fecha_publicacion');
+				}
+				// If the selected_journals array is set then iterate through it to create a filterQuery
+				if (isset($selected_journals)) {
+					// $journals_collection = collect($selected_journals);
+					$strFilterQuery = "collection:\"{$selected_journals[0]}\"";
+					$query->createFilterQuery('journals')->setQuery($strFilterQuery)->addTag('selected_journals');
+				}
+
+				// FacetFields
+				// Creating a facet over the publishDate field
+				// $facetSet->createFacetField('pub_date')->setField('publishDate')->setMinCount(1);
+				$facetSet->createFacetField('unfiltered')->setField('publishDate')->setMinCount(1)->getLocalParameters()->addExcludes(['fecha_publicacion']);
+
+				$facetSet->createFacetField('unFilteredJournals')->setField('collection')->setMinCount(1);
+				// $facetSet->createFacetField('unFilteredJournals')->setField('collection')->setMinCount(1)->getLocalParameters()->addExcludes(['selected_journals']);
+
+				$resultsPerPage = 15;
+				$startPage = $query->getStart();
+				$page = max(0, Paginator::resolveCurrentPage());
+				$offset = ($page * $resultsPerPage) - $resultsPerPage;
+				// Set the number of results to return
+				$query->setRows($resultsPerPage);
+				// Set the 0-based result to start from, taking into account pagination
+				$query->setStart($offset);
+
+				// sort the results by price ascending
+				// $query->addSort('publishDate', $query::SORT_ASC);
+
+				// this executes the query and returns the result
+				$resultset = $this->client->execute($query);
+				// $publishDateFacet = $resultset->getFacetSet()->getFacet('pub_date');
+				$unFilteredPublishDateFacet = $resultset->getFacetSet()->getFacet('unfiltered');
+				// $journalsFacet = $resultset->getFacetSet()->getFacet('journals');
+				$unFilteredJournalsFacet = $resultset->getFacetSet()->getFacet('unFilteredJournals');
+				$numFound = $resultset->getNumFound();
+				$resultset = $this->proccessResultSet($resultset);
+
+				$mypaginator = $this->paginate($request, $resultset, $numFound, $resultsPerPage, $page);
+				$publishDateArray = $this->processFacet($unFilteredPublishDateFacet, $selected_publishDates)->toArray();
+				$journalsArray = $this->processFacet($unFilteredJournalsFacet, $selected_journals)->toArray();
+
+				if ($request->ajax()) {
+					return view('resultados.bSolrIndex', [
+						'resultset' => $resultset,
+						'numFound' => $numFound,
+						'searchTerm' => $searchTerm,
+						'mypaginator' => $mypaginator,
+						'publishDateArray' => $publishDateArray,
+						'selected_publishDates' => $selected_publishDates,
+						'journalsArray' => $journalsArray,
+						'selected_journals' => $selected_journals,
+						'path' => $request->path(),
+					])->render();
+				}
+				return view('resultados.resultadosBusquedaPorArticulos', [
+					'resultset' => $resultset,
+					'numFound' => $numFound,
+					'searchTerm' => $searchTerm,
+					'mypaginator' => $mypaginator,
+					'publishDateArray' => $publishDateArray,
+					'selected_publishDates' => $selected_publishDates,
+					'journalsArray' => $journalsArray,
+					'selected_journals' => $selected_journals,
+					'path' => $request->path(),
+					'solrAvailable' => true,
+				]);
+			} else {
+				$indices = $this->indicesServicio->getIndices();
+
+				$alfabeto = $this->indicesServicio->getAlfabeto();
+
+				return view('resultados.resultadosPorIndices', [
+					'revistas' => Revista::where('titulo', 'like', '%' . $searchTerm . '%')->paginate(5),
+					'tipos_revistas' => $indices['typos'],
+					'areas_conocimiento' => $indices['areas'],
+					'indexadores' => $indices['indexadores'],
+					'alfabeto' => $alfabeto,
+					'accion' => 'Busqueda básica',
+					'filtro' => $searchTerm,
+					'breadcrumb' => 'Busqueda básica',
+					'idMod' => $idMod,
+				]);
+			}
+		} catch (\Solarium\Exception $e) {
+			Log::error('Error de conexión con Solr: ' . $e->getMessage());
+			if ($request->expectsJson()) {
+				return response()->json([
+					'error' => true,
+					'message' => 'El servición de búsqueda por título de artículo no se encuentra disponible temporalmente.'
+				], 503);
+			}
+		} catch (Throwable $e) {
+			// Atrapa fallos críticos de red, Timeouts de cURL, errores de DNS o conexión caída
+			Log::error('Fallo de conexión o Timeout con Solr en [getHarvestedJournals]: ' . $e->getMessage());
+		}
+		return view('resultados.resultadosBusquedaPorArticulos', [
+			'resultset' => collect(),
+			'numFound' => 0,
+			'searchTerm' => $searchTerm,
+			'publishDateArray' => [],
+			'selected_publishDates' => [],
+			'journalsArray' => [],
+			'selected_journals' => [],
+			'path' => $request->path(),
+			'solrAvailable' => false,
+			'warningMessage' => 'Las búsquedas por los atributos de título, revista, período y autores no se encuentran disponibles temporalmente.'
+		]);
+	}
+
+	public function advancedSearching(Request $request) {
+		try {
+			// The both below are the filters
+			$selected_publishDates = $request->input('selected_publishDates');
+			$selected_journals = $request->input('selected_journals');
+			// The next 5 fields are the available searching parameters
+			$requested_journal = $request->input('requested_journal');
+			$published_date_from = $request->input('publish_date_from');
+			$published_date_to = $request->input('publish_date_to');
+			$author_name = $request->input('author_name');
+			$searchTerm = $request->input('searchTerm');
+
 			$query = $this->client->createSelect();
 			// This line is very important because the default query operator is AND, and it should be OR
 			$query->setQueryDefaultOperator(Query::QUERY_OPERATOR_OR);
 			// get the facetset component
 			$facetSet = $query->getFacetSet();
-
-			$query->setQuery($strQuery);
-
-			$query->setFields(array('collection', 'title', 'author', 'publishDate', 'issn', 'url', 'pclave_txt_mv', 'doi_txt', 'description'));
-
-			// FilterQueries
-			// Filter all the documents which their publishdate is 2018 and 2016
-			// $query->createFilterQuery('publishdate')->setQuery('publishDate:(2018 or 2016)');
-			//Filter all the documents from Mundo Nano journal
-			// $query->createFilterQuery('journals')->setQuery('collection:"Mundo nano"');
-
-			// If the selected_publishDates is set then iterate to add them to the filterQuery
-			if (isset($selected_publishDates)) {
-				$collection_publishDates = collect($selected_publishDates);
-				$strFilterQuery = "publishDate:({$collection_publishDates->implode(' or ')})";
-				$query->createFilterQuery('publishdate')->setQuery($strFilterQuery)->addTag('fecha_publicacion');
-			}
-			// If the selected_journals array is set then iterate through it to create a filterQuery
-			if (isset($selected_journals)) {
-				// $journals_collection = collect($selected_journals);
-				$strFilterQuery = "collection:\"{$selected_journals[0]}\"";
-				$query->createFilterQuery('journals')->setQuery($strFilterQuery)->addTag('selected_journals');
-			}
-
-			// FacetFields
-			// Creating a facet over the publishDate field
-			// $facetSet->createFacetField('pub_date')->setField('publishDate')->setMinCount(1);
-			$facetSet->createFacetField('unfiltered')->setField('publishDate')->setMinCount(1)->getLocalParameters()->addExcludes(['fecha_publicacion']);
-
-			$facetSet->createFacetField('unFilteredJournals')->setField('collection')->setMinCount(1);
-			// $facetSet->createFacetField('unFilteredJournals')->setField('collection')->setMinCount(1)->getLocalParameters()->addExcludes(['selected_journals']);
 
 			$resultsPerPage = 15;
 			$startPage = $query->getStart();
@@ -89,21 +203,60 @@ class SolariumController extends Controller {
 			// Set the 0-based result to start from, taking into account pagination
 			$query->setStart($offset);
 
-			// sort the results by price ascending
-			// $query->addSort('publishDate', $query::SORT_ASC);
+			// $fq_journal = "collection:\"Investigaciones Geográficas\"";
+			// $query->createFilterQuery('fq_journal')->setQuery($fq_journal);
+			if (isset($published_date_from) && $selected_publishDates == null) {
+				if (isset($published_date_to)) {
+					$fq_dates = "publishDate:[" . $published_date_from . " TO " . $published_date_to . "]";
+				} else {
+					$fq_dates = "publishDate:[" . $published_date_from . " TO * ]";
+				}
 
-			// this executes the query and returns the result
+				$query->createFilterQuery('fq_dates')->setQuery($fq_dates);
+			} elseif (isset($selected_publishDates)) {
+				// I need to set a query filter with the selected years in the publish date filter
+				$collection_publishDates = collect($selected_publishDates);
+				$strFilterQuery = "publishDate:({$collection_publishDates->implode(' or ')})";
+				$query->createFilterQuery('publishdate')->setQuery($strFilterQuery)->addTag('fecha_publicacion');
+			}
+
+			// $fq_author = "author_facet:\"Ordorika, Imanol\"";
+			// $query->createFilterQuery('fq_author')->setQuery($fq_author);
+			// $fq_title = "title:\"ciencia\"";
+			// $query->createFilterQuery('fq_title')->setQuery($fq_title);
+
+			if (isset($requested_journal)) {
+				$fq_journal = "collection:\"" . $requested_journal . "\"";
+				// dd($fq_journal);
+				$query->createFilterQuery('fq_journal')->setQuery($fq_journal);
+			}
+
+			if (isset($author_name)) {
+				$strQuery = "author:{$author_name}";
+				$query->createFilterQuery('author')->setQuery($strQuery);
+			}
+			if (isset($searchTerm)) {
+				$strQuery = $this->solrService->cleanInputSearchTerm($searchTerm);
+				$query->createFilterQuery('title')->setQuery($strQuery)->addTag('fq_title');
+			}
+
+			// FacetFields
+			// Creating a facet over the publishDate field
+			$facetSet->createFacetField('unfiltered')->setField('publishDate')->setMinCount(1)->getLocalParameters()->addExcludes(['fecha_publicacion']);
+
+			$facetSet->createFacetField('unFilteredJournals')->setField('collection')->setMinCount(1);
+
 			$resultset = $this->client->execute($query);
-			// $publishDateFacet = $resultset->getFacetSet()->getFacet('pub_date');
+			$numFound = $resultset->getNumFound();
+
 			$unFilteredPublishDateFacet = $resultset->getFacetSet()->getFacet('unfiltered');
 			// $journalsFacet = $resultset->getFacetSet()->getFacet('journals');
 			$unFilteredJournalsFacet = $resultset->getFacetSet()->getFacet('unFilteredJournals');
-			$numFound = $resultset->getNumFound();
-			$resultset = $this->proccessResultSet($resultset);
-
-			$mypaginator = $this->paginate($request, $resultset, $numFound, $resultsPerPage, $page);
 			$publishDateArray = $this->processFacet($unFilteredPublishDateFacet, $selected_publishDates)->toArray();
 			$journalsArray = $this->processFacet($unFilteredJournalsFacet, $selected_journals)->toArray();
+
+			$resultset = $this->proccessResultSet($resultset);
+			$mypaginator = $this->paginate($request, $resultset, $numFound, $resultsPerPage, $page);
 
 			if ($request->ajax()) {
 				return view('resultados.bSolrIndex', [
@@ -118,147 +271,52 @@ class SolariumController extends Controller {
 					'path' => $request->path(),
 				])->render();
 			}
-			return view('resultados.resultadosBusquedaPorArticulos', [
+			return view('resultados.resultadosBusquedaAvanzada', [
 				'resultset' => $resultset,
 				'numFound' => $numFound,
-				'searchTerm' => $searchTerm,
 				'mypaginator' => $mypaginator,
 				'publishDateArray' => $publishDateArray,
-				'selected_publishDates' => $selected_publishDates,
 				'journalsArray' => $journalsArray,
+				'searchTerm' => $searchTerm,
+				'selected_publishDates' => $selected_publishDates,
 				'selected_journals' => $selected_journals,
+				'requested_journal' => $requested_journal,
+				'published_date_from' => $published_date_from,
+				'published_date_to' => $published_date_to,
+				'author_name' => $author_name,
+				'searchTerm' => $searchTerm,
 				'path' => $request->path(),
+				'solrAvailable' => true
 			]);
-		} else {
-			$indices = $this->indicesServicio->getIndices();
-
-			$alfabeto = $this->indicesServicio->getAlfabeto();
-
-			return view('resultados.resultadosPorIndices', [
-				'revistas' => Revista::where('titulo', 'like', '%' . $searchTerm . '%')->paginate(5),
-				'tipos_revistas' => $indices['typos'],
-				'areas_conocimiento' => $indices['areas'],
-				'indexadores' => $indices['indexadores'],
-				'alfabeto' => $alfabeto,
-				'accion' => 'Busqueda básica',
-				'filtro' => $searchTerm,
-				'breadcrumb' => 'Busqueda básica',
-				'idMod' => $idMod,
-			]);
-		}
-	}
-
-	public function advancedSearching(Request $request) {
-		// The both below are the filters
-		$selected_publishDates = $request->input('selected_publishDates');
-		$selected_journals = $request->input('selected_journals');
-		// The next 5 fields are the available searching parameters
-		$requested_journal = $request->input('requested_journal');
-		$published_date_from = $request->input('publish_date_from');
-		$published_date_to = $request->input('publish_date_to');
-		$author_name = $request->input('author_name');
-		$searchTerm = $request->input('searchTerm');
-
-		$query = $this->client->createSelect();
-		// This line is very important because the default query operator is AND, and it should be OR
-		$query->setQueryDefaultOperator(Query::QUERY_OPERATOR_OR);
-		// get the facetset component
-		$facetSet = $query->getFacetSet();
-
-		$resultsPerPage = 15;
-		$startPage = $query->getStart();
-		$page = max(0, Paginator::resolveCurrentPage());
-		$offset = ($page * $resultsPerPage) - $resultsPerPage;
-		// Set the number of results to return
-		$query->setRows($resultsPerPage);
-		// Set the 0-based result to start from, taking into account pagination
-		$query->setStart($offset);
-
-		// $fq_journal = "collection:\"Investigaciones Geográficas\"";
-		// $query->createFilterQuery('fq_journal')->setQuery($fq_journal);
-		if (isset($published_date_from) && $selected_publishDates == null) {
-			if (isset($published_date_to)) {
-				$fq_dates = "publishDate:[" . $published_date_from . " TO " . $published_date_to . "]";
-			} else {
-				$fq_dates = "publishDate:[" . $published_date_from . " TO * ]";
+		} catch (\Solarium\Exception $e) {
+			Log::error('Error de conexión con Solr: ' . $e->getMessage());
+			if ($request->expectsJson()) {
+				return response()->json([
+					'error' => true,
+					'message' => 'El servición de búsqueda avanzada no se encuentra disponible en este momento.'
+				], 503);
 			}
-
-			$query->createFilterQuery('fq_dates')->setQuery($fq_dates);
-		} elseif (isset($selected_publishDates)) {
-			// I need to set a query filter with the selected years in the publish date filter
-			$collection_publishDates = collect($selected_publishDates);
-			$strFilterQuery = "publishDate:({$collection_publishDates->implode(' or ')})";
-			$query->createFilterQuery('publishdate')->setQuery($strFilterQuery)->addTag('fecha_publicacion');
-		}
-
-		// $fq_author = "author_facet:\"Ordorika, Imanol\"";
-		// $query->createFilterQuery('fq_author')->setQuery($fq_author);
-		// $fq_title = "title:\"ciencia\"";
-		// $query->createFilterQuery('fq_title')->setQuery($fq_title);
-
-		if (isset($requested_journal)) {
-			$fq_journal = "collection:\"" . $requested_journal . "\"";
-			// dd($fq_journal);
-			$query->createFilterQuery('fq_journal')->setQuery($fq_journal);
-		}
-
-		if (isset($author_name)) {
-			$strQuery = "author:{$author_name}";
-			$query->createFilterQuery('author')->setQuery($strQuery);
-		}
-		if (isset($searchTerm)) {
-			$strQuery = $this->solrService->cleanInputSearchTerm($searchTerm);
-			$query->createFilterQuery('title')->setQuery($strQuery)->addTag('fq_title');
-		}
-
-		// FacetFields
-		// Creating a facet over the publishDate field
-		$facetSet->createFacetField('unfiltered')->setField('publishDate')->setMinCount(1)->getLocalParameters()->addExcludes(['fecha_publicacion']);
-
-		$facetSet->createFacetField('unFilteredJournals')->setField('collection')->setMinCount(1);
-
-		$resultset = $this->client->execute($query);
-		$numFound = $resultset->getNumFound();
-
-		$unFilteredPublishDateFacet = $resultset->getFacetSet()->getFacet('unfiltered');
-		// $journalsFacet = $resultset->getFacetSet()->getFacet('journals');
-		$unFilteredJournalsFacet = $resultset->getFacetSet()->getFacet('unFilteredJournals');
-		$publishDateArray = $this->processFacet($unFilteredPublishDateFacet, $selected_publishDates)->toArray();
-		$journalsArray = $this->processFacet($unFilteredJournalsFacet, $selected_journals)->toArray();
-
-		$resultset = $this->proccessResultSet($resultset);
-		$mypaginator = $this->paginate($request, $resultset, $numFound, $resultsPerPage, $page);
-
-		if ($request->ajax()) {
-			return view('resultados.bSolrIndex', [
-				'resultset' => $resultset,
-				'numFound' => $numFound,
-				'searchTerm' => $searchTerm,
-				'mypaginator' => $mypaginator,
-				'publishDateArray' => $publishDateArray,
-				'selected_publishDates' => $selected_publishDates,
-				'journalsArray' => $journalsArray,
-				'selected_journals' => $selected_journals,
-				'path' => $request->path(),
-			])->render();
+		} catch (Throwable $e) {
+			// Atrapa fallos críticos de red, Timeouts de cURL, errores de DNS o conexión caída
+			Log::error('Fallo de conexión o Timeout con Solr en [getHarvestedJournals]: ' . $e->getMessage());
 		}
 		return view('resultados.resultadosBusquedaAvanzada', [
-			'resultset' => $resultset,
-			'numFound' => $numFound,
-			'mypaginator' => $mypaginator,
-			'publishDateArray' => $publishDateArray,
-			'journalsArray' => $journalsArray,
+			'resultset' => collect(),
+			'numFound' => 0,
+			'publishDateArray' => [],
+			'journalsArray' => [],
 			'searchTerm' => $searchTerm,
-			'selected_publishDates' => $selected_publishDates,
-			'selected_journals' => $selected_journals,
-			'requested_journal' => $requested_journal,
-			'published_date_from' => $published_date_from,
-			'published_date_to' => $published_date_to,
-			'author_name' => $author_name,
+			'selected_publishDates' => [],
+			'selected_journals' => [],
+			'requested_journal' => "",
+			'published_date_from' => [],
+			'published_date_to' => [],
+			'author_name' => "",
 			'searchTerm' => $searchTerm,
 			'path' => $request->path(),
+			'solrAvailable' => false,
+			'warningMessage' => 'La búsqueda avanzada no se encuentran disponible en este momento.'
 		]);
-
 	}
 
 	public function proccessResultSet($resulset) {

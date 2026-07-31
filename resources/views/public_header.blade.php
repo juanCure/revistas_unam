@@ -67,15 +67,23 @@
                                 </div>
                             </div>
                             <div class="col-12 col-sm-10 col-md-12 offset-sm-1 offset-md-0">
-                                <div style="padding-top: 5px;"><span style="/*margin-top: 200px;*/">
-                                    Portal con {{ $indiceServicio->getTotalRevistas() }} revistas y acceso a más de {{ $solrService->getNumDocsFound() }} artículos a texto completo.<br></span></div>
+                                <div style="padding-top: 5px;">
+                                    @if($solrService->getNumDocsFound() === 0)
+                                        <div class="alert alert-warning" role="alert">
+                                            El servicio búsqueda por título de artículo y la búsqueda avanzada no se encuentran disponibles en este momento.
+                                        </div>
+                                    @else
+                                        <span style="/*margin-top: 200px;*/">
+                                        Portal con {{ $indiceServicio->getTotalRevistas() }} revistas y acceso a más de {{ $solrService->getNumDocsFound() }} artículos a texto completo.<br></span>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
         </section>
-        {{-- The advance searching form --}}
+        {{-- The advanced searching form --}}
         <form action="{{ route('solr.advanced.search') }}" method="POST" name="advanced" class="d-xl-flex justify-content-xl-start">
             @csrf
             <div class="form-row" style="width: 100%;">
@@ -89,10 +97,11 @@
 
                                         <select name="requested_journal" class="form-control advanced_select" id="journal_select">
                                             <option value="" selected="">Selecciona una revista</option>
-                                            {{-- @foreach ($harvestedJournals as $journal => $value) --}}
-                                            @foreach ($solrService->getHarvestedJournals() as $journal)
-                                            <option value="{{ $journal }}" {{ (isset($requested_journal) && $journal == $requested_journal) ? 'selected' : '' }}>{{ $journal }}</option>
-                                            @endforeach
+                                            @if($solrService->getHarvestedJournals()->isNotEmpty()) 
+                                                @foreach ($solrService->getHarvestedJournals() as $journal)
+                                                    <option value="{{ $journal }}" {{ (isset($requested_journal) && $journal == $requested_journal) ? 'selected' : '' }}>{{ $journal }}</option>
+                                                @endforeach
+                                            @endif
                                         </select>
                                     </div>
                                 </div>
@@ -104,18 +113,22 @@
                                         <select name="publish_date_from" class="form-control advanced_select" id="select_from">
                                             {{-- <option value="" selected="false" class="place_holder_year" disabled="true">Año</option> --}}
                                             <option value="" selected="" class="place_holder_year">Año</option>
-                                            @foreach ($solrService->getPublishingDates() as $date)
-                                            <option value="{{ $date }}" {{ (isset($published_date_from) && $date == $published_date_from) ? 'selected' : '' }}>{{ $date }}</option>
-                                            @endforeach
+                                            @if($solrService->getPublishingDates()->isNotEmpty())
+                                                @foreach ($solrService->getPublishingDates() as $date)
+                                                <option value="{{ $date }}" {{ (isset($published_date_from) && $date == $published_date_from) ? 'selected' : '' }}>{{ $date }}</option>
+                                                @endforeach
+                                            @endif
                                         </select>
                                     </div>
                                     <div class="col-12 col-sm-6 d-flex justify-content-start align-items-center justify-content-xl-end input_col"><label class="text-left year_label">Hasta</label>
                                         <select name="publish_date_to" class="form-control advanced_select" id="select_to">
                                             {{-- <option value="default" selected="false" class="place_holder_year" disabled="true">Año</option> --}}
                                             <option value="" selected="" class="place_holder_year">Año</option>
-                                            @foreach ($solrService->getPublishingDates() as $date)
-                                            <option value="{{ $date }}" {{ (isset($published_date_to) && $date == $published_date_to) ? 'selected' : '' }}>{{ $date }}</option>
-                                            @endforeach
+                                            @if($solrService->getPublishingDates()->isNotEmpty())
+                                                @foreach ($solrService->getPublishingDates() as $date)
+                                                <option value="{{ $date }}" {{ (isset($published_date_to) && $date == $published_date_to) ? 'selected' : '' }}>{{ $date }}</option>
+                                                @endforeach
+                                            @endif
                                         </select>
                                     </div>
                                 </div>
