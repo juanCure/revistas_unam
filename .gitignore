@@ -18,3 +18,5 @@ public/pdf/
 /public/node_modules
 public/mix-manifest.json
 public/img
+/public/js
+/public/css
