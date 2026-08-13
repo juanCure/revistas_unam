@@ -1,0 +1,173 @@
+@charset "UTF-8";
+/* CSS Document */
+/*Estilos realizados para el portal de Revistas UNAM, para que la tabla con resultados se comporte en forma más compacta en los tamaños pequeños, de 768 hacia abajo*/
+* {
+  font-family: sans-serif;
+}
+/*Estilos para las tablas que muestran los datos de acuerdo a las búsquedas*/
+.table-responsive{
+	width: 100%;
+	margin:0 auto;
+	overflow-x:hidden;
+}
+.table-responsive table.table{
+	display: none;
+}
+/*Segunda tabla la cual muestra los resultados de la búsqueda en un solo div*/
+.table-responsive  table#table-responsive-two{
+    display: table;
+    width: 100%; 
+    height:auto; 
+    padding: 1%; 
+    margin:2% 0; 
+    overflow: auto; 
+    border-collapse: collapse;
+    font-size: 1rem; 
+    color: #343a40;
+}
+.table-responsive  table#table-responsive-two tr td .found-item{
+	border-top: none;
+	padding: 1%;
+    text-align: left;       
+}
+.table-responsive  table#table-responsive-two tr td .found-item .tit-tableOneColumn {
+    color: #343a40;
+    font-weight: bold !important;
+    font-family: sans-serif !important;
+}
+.table-responsive  table#table-responsive-two tr td i{
+	color: #de181c;
+	font-size: 1.4rem;
+}
+/*Estilos para los links de la tabla responsiva two*/
+.table-responsive  table#table-responsive-two tr a{
+	color:#343a40;
+	text-decoration: none;
+}
+.table-responsive  table#table-responsive-two tr a:hover, .table-responsive  table#table-responsive-two tr a:focus{
+    color: #de181c !important;
+    background: #9e9e9e1a;
+    text-decoration: none;
+}
+
+/*Aquí inician las medias queries*/
+@media (min-width:480px) {
+/*Estilos para las tablas que muestran los datos de acuerdo a las búsquedas*/
+.table-responsive{
+	width: 100%;
+	margin:0 auto;
+	overflow-x:hidden;
+}
+.table-responsive table.table{
+	display: none;
+}
+/*Segunda tabla la cual muestra los resultados de la búsqueda en un solo div*/
+.table-responsive  table#table-responsive-two{
+    display: table;
+    width: 100%; 
+    height:auto; 
+    padding: 1%; 
+    margin:2% 0; 
+    overflow: auto; 
+    border-collapse: collapse;
+    font-size: 1rem; 
+    color: #343a40;
+}
+.table-responsive  table#table-responsive-two tr td .found-item{
+	border-top: none;
+	padding: 1%;
+    text-align: left;       
+}
+.table-responsive  table#table-responsive-two tr td .found-item .tit-tableOneColumn {
+    color: #343a40;
+    font-weight: bold !important;
+    font-family: sans-serif !important;
+}
+.table-responsive  table#table-responsive-two tr td i{
+	color: #de181c;
+	font-size: 1.4rem;
+}
+/*Estilos para los links de la tabla responsiva two*/
+.table-responsive  table#table-responsive-two tr a{
+	color:#343a40;
+	text-decoration: none;
+}
+.table-responsive  table#table-responsive-two tr a:hover, .table-responsive  table#table-responsive-two tr a:focus{
+    color: #de181c !important;
+    background: #9e9e9e1a;
+    text-decoration: none;
+}
+}
+/*Aquí inician la media querie a partir de 768px para arriba*/
+@media (min-width: 768px) {
+/*Estilos para las tablas que muestran los datos de acuerdo a las búsquedas*/
+.table-responsive{
+	width: 100%;
+	margin:0 auto;
+	overflow-x:hidden;
+}
+.table-responsive table.table{
+	display: none;
+}
+/*Segunda tabla la cual muestra los resultados de la búsqueda en un solo div*/
+.table-responsive  table#table-responsive-two{
+    display: table;
+    width: 100%; 
+    height:auto; 
+    padding: 1%; 
+    margin:2% 0; 
+    overflow: auto; 
+    border-collapse: collapse;
+    font-size: 1rem; 
+    color: #343a40;
+}
+.table-responsive  table#table-responsive-two tr td .found-item{
+	border-top: none;
+	padding: 1%;
+    text-align: left;       
+}
+.table-responsive  table#table-responsive-two tr td .found-item .tit-tableOneColumn {
+    color: #343a40;
+    font-weight: bold !important;
+    font-family: sans-serif !important;
+}
+.table-responsive  table#table-responsive-two tr td i{
+	color: #de181c;
+	font-size: 1.4rem;
+}
+/*Estilos para los links de la tabla responsiva two*/
+.table-responsive  table#table-responsive-two tr a{
+	color:#343a40;
+	text-decoration: none;
+}
+.table-responsive  table#table-responsive-two tr a:hover, .table-responsive  table#table-responsive-two tr a:focus{
+    color: #de181c !important;
+    background: #9e9e9e1a;
+    text-decoration: none;
+}
+
+}
+
+/*Aquí inician la media querie a partir de 992px para arriba*/
+@media (min-width: 992px) {
+/*Contenedor padre de la tabla de resultados*/
+/*El widht en esta tabla de ejercicio funciona con 98%, mientras que en el portal funciona al 90%, por lo que en el ejemplose verá más pequeña la caja, NO CAMBIAR*/
+.table-responsive {
+    display: block;
+    width: 90%;
+    padding: 1% 2%;
+    margin:0;
+    overflow-x: auto;
+}
+/*Tabla de resultados*/    
+.table-responsive table.table {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #212529;
+        display: block;
+}
+/*Segunda tabla la cual muestra los resultados de la búsqueda en un solo div*/
+.table-responsive  table#table-responsive-two{
+	display: none;
+}
+}

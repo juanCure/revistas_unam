@@ -1,0 +1,185 @@
+.filter_col label {
+  margin-top: 4px;
+}
+
+.article_data_row {
+  background: white;
+}
+
+.article_data {
+  padding: 15px !important;
+}
+
+.data-col {
+  padding-left: 10px;
+}
+
+.page_col, .article_col {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+
+.article_result_row, .page_row {
+  margin-left: 5px;
+  padding: 10px 0;
+  background: rgb(242,242,242);
+}
+
+.article_link {
+  font-size: 1.1em;
+  color: var(--dark);
+}
+
+.article_link i {
+  color: var(--link);
+  font-size: 1.2em;
+  margin-left: 5px;
+}
+
+.data_container {
+  margin-bottom: 6px;
+}
+
+.article_authors {
+  margin-top: 3px;
+}
+
+.data_label {
+  margin-right: 0;
+  padding-left: 0;
+}
+
+.doi_link {
+  display: inline-block;
+}
+
+.keyword_caontainer {
+  display: inline-block;
+}
+
+.keyword_link {
+  background: #f2f2f2;
+  color: rgb(104 104 104);
+  font-size: .9em;
+  font-weight: lighter;
+  font-family: Anaheim, sans-serif;
+  padding: 1px 6px;
+  display: inline-block;
+  margin: 0 3px;
+  margin-bottom: 3px;
+}
+
+.article_result_row {
+  margin-left: 5px;
+  padding: 10px 0;
+  background: rgb(242,242,242);
+}
+
+.social_list {
+  margin-top: 18px;
+}
+
+.social_result_article a > * {
+  font-size: 30px;
+  padding: 4px 0;
+}
+
+.journal_title {
+  color: var(--dark);
+  background: white;
+  height: auto;
+  margin: 0;
+  display: inline-block;
+  padding-top: 5px;
+  padding-right: 20px;
+  padding-left: 10px;
+}
+
+.journal_title:after {
+}
+
+hr {
+  display: none;
+  margin-top: .3rem;
+  margin-bottom: .3rem;
+}
+
+.label_description:after {
+  display: none;
+}
+
+.description_container {
+  margin-left: 10px;
+  margin-top: 10px;
+  padding: 15px;
+  padding-top: 5px;
+  border: solid 1px #dedede;
+  font-size: .92em;
+}
+
+.label_description {
+  cursor: pointer;
+}
+
+.label_description i {
+  margin-left: 5px;
+  color: var(--link);
+}
+
+/* *************   DATE COLUMN   **************** */
+
+.card_body_article {
+}
+
+.card_body_filters {
+  background: rgb(248,248,248);
+  border-bottom: solid #a4a4a4 3px;
+  max-height: 50vh;
+  overflow: auto;
+}
+
+#all_dates {
+}
+
+#all_dates label {
+  color: var(--gray);
+}
+
+.date_col {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.custom-switch .custom-control-label {
+  text-indent: 2px;
+  font-size: .85em;
+}
+
+.filter_results {
+  margin-left: 5px;
+}
+
+.filter_results:before {
+  content: "(";
+}
+
+.filter_results:after {
+  content: ")";
+}
+
+.rest_link_container {
+  background: rgb(238,237,237);
+  margin: 10px 0;
+  color: var(--dark);
+}
+
+.rest_link_container a {
+  color: var(--dark);
+  font-size: .9em;
+}
+
+.rest_link_container i {
+  margin-left: 5px;
+  color: var(--link);
+}
+
