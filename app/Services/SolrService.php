@@ -17,7 +17,7 @@ class SolrService {
 		try {
 			$query = $this->client->createSelect();
 			$facetSet = $query->getFacetSet();
-			$facetSet->createFacetField('journals')->setField('collection');
+			$facetSet->createFacetField('journals')->setField('journal_title');
 			$resultSet = $this->client->select($query);
 			$journals = $resultSet->getFacetSet()->getFacet('journals');
 			$journalsArray = [];
@@ -41,8 +41,8 @@ class SolrService {
 		try {
 			$query = $this->client->createSelect();
 			$facetSet = $query->getFacetSet();
-			$facetSet->createFacetField('publishingDates')->setField('publishDate');
-			$query->addSort('publishDate', $query::SORT_DESC);
+			$facetSet->createFacetField('publishingDates')->setField('published_year_s');
+			$query->addSort('published_year_s', $query::SORT_DESC);
 			$resultSet = $this->client->select($query);
 			$publishingDates = $resultSet->getFacetSet()->getFacet('publishingDates');
 			$publishingDates_array = [];
@@ -66,23 +66,15 @@ class SolrService {
 	public function cleanInputSearchTerm($searchTerm) {
 		$searchTerm = trim($searchTerm);
 		$searchTerm = str_replace(":", "\:", $searchTerm);
-		$strQuery = "(title:\"$searchTerm\")";
+		// $strQuery = "(title_local_s:\"$searchTerm\")";
 		// The empty searching
-		if ($searchTerm == "") {
-			$strQuery = "*:*";
-		} elseif (strpos($searchTerm, ' ')) {
-			// The user wrote a phrase instead of only a word
-			$strQuery = '(title_full:"' . $searchTerm . '" OR description:"' . $searchTerm . '"';
-			$strQuery .= ' OR pclave_txt_mv:"' . $searchTerm . '" OR author:"' . $searchTerm . '"';
-			$strQuery .= ' OR publisher:"' . $searchTerm . '" OR issn:"' . $searchTerm . '"';
-			$strQuery .= ' OR institution:"' . $searchTerm . '" OR collection:"' . $searchTerm . '")';
-		} else {
-			// The user wrote only a word
-			$strQuery = '(title_full:' . $searchTerm . ' OR description:' . $searchTerm;
-			$strQuery .= ' OR pclave_txt_mv:' . $searchTerm . ' OR author:' . $searchTerm;
-			$strQuery .= ' OR publisher:' . $searchTerm . ' OR issn:' . $searchTerm;
-			$strQuery .= ' OR institution:' . $searchTerm . ' OR collection:' . $searchTerm . ')';
-		}
+		// if ($searchTerm == "") {
+		// 	$strQuery = "*:*";
+		// } else {
+		// 	// The user wrote a searching term
+		// 	$strQuery = '(title_local_s:"' . $searchTerm . '" OR description_local_s:"' . $searchTerm . '"';
+		// 	$strQuery .= ' OR subjects_t:"' . $searchTerm . '" OR authors_t:"' . $searchTerm . '"';
+		// } 
 		return $strQuery;
 	}
 

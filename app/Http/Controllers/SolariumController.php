@@ -42,19 +42,41 @@ class SolariumController extends Controller {
 			$searchTerm = $request->input('buscar');
 			$selected_publishDates = $request->input('selected_publishDates');
 			$selected_journals = $request->input('selected_journals');
-			$strQuery = $this->solrService->cleanInputSearchTerm($searchTerm);
 
 			// This search is for article
 			if (isset($idMod) && $idMod == 0) {
-				$query = $this->client->createSelect();
+				$strQuery = $this->sanitizeSolrQuery($searchTerm);
+				$query = $this->client->createQuery($this->client::QUERY_SELECT);
 				// This line is very important because the default query operator is AND, and it should be OR
 				$query->setQueryDefaultOperator(Query::QUERY_OPERATOR_OR);
+				// $query = $this->client->createSelect();
+				$query->setQuery($strQuery);
+				// Define your fields and their weights as a single space-separated string
+				$queryFieldsString = 'title_txt_en^3.0 title_txt_es^3.0 subject_en^2.0 subject_es^2.0 description_txt_en^1.0 description_txt_es^1.0';
+				// Configure eDisMax parser to search across multi-language fields
+				$edismax = $query->getEDisMax();
+				$edismax->setQueryFields($queryFieldsString);
+
+				// 3. Set the fields you want to recover (Fl - Field List)
+				// Only fetch required data to optimize bandwidth and memory
+				$query->setFields([
+					'journal_title', 
+					'locale_s', 
+					'issne', 
+					'title_txt_es', 
+					'title_txt_en',
+					'subject_es',
+					'subject_en',
+					'authors_t',
+					'description_txt_es',
+					'description_txt_en',
+					'doi_s', 
+					'url_s', 
+					'published_year_s'
+				]);
+
 				// get the facetset component
 				$facetSet = $query->getFacetSet();
-
-				$query->setQuery($strQuery);
-
-				$query->setFields(array('collection', 'title', 'author', 'publishDate', 'issn', 'url', 'pclave_txt_mv', 'doi_txt', 'description'));
 
 				// FilterQueries
 				// Filter all the documents which their publishdate is 2018 and 2016
@@ -65,23 +87,23 @@ class SolariumController extends Controller {
 				// If the selected_publishDates is set then iterate to add them to the filterQuery
 				if (isset($selected_publishDates)) {
 					$collection_publishDates = collect($selected_publishDates);
-					$strFilterQuery = "publishDate:({$collection_publishDates->implode(' or ')})";
-					$query->createFilterQuery('publishdate')->setQuery($strFilterQuery)->addTag('fecha_publicacion');
+					$strFilterQuery = "published_year_s:({$collection_publishDates->implode(' or ')})";
+					$query->createFilterQuery('published_year_s')->setQuery($strFilterQuery)->addTag('selected_publishDates');
 				}
 				// If the selected_journals array is set then iterate through it to create a filterQuery
 				if (isset($selected_journals)) {
 					// $journals_collection = collect($selected_journals);
-					$strFilterQuery = "collection:\"{$selected_journals[0]}\"";
+					$strFilterQuery = "journal_title:\"{$selected_journals[0]}\"";
 					$query->createFilterQuery('journals')->setQuery($strFilterQuery)->addTag('selected_journals');
 				}
 
 				// FacetFields
 				// Creating a facet over the publishDate field
 				// $facetSet->createFacetField('pub_date')->setField('publishDate')->setMinCount(1);
-				$facetSet->createFacetField('unfiltered')->setField('publishDate')->setMinCount(1)->getLocalParameters()->addExcludes(['fecha_publicacion']);
+				$facetSet->createFacetField('facet_year')->setField('published_year_s')->setMinCount(1)->getLocalParameters()->addExcludes(['selected_publishDates']);
 
-				$facetSet->createFacetField('unFilteredJournals')->setField('collection')->setMinCount(1);
-				// $facetSet->createFacetField('unFilteredJournals')->setField('collection')->setMinCount(1)->getLocalParameters()->addExcludes(['selected_journals']);
+				$facetSet->createFacetField('facet_journal')->setField('journal_title')->setMinCount(1);
+				// $facetSet->createFacetField('facet_journal')->setField('collection')->setMinCount(1)->getLocalParameters()->addExcludes(['selected_journals']);
 
 				$resultsPerPage = 15;
 				$startPage = $query->getStart();
@@ -98,15 +120,15 @@ class SolariumController extends Controller {
 				// this executes the query and returns the result
 				$resultset = $this->client->execute($query);
 				// $publishDateFacet = $resultset->getFacetSet()->getFacet('pub_date');
-				$unFilteredPublishDateFacet = $resultset->getFacetSet()->getFacet('unfiltered');
+				$resultset_facet_year = $resultset->getFacetSet()->getFacet('facet_year');
 				// $journalsFacet = $resultset->getFacetSet()->getFacet('journals');
-				$unFilteredJournalsFacet = $resultset->getFacetSet()->getFacet('unFilteredJournals');
+				$resultset_facet_journal = $resultset->getFacetSet()->getFacet('facet_journal');
 				$numFound = $resultset->getNumFound();
 				$resultset = $this->proccessResultSet($resultset);
 
 				$mypaginator = $this->paginate($request, $resultset, $numFound, $resultsPerPage, $page);
-				$publishDateArray = $this->processFacet($unFilteredPublishDateFacet, $selected_publishDates)->toArray();
-				$journalsArray = $this->processFacet($unFilteredJournalsFacet, $selected_journals)->toArray();
+				$publishDateArray = $this->processFacet($resultset_facet_year, $selected_publishDates)->toArray();
+				$journalsArray = $this->processFacet($resultset_facet_journal, $selected_journals)->toArray();
 
 				if ($request->ajax()) {
 					return view('resultados.bSolrIndex', [
@@ -135,7 +157,6 @@ class SolariumController extends Controller {
 				]);
 			} else {
 				$indices = $this->indicesServicio->getIndices();
-
 				$alfabeto = $this->indicesServicio->getAlfabeto();
 
 				return view('resultados.resultadosPorIndices', [
@@ -162,22 +183,10 @@ class SolariumController extends Controller {
 			// Atrapa fallos críticos de red, Timeouts de cURL, errores de DNS o conexión caída
 			Log::error('Fallo de conexión o Timeout con Solr en [getHarvestedJournals]: ' . $e->getMessage());
 		}
-		return view('resultados.resultadosBusquedaPorArticulos', [
-			'resultset' => collect(),
-			'numFound' => 0,
-			'searchTerm' => $searchTerm,
-			'publishDateArray' => [],
-			'selected_publishDates' => [],
-			'journalsArray' => [],
-			'selected_journals' => [],
-			'path' => $request->path(),
-			'solrAvailable' => false,
-			'warningMessage' => 'Las búsquedas por los atributos de título, revista, período y autores no se encuentran disponibles temporalmente.'
-		]);
 	}
 
-	public function advancedSearching(Request $request) {
-		try {
+	public function advancedSearch(Request $request) {
+		try{
 			// The both below are the filters
 			$selected_publishDates = $request->input('selected_publishDates');
 			$selected_journals = $request->input('selected_journals');
@@ -188,11 +197,75 @@ class SolariumController extends Controller {
 			$author_name = $request->input('author_name');
 			$searchTerm = $request->input('searchTerm');
 
-			$query = $this->client->createSelect();
+			$query = $this->client->createQuery($this->client::QUERY_SELECT);
 			// This line is very important because the default query operator is AND, and it should be OR
 			$query->setQueryDefaultOperator(Query::QUERY_OPERATOR_OR);
-			// get the facetset component
+			// Define your fields and their weights as a single space-separated string
+			$queryFieldsString = "";
+			
+			// Reviewing if journal title was set up
+			if (isset($requested_journal)) {
+				$fq_journal = "journal_title:\"" . $requested_journal . "\"";
+				$query->createFilterQuery('fq_journal')->setQuery($fq_journal);
+				$queryFieldsString .= " journal_title^3.0";
+			}
+			// Reviewing if publication period was set up
+			if (isset($published_date_from) && $selected_publishDates == null) {
+				if (isset($published_date_to)) {
+					$fq_dates = "published_year_s:[" . $published_date_from . " TO " . $published_date_to . "]";
+				} else {
+					$fq_dates = "published_year_s:[" . $published_date_from . " TO * ]";
+				}
+				$query->createFilterQuery('fq_dates')->setQuery($fq_dates);
+			} elseif (isset($selected_publishDates)) {
+				// I need to set a query filter with the selected years in the publish date filter
+				$collection_publishDates = collect($selected_publishDates);
+				$strFilterQuery = " published_year_s:({$collection_publishDates->implode(' or ')})";
+				$query->createFilterQuery('publishdate')->setQuery($strFilterQuery)->addTag('fecha_publicacion');
+			}
+
+			// Reviewing if the author field was set up
+			if (isset($author_name)) {
+				$strQuery = "authors_t:{$author_name}";
+				$query->createFilterQuery('author')->setQuery($strQuery);
+				$queryFieldsString .= " authors_t^3.0";
+			}
+			// Reviewing if there was a searchTerm set up
+			if (isset($searchTerm)) {
+				$strQuery = $this->sanitizeSolrQuery($searchTerm);
+				$query->setQuery($strQuery);
+				$queryFieldsString .= ' title_txt_en^3.0 title_txt_es^3.0 subject_en^2.0 subject_es^2.0 description_txt_en^1.0 description_txt_es^1.0';
+			}
+			// Configure eDisMax parser to search across multi-language fields
+			$edismax = $query->getEDisMax();
+			$edismax->setQueryFields($queryFieldsString);
+
+			// Set the fields you want to recover (Fl - Field List)
+			// Only fetch required data to optimize bandwidth and memory
+			$query->setFields([
+				'journal_title', 
+				'locale_s', 
+				'issne', 
+				'title_txt_es', 
+				'title_txt_en',
+				'subject_es',
+				'subject_en',
+				'authors_t',
+				'description_txt_es',
+				'description_txt_en',
+				'doi_s', 
+				'url_s', 
+				'published_year_s'
+			]);
+
+			// Get the facetset component
 			$facetSet = $query->getFacetSet();
+
+			// FacetFields
+			// Creating a facet over the published_year_s field
+			$facetSet->createFacetField('facet_year')->setField('published_year_s')->setMinCount(1)->getLocalParameters()->addExcludes(['selected_publishDates']);
+
+			$facetSet->createFacetField('facet_journal')->setField('journal_title')->setMinCount(1);
 
 			$resultsPerPage = 15;
 			$startPage = $query->getStart();
@@ -203,60 +276,19 @@ class SolariumController extends Controller {
 			// Set the 0-based result to start from, taking into account pagination
 			$query->setStart($offset);
 
-			// $fq_journal = "collection:\"Investigaciones Geográficas\"";
-			// $query->createFilterQuery('fq_journal')->setQuery($fq_journal);
-			if (isset($published_date_from) && $selected_publishDates == null) {
-				if (isset($published_date_to)) {
-					$fq_dates = "publishDate:[" . $published_date_from . " TO " . $published_date_to . "]";
-				} else {
-					$fq_dates = "publishDate:[" . $published_date_from . " TO * ]";
-				}
+			// sort the results by price ascending
+			// $query->addSort('publishDate', $query::SORT_ASC);
 
-				$query->createFilterQuery('fq_dates')->setQuery($fq_dates);
-			} elseif (isset($selected_publishDates)) {
-				// I need to set a query filter with the selected years in the publish date filter
-				$collection_publishDates = collect($selected_publishDates);
-				$strFilterQuery = "publishDate:({$collection_publishDates->implode(' or ')})";
-				$query->createFilterQuery('publishdate')->setQuery($strFilterQuery)->addTag('fecha_publicacion');
-			}
-
-			// $fq_author = "author_facet:\"Ordorika, Imanol\"";
-			// $query->createFilterQuery('fq_author')->setQuery($fq_author);
-			// $fq_title = "title:\"ciencia\"";
-			// $query->createFilterQuery('fq_title')->setQuery($fq_title);
-
-			if (isset($requested_journal)) {
-				$fq_journal = "collection:\"" . $requested_journal . "\"";
-				// dd($fq_journal);
-				$query->createFilterQuery('fq_journal')->setQuery($fq_journal);
-			}
-
-			if (isset($author_name)) {
-				$strQuery = "author:{$author_name}";
-				$query->createFilterQuery('author')->setQuery($strQuery);
-			}
-			if (isset($searchTerm)) {
-				$strQuery = $this->solrService->cleanInputSearchTerm($searchTerm);
-				$query->createFilterQuery('title')->setQuery($strQuery)->addTag('fq_title');
-			}
-
-			// FacetFields
-			// Creating a facet over the publishDate field
-			$facetSet->createFacetField('unfiltered')->setField('publishDate')->setMinCount(1)->getLocalParameters()->addExcludes(['fecha_publicacion']);
-
-			$facetSet->createFacetField('unFilteredJournals')->setField('collection')->setMinCount(1);
-
+			// this executes the query and returns the result
 			$resultset = $this->client->execute($query);
+			$resultset_facet_year = $resultset->getFacetSet()->getFacet('facet_year');
+			$resultset_facet_journal = $resultset->getFacetSet()->getFacet('facet_journal');
 			$numFound = $resultset->getNumFound();
-
-			$unFilteredPublishDateFacet = $resultset->getFacetSet()->getFacet('unfiltered');
-			// $journalsFacet = $resultset->getFacetSet()->getFacet('journals');
-			$unFilteredJournalsFacet = $resultset->getFacetSet()->getFacet('unFilteredJournals');
-			$publishDateArray = $this->processFacet($unFilteredPublishDateFacet, $selected_publishDates)->toArray();
-			$journalsArray = $this->processFacet($unFilteredJournalsFacet, $selected_journals)->toArray();
-
 			$resultset = $this->proccessResultSet($resultset);
+
 			$mypaginator = $this->paginate($request, $resultset, $numFound, $resultsPerPage, $page);
+			$publishDateArray = $this->processFacet($resultset_facet_year, $selected_publishDates)->toArray();
+			$journalsArray = $this->processFacet($resultset_facet_journal, $selected_journals)->toArray();
 
 			if ($request->ajax()) {
 				return view('resultados.bSolrIndex', [
@@ -293,80 +325,34 @@ class SolariumController extends Controller {
 			if ($request->expectsJson()) {
 				return response()->json([
 					'error' => true,
-					'message' => 'El servición de búsqueda avanzada no se encuentra disponible en este momento.'
+					'message' => 'El servición de búsqueda por título de artículo no se encuentra disponible temporalmente.'
 				], 503);
 			}
 		} catch (Throwable $e) {
 			// Atrapa fallos críticos de red, Timeouts de cURL, errores de DNS o conexión caída
 			Log::error('Fallo de conexión o Timeout con Solr en [getHarvestedJournals]: ' . $e->getMessage());
 		}
-		return view('resultados.resultadosBusquedaAvanzada', [
-			'resultset' => collect(),
-			'numFound' => 0,
-			'publishDateArray' => [],
-			'journalsArray' => [],
-			'searchTerm' => $searchTerm,
-			'selected_publishDates' => [],
-			'selected_journals' => [],
-			'requested_journal' => "",
-			'published_date_from' => [],
-			'published_date_to' => [],
-			'author_name' => "",
-			'searchTerm' => $searchTerm,
-			'path' => $request->path(),
-			'solrAvailable' => false,
-			'warningMessage' => 'La búsqueda avanzada no se encuentran disponible en este momento.'
-		]);
 	}
 
 	public function proccessResultSet($resulset) {
 		$collection_resultset = collect();
 		foreach ($resulset as $document) {
+			$suffix = $document['locale_s'] ?? 'en'; 
 			// Se itera sobre el documento para acceder a cada campo
 			$item = [];
 			foreach ($document as $field => $value) {
-				if (is_array($value) && $field == "author") {
-					$author_collection = collect();
-					foreach ($value as $author) {
-						$author_in_segments = Str::of($author)->split('/[,]+/'); // '/[,]+/' con este patrón separo por medio de comas
-						$author_in_order = $author_in_segments[1] . ' ' . $author_in_segments[0];
-						$author_collection->push($author_in_order);
-					}
-					$imploded_authors = $author_collection->implode(';');
+				if (is_array($value) && $field == "authors_t") {
+					$author_collection = collect($value);
+					$imploded_authors = $author_collection->implode('; ');
 					$item[$field] = $imploded_authors;
 					continue;
 				}
-				if (is_array($value) && $field == "pclave_txt_mv") {
-					$keyword_collection = collect();
-					foreach ($value as $keyword) {
-						if ($keyword != "") {
-							if (Str::contains($keyword, ';')) {
-								// La keyword es una cadena con varias palabras clave separadas por ;
-								$keyword_in_segments_by_colon = Str::of($keyword)->split('/[;]+/');
-								$keyword_collection = $keyword_collection->merge($keyword_in_segments_by_colon);
-
-							} elseif (Str::contains($keyword, ',')) {
-								// La keyword es una cadena con varias palabras clave separadas por ,
-								$keyword_in_segments_by_comma = Str::of($keyword)->split('/[,]+/');
-								$keyword_collection = $keyword_collection->merge($keyword_in_segments_by_comma);
-							} else {
-								// La keyword es una sóla palabra clave (Es el caso bonito)
-								$keyword_collection->push($keyword);
-							}
-						}
-					}
-					$imploded_keywords = $keyword_collection->implode('; ');
-					$item[$field] = $imploded_keywords;
+				if (is_array($value) && $field == "subject_{$suffix}") {
+					$keyword_collection = collect($value);
+					$imploded_subject = $keyword_collection->implode('; ');
+					$item[$field] = $imploded_subject;
 					continue;
-				}
-				if (is_array($value) && $field != "issn") {
-					$value = implode(', ', $value);
-					$item[$field] = $value;
-					continue;
-				} elseif (is_array($value) && $field == "issn") {
-					$item['myownissn'] = $value[0];
-					$item['doi'] = count($value) == 3 ? $value[2] : null;
-					continue;
+					
 				}
 				$item[$field] = $value;
 			}
@@ -390,15 +376,18 @@ class SolariumController extends Controller {
 		];
 		return new LengthAwarePaginator($items, $resultset_total, $perPage, $page, $options);
 	}
+	
+	
 	/**
+	 * 
 	 * This function processes the returned facet to add some attributes for the view
 	 * @return $publishDateArray = [
-	['checkbox_id' => 2014, 'count' => 18, 'is_checked' => true],
-	['checkbox_id' => 2016, 'count' => 15, 'is_checked' => true],
-	['checkbox_id' => 2017, 'count' => 12, 'is_checked' => false],
-	];
-	 *
-	 */
+	 *	['checkbox_id' => 2014, 'count' => 18, 'is_checked' => true],
+	 *	['checkbox_id' => 2016, 'count' => 15, 'is_checked' => true],
+	 *	['checkbox_id' => 2017, 'count' => 12, 'is_checked' => false],
+	 *	];
+	 */ 
+	 
 	public function processFacet($faceta, $selected) {
 		$collection_facet = collect();
 		$item = [];
@@ -419,5 +408,26 @@ class SolariumController extends Controller {
 
 		return $collection_facet;
 	}
+
+	/**
+     * Safely escapes Solr query syntax rules to prevent injection errors.
+     */
+    private function sanitizeSolrQuery($string) {
+
+		if(empty($string)) {
+			$strQuery = "*:*";
+			return $strQuery;
+		} else {
+			// Trim basic whitespace
+			$string = trim($string);
+
+			// Escape Solr special query operators: + - && || ! ( ) { } [ ] ^ " ~ * ? : \ /
+			// This stops users from typing a single broken brace or quote and breaking the server
+			$pattern = '/([\\+\\-\\&\\|\\!\\(\\)\\{\\}\\[\\]\\^\\"\\~\\*\\?\\:\\\\\\/])/';
+			
+			return preg_replace($pattern, '\\\\$1', $string);
+
+		}
+    }
 
 }

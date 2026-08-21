@@ -67,20 +67,20 @@
         <div class="row page_row">
 			@foreach($resultset as $document)
 				<div class="col-12 page_col">
-					<a class="journal_title" href="#">{{ $document['collection'] }}</a>
+					<a class="journal_title" href="#">{{ $document['journal_title'] }}</a>
 					<div class="row no-gutters article_data_row">
 						<div class="col-11 data-col">
 							<div class="row no-gutters">
 								<div class="col-12 article_data">
 									<div class="row">
 										<div class="col-4 col-sm-3 col-md-2 col-xl-2">
-											<div class="data_container"><span class="data_label">Año</span><span class="data_value">{{ (isset($document['publishDate'])) ? $document['publishDate'] : '' }}</span></div>
+											<div class="data_container"><span class="data_label">Año</span><span class="data_value">{{ (isset($document['published_year_s'])) ? $document['published_year_s'] : '' }}</span></div>
 										</div>
 										<div class="col-8 col-sm-9 col-md-10">
 											<div class="data_container"><span class="data_label">ISSN</span>
 												<span class="data_value">
-												@if (isset($document['myownissn']))
-													{{ $document['myownissn'] }}
+												@if (isset($document['issne']))
+													{{ $document['issne'] }}
 												@else
 													N/A
 												@endif
@@ -88,18 +88,27 @@
 											</div>
 										</div>
 									</div>
-									<a target="_blank" class="article_link" href="{{ $document['url'] }}">{{ $document['title'] }}</a>
-									<p class="article_authors">{{ $document['author'] }}</p>
+									@php
+										// 1. Force the locale string to lowercase to match your schema attributes safely
+										$suffix = strtolower($document['locale_s'] ?? 'en'); 
+
+										// 2. Fallback system: if the localized field is missing or empty, fall back to English
+										$titleField = isset($document["title_txt_{$suffix}"]) ? "title_txt_{$suffix}" : "title_txt_en";
+										$descField  = isset($document["description_txt_{$suffix}"]) ? "description_txt_{$suffix}" : "description_txt_en";
+										$subjField  = isset($document["subject_{$suffix}"]) ? "subject_{$suffix}" : "subject_en";
+									@endphp
+									<a target="_blank" class="article_link" href="{{ $document['url_s'] }}"> {{ $document[$titleField] ?? 'Untitled Article' }}</a>
+									<p class="article_authors">{{ $document['authors_t'] }}</p>
 									<div class="data_container">
-										@if ( isset($document['doi_txt']) && $document['doi_txt'] != null)
-											<span class="data_label">DOI</span><a class="text-break doi_link" target="_blank" href="https://doi.org/{{ $document['doi_txt'] }}">https://doi.org/{{ $document['doi_txt'] }}</a>
+										@if ( isset($document['doi_s']) && $document['doi_s'] != null)
+											<span class="data_label">DOI</span><a class="text-break doi_link" target="_blank" href="https://doi.org/{{ $document['doi_s'] }}">https://doi.org/{{ $document['doi_s'] }}</a>
 										@endif
 									</div>
-									@if (isset($document['pclave_txt_mv']) && $document['pclave_txt_mv'] != '')
+									@if (isset($document[$subjField]) && $document[$subjField] != '')
 										<div class="data_container">
 											<span class="data_label">Palabras Clave</span>
 											<div class="keywor_caontainer">
-												<p>{{ $document['pclave_txt_mv'] }}</p>
+												<p>{{ $document[$subjField] }}</p>
 											</div>
 										</div>
 									@endif
@@ -114,11 +123,11 @@
 											<a class="text-break keyword_link" href="#" target="_blank">covid</a>
 										</div>
 									</div> --}}
-									@if (isset($document['description']) && $document['description'] != "")
+									@if (isset($document[$descField]) && $document[$descField] != "")
 										<div class="data_container"><a class="link_description" href="#description_container" data-toggle="collapse"><span class="data_label label_description">Descripción<i class="fa fa-plus-circle"></i></span></a>
 											<div id="description_container" class="card card-body collapse description_container">
 												<div>
-													<p>{{ $document['description'] }}</p>
+													<p>{{ $document[$descField] }}</p>
 												</div>
 											</div>
 										</div>
