@@ -74,7 +74,8 @@
                                         </div>
                                     @else
                                         <span style="/*margin-top: 200px;*/">
-                                        Portal con {{ $indiceServicio->getTotalRevistas() }} revistas y acceso a más de {{ $solrService->getNumDocsFound() }} artículos a texto completo.<br></span>
+                                        <!-- Portal con {{ $indiceServicio->getTotalRevistas() }} revistas y acceso a más de {{ $solrService->getNumDocsFound() }} artículos a texto completo.<br></span> -->
+                                         Portal con {{ $indiceServicio->getTotalRevistas() }} revistas<br></span>
                                     @endif
                                 </div>
                             </div>
