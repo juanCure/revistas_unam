@@ -1,7 +1,11 @@
 @extends('layouts.app')
 @section('content')
 	<div class="container-fluid" id="main_container">
-		@includeWhen($solrAvailable, 'resultados.bSolrIndex', ['status' => 'active'])
+		@if($numFound > 0)
+			@include('resultados.bSolrIndex')
+		@else
+			@include('resultados.emptyResultsets')
+		@endif
 	</div>
 	<script>
 

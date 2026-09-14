@@ -337,7 +337,7 @@ class SolariumController extends Controller {
 	public function proccessResultSet($resulset) {
 		$collection_resultset = collect();
 		foreach ($resulset as $document) {
-			$suffix = $document['locale_s'] ?? 'en'; 
+			$suffix = $document['locale_s'];
 			// Se itera sobre el documento para acceder a cada campo
 			$item = [];
 			foreach ($document as $field => $value) {
@@ -351,8 +351,7 @@ class SolariumController extends Controller {
 					$keyword_collection = collect($value);
 					$imploded_subject = $keyword_collection->implode('; ');
 					$item[$field] = $imploded_subject;
-					continue;
-					
+					continue;					
 				}
 				$item[$field] = $value;
 			}

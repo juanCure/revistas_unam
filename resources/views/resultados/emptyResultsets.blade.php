@@ -1,0 +1,1 @@
+<p>Por el momento no hay artículos que cumplan los criterios introducidos. Intenta de nuevo con otros criterios de búsqueda!</p>

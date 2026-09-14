@@ -2,8 +2,11 @@
 @section('content')
 	{{-- <div id="resultados_contenido" class="container-fluid"> --}}
 	<div class="container-fluid" id="main_container">
-		{{-- @include("resultados.bSolrIndex") --}}
-		@includeWhen($solrAvailable, 'resultados.bSolrIndex', ['status' => 'active'])
+		@if($numFound > 0)
+			@include('resultados.bSolrIndex')
+		@else
+			@include('resultados.emptyResultsets')
+		@endif
 	</div>
 	<script>
 		// Obteniendo la URL DE LA APP

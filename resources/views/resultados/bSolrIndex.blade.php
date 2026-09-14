@@ -104,7 +104,7 @@
 											<span class="data_label">DOI</span><a class="text-break doi_link" target="_blank" href="https://doi.org/{{ $document['doi_s'] }}">https://doi.org/{{ $document['doi_s'] }}</a>
 										@endif
 									</div>
-									@if (isset($document[$subjField]) && $document[$subjField] != '')
+									@if (isset($document[$subjField]) && is_string($document[$subjField]))
 										<div class="data_container">
 											<span class="data_label">Palabras Clave</span>
 											<div class="keywor_caontainer">
@@ -112,17 +112,6 @@
 											</div>
 										</div>
 									@endif
-									{{-- <div class="data_container">
-										<span class="data_label">Palabras Clave</span>
-										<div class="keyword_caontainer">
-											<a class="text-break keyword_link" href="#" target="_blank">políticas públicas</a>
-											<a class="text-break keyword_link" href="#" target="_blank">representaciones sociales</a>
-											<a class="text-break keyword_link" href="#" target="_blank">habitar</a>
-											<a class="text-break keyword_link" href="#" target="_blank">movilidades urbanas</a>
-											<a class="text-break keyword_link" href="#" target="_blank">pandemia</a>
-											<a class="text-break keyword_link" href="#" target="_blank">covid</a>
-										</div>
-									</div> --}}
 									@if (isset($document[$descField]) && $document[$descField] != "")
 										<div class="data_container"><a class="link_description" href="#description_container" data-toggle="collapse"><span class="data_label label_description">Descripción<i class="fa fa-plus-circle"></i></span></a>
 											<div id="description_container" class="card card-body collapse description_container">
